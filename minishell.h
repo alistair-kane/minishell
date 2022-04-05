@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbrandtn <dbrandtn@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: alkane <alkane@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 16:14:47 by alkane            #+#    #+#             */
-/*   Updated: 2022/04/02 17:40:56 by dbrandtn         ###   ########.fr       */
+/*   Updated: 2022/04/05 14:37:36 by alkane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,9 @@ typedef struct s_data
 {
 	t_vector	*history;
 }				t_data;
+
+t_data	*data_init(void);
+void	data_cleanup(t_data *data);
+
 
 #endif

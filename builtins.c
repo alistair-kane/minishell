@@ -1,38 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alkane <alkane@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/02 16:19:48 by alkane            #+#    #+#             */
-/*   Updated: 2022/04/05 14:41:34 by alkane           ###   ########.fr       */
+/*   Created: 2022/04/05 15:27:44 by alkane            #+#    #+#             */
+/*   Updated: 2022/04/05 16:22:34 by alkane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <readline/readline.h>
-#include <readline/history.h>
 #include "minishell.h"
 
+// should return int of "args consumed"
 
-
-int	main(void)
-{
-	char	*buf;
-	t_data	*data;
-
-	data = data_init();
-	if (data == NULL)
-		return (-1);
-	buf = readline(PROMPT);
-	while (buf != NULL)
-	{
-		vector_add(data->history, buf);
-		buf = readline(PROMPT);
-		parser(data, buf);
-	}
-	data_cleanup(data);
-	return (0);
-}
-
+// cd for example consumes itself = return 1
+// cd modifiers 'current directory' char* each time it modifies the current dir
+// 		current directory var initialized as home directory (from path vector)
