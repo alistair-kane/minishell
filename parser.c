@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alkane <alkane@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dbrandtn <dbrandtn@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 14:40:06 by alkane            #+#    #+#             */
-/*   Updated: 2022/04/05 20:33:49 by alkane           ###   ########.fr       */
+/*   Updated: 2022/04/05 20:41:41 by dbrandtn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	parser(t_data *data, char *buf)
 
 	// !!!!! split must be replaced
 	// new pre-parser should handle all whitespace chars and ___ " ' $ ___ (not splitting inside)
-	args = ft_split(buf, ' ');
+	args = ms_split(buf);
 	i = 0;
 	while (args[i])
 	{

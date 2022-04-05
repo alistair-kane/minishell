@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alkane <alkane@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dbrandtn <dbrandtn@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 16:14:47 by alkane            #+#    #+#             */
-/*   Updated: 2022/04/05 18:14:27 by alkane           ###   ########.fr       */
+/*   Updated: 2022/04/05 20:41:19 by dbrandtn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ void	data_cleanup(t_data *data);
 
 void	parser(t_data *data, char *buf);
 
-int	builtin_echo(t_data *data, char **buf);
+int		builtin_echo(t_data *data, char **buf);
+
+char	**ms_split(char *line);
 
 #endif
