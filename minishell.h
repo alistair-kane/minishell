@@ -6,7 +6,7 @@
 /*   By: alkane <alkane@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 16:14:47 by alkane            #+#    #+#             */
-/*   Updated: 2022/04/05 14:37:36 by alkane           ###   ########.fr       */
+/*   Updated: 2022/04/05 17:14:50 by alkane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include "libft/libft.h"
 # include "libft/vector.h"
 
-# define PROMPT "$"
+# define PROMPT "$ "
 
 typedef struct s_data
 {
