@@ -6,7 +6,7 @@
 #    By: alkane <alkane@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/02 17:22:40 by dbrandtn          #+#    #+#              #
-#    Updated: 2022/04/05 14:38:37 by alkane           ###   ########.fr        #
+#    Updated: 2022/04/05 20:15:49 by alkane           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ CC		= gcc
 CFLAGS	= -Wall -Werror -Wextra
 LIB_LOC = ./libft
 LIBRARY = libft.a
-SRCS	= minishell.c data_structs.c
+SRCS	= minishell.c data_structs.c parser.c builtins.c
 OBJS	= ${SRCS:.c=.o}
 
 all: $(NAME)
@@ -26,8 +26,8 @@ $(LIBRARY):
 $(NAME): $(OBJS) $(LIBRARY)
 	$(CC) $(CFLAGS) $(OBJS) -lreadline -o $(NAME) -L $(LIB_LOC) -lft
 
-debug: $(CFLAGS) += -g3
-debug: all
+debug: CFLAGS += -g3
+debug: re
 
 clean:
 	rm -f $(OBJS)

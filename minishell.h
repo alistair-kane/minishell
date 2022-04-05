@@ -6,7 +6,7 @@
 /*   By: alkane <alkane@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 16:14:47 by alkane            #+#    #+#             */
-/*   Updated: 2022/04/05 17:14:50 by alkane           ###   ########.fr       */
+/*   Updated: 2022/04/05 18:14:27 by alkane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # include "libft/libft.h"
 # include "libft/vector.h"
 
+# include <stdio.h>
+
 # define PROMPT "$ "
 
 typedef struct s_data
@@ -29,5 +31,8 @@ typedef struct s_data
 t_data	*data_init(void);
 void	data_cleanup(t_data *data);
 
+void	parser(t_data *data, char *buf);
+
+int	builtin_echo(t_data *data, char **buf);
 
 #endif
