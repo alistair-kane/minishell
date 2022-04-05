@@ -6,7 +6,7 @@
 /*   By: alkane <alkane@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 16:19:48 by alkane            #+#    #+#             */
-/*   Updated: 2022/04/05 14:41:34 by alkane           ###   ########.fr       */
+/*   Updated: 2022/04/05 17:09:58 by alkane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "minishell.h"
-
-
 
 int	main(void)
 {
@@ -26,11 +24,15 @@ int	main(void)
 	if (data == NULL)
 		return (-1);
 	buf = readline(PROMPT);
+	if (ft_strlen(buf))
+		add_history(buf);
 	while (buf != NULL)
 	{
 		vector_add(data->history, buf);
 		buf = readline(PROMPT);
-		parser(data, buf);
+		if (ft_strlen(buf))
+			add_history(buf);
+		// parser(data, buf);
 	}
 	data_cleanup(data);
 	return (0);
