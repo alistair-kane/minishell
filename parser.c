@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbrandtn <dbrandtn@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: alkane <alkane@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 14:40:06 by alkane            #+#    #+#             */
-/*   Updated: 2022/04/06 14:35:57 by dbrandtn         ###   ########.fr       */
+/*   Updated: 2022/04/06 14:51:58 by alkane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,9 @@ int	check_builtin(t_data *data, char **arg)
 	// 	return(builtin_unset(data));
 	// else if (!ft_strncmp("env", arg[0], 3))
 	// 	return(builtin_env(data));
-	// else if (!ft_strncmp("exit", arg, 3))
-	// 	return(builtin_exit(data));
+	else if (!ft_strncmp("exit", arg[0], ft_strlen(arg[0])))
+		builtin_exit(0);
+		// 0 represents exit code
 	return (0);
 }
 
