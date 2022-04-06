@@ -6,7 +6,6 @@
 #include "../minishell.h"
 
 static void	init_environment(t_data *data);
-static int	get_name_length(char *entry);
 
 t_data	*data_init(void)
 {
@@ -65,13 +64,15 @@ static void	init_environment(t_data *data)
 		init_paths(data, environ[i]); // checks for PATH= , adds to data struct
 		length_value = ft_strlen(&environ[i][length_name + 1]);
 		entry.value = malloc(length_value + 1);
+		if (entry.value == NULL)
+			return ; // !!!!!
 		ft_strlcpy(entry.value, &environ[i][length_name + 1], length_value + 1);
 		vector_add(data->environment, &entry);
 		i++;
 	}
 }
 
-static int	get_name_length(char *entry)
+int	get_name_length(char *entry)
 {
 	int	length;
 
