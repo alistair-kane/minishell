@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.c                                         :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alkane <alkane@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 15:27:44 by alkane            #+#    #+#             */
-/*   Updated: 2022/04/06 14:22:53 by alkane           ###   ########.fr       */
+/*   Updated: 2022/04/06 14:29:29 by alkane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-// should return int of "args consumed"
+// should return int of "-n consumed and set n_flag"
 
 static int	flag_handler(char **buf, int *n_flag)
 {
@@ -36,6 +36,8 @@ static int	flag_handler(char **buf, int *n_flag)
 	return (i);
 }
 
+// should return int of "args consumed"
+
 int	builtin_echo(t_data *data, char **buf)
 {
 	int	i;
@@ -48,7 +50,7 @@ int	builtin_echo(t_data *data, char **buf)
 	// flag handler should parse through all -n -nnnn -n variations
 	// gives back next segment to be output position
 	i = flag_handler(buf, &n_flag);
-	// checking for ending conditions
+	// checking for ending conditions, current goes through all segments
 	while (buf[i] && ft_strncmp(buf[i], "|", 1))
 	{
 		// if a piping is needed, change of fd here?
@@ -59,5 +61,5 @@ int	builtin_echo(t_data *data, char **buf)
 	if (!n_flag)
 		ft_putstr_fd("\n", 1);
 	// returns i after each segmentation is consumed
-	return (0);
+	return (i);
 }

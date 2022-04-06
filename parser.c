@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbrandtn <dbrandtn@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: alkane <alkane@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 14:40:06 by alkane            #+#    #+#             */
-/*   Updated: 2022/04/05 20:41:41 by dbrandtn         ###   ########.fr       */
+/*   Updated: 2022/04/06 14:27:38 by alkane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,8 @@ void	parser(t_data *data, char *buf)
 	while (args[i])
 	{
 		i += parse_args(data, &args[i]);
-		// line is here because parse_args doesnt work as intended just yet
-		i++;
+		
+		// line is here incase parse_args not functioning as intended
+		// i++;
 	}
 }
