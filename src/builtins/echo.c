@@ -6,11 +6,11 @@
 /*   By: alkane <alkane@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 15:27:44 by alkane            #+#    #+#             */
-/*   Updated: 2022/04/06 14:29:29 by alkane           ###   ########.fr       */
+/*   Updated: 2022/04/06 14:38:50 by alkane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
 // should return int of "-n consumed and set n_flag"
 
