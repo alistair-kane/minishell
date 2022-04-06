@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alkane <alkane@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alistair <alistair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 14:22:37 by alkane            #+#    #+#             */
-/*   Updated: 2022/04/06 23:54:39 by alkane           ###   ########.fr       */
+/*   Updated: 2022/04/07 01:34:16 by alistair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,17 +37,15 @@ static int	check_paths(t_data *data, char *end)
 {
 	int		i;
 	char	*temp;
-	// DIR		*dir;
-	// struct stat	sb;
-	i = -1;
 
+	i = -1;
 	while (data->path[++i])
 	{
 		temp = data->path[i];
-		if (temp[ft_strlen(temp)] != '/') // !!!!! need to support \ ?
+		if (temp[ft_strlen(temp) - 1] != '/') // !!!!! need to support \ ?
 			temp = ft_strjoin(temp, "/");
 		temp = ft_strjoin(temp, end);
-		printf("Path: %s\n", temp);
+		// printf("Path: %s\n", temp);
 		// dir = opendir(temp);
 		if (!chdir(temp))
 			printf("Found a dir: %s\n", temp);

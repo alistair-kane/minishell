@@ -25,7 +25,8 @@ typedef struct s_data
 {
 	t_vector	*environment;
 	t_vector	*history;
-	char		**path; // yes atleast in cd we already need!!!!! to we need this??
+	char		**path;
+	char		*pwd;
 }				t_data;
 
 t_data	*data_init(void);
