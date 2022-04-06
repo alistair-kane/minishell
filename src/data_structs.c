@@ -25,6 +25,24 @@ t_data	*data_init(void)
 	return (data);
 }
 
+// takes line of env and checks if its path, if it is adds to **paths in data struct
+
+static void init_paths(t_data *data, char *env_line)
+{
+	int	len;
+
+	if (!ft_strncmp(env_line, "PATH", 4))
+	{
+		data->path = ft_split(env_line, ':');
+		// remove "PATH=" from first entry of split return
+		if (data->path)
+		{
+			len = ft_strlen(data->path[0]) - 4;
+			ft_strlcpy(data->path[0], &data->path[0][5], len);
+		}
+	}
+}
+
 static void	init_environment(t_data *data)
 {
 	extern char		**environ;
@@ -44,6 +62,7 @@ static void	init_environment(t_data *data)
 		if (entry.name == NULL)
 			return ; // !!!!!
 		ft_strlcpy(entry.name, environ[i], length_name + 1);
+		init_paths(data, environ[i]); // checks for PATH= , adds to data struct
 		length_value = ft_strlen(&environ[i][length_name + 1]);
 		entry.value = malloc(length_value + 1);
 		ft_strlcpy(entry.value, &environ[i][length_name + 1], length_value + 1);

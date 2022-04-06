@@ -6,7 +6,7 @@
 /*   By: alkane <alkane@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 15:27:44 by alkane            #+#    #+#             */
-/*   Updated: 2022/04/06 15:33:34 by alkane           ###   ########.fr       */
+/*   Updated: 2022/04/06 15:44:04 by alkane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ static int	flag_handler(char **buf, int *n_flag)
 }
 
 // should return int of "args consumed"
+// maybe passing data to this function is not needed?
 
 int	builtin_echo(t_data *data, char **buf)
 {
