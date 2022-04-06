@@ -6,19 +6,15 @@
 /*   By: alkane <alkane@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 15:27:44 by alkane            #+#    #+#             */
-/*   Updated: 2022/04/05 20:37:32 by alkane           ###   ########.fr       */
+/*   Updated: 2022/04/06 14:22:53 by alkane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 // should return int of "args consumed"
 
-// cd for example consumes itself = return 1
-// cd modifiers 'current directory' char* each time it modifies the current dir
-// 		current directory var initialized as home directory (from path vector)
-
-int	flag_handler(char **buf, int *n_flag)
+static int	flag_handler(char **buf, int *n_flag)
 {
 	int	i;
 	int j;
