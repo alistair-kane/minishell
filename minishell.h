@@ -28,11 +28,13 @@ typedef struct s_data
 
 t_data	*data_init(void);
 void	data_cleanup(t_data *data);
+int		get_name_length(char *entry);
 
 void	parser(t_data *data, char *buf);
 
 int		builtin_echo(t_data *data, char **buf);
 void	builtin_exit(int status);
+int		builtin_export(t_data *data, char **args);
 
 char	**ms_split(char *line);
 

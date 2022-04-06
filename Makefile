@@ -5,7 +5,8 @@ CC		= gcc
 CFLAGS	= -Wall -Werror -Wextra
 LIB_LOC = ./libft
 LIBRARY = libft.a
-SRCS	= minishell.c src/data_structs.c src/parser.c src/split.c src/builtins/echo.c src/builtins/cd.c src/builtins/exit.c 
+SRCS	= minishell.c src/data_structs.c src/parser.c src/split.c src/builtins/echo.c src/builtins/cd.c src/builtins/exit.c \
+			src/builtins/export.c
 OBJS	= ${SRCS:.c=.o}
 
 all: $(NAME)
