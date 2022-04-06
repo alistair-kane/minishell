@@ -6,7 +6,7 @@
 /*   By: dbrandtn <dbrandtn@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 16:14:47 by alkane            #+#    #+#             */
-/*   Updated: 2022/04/05 20:41:19 by dbrandtn         ###   ########.fr       */
+/*   Updated: 2022/04/06 14:16:17 by dbrandtn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,17 @@
 
 # define PROMPT "$ "
 
+typedef struct s_environment
+{
+	char	*name;
+	char	*value;
+}				t_environment;
+
 typedef struct s_data
 {
+	t_vector	*environment;
 	t_vector	*history;
+	//char		**path; !!!!! to we need this??
 }				t_data;
 
 t_data	*data_init(void);

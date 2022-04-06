@@ -6,7 +6,7 @@
 /*   By: dbrandtn <dbrandtn@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 17:02:32 by dbrandtn          #+#    #+#             */
-/*   Updated: 2022/04/05 20:27:24 by dbrandtn         ###   ########.fr       */
+/*   Updated: 2022/04/05 20:45:36 by dbrandtn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static int	is_whitespace(char c);
 returns an array of strings - splits the line when finding a whitespace-char, 
 that's not part of any string (surrounded by ' or " quotes)
 */
+// !!!!! currently returns the quotes -> remove !? echo "test" => test
 char	**ms_split(char *line)
 {
 	char	**array;

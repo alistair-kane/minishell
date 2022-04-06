@@ -6,7 +6,7 @@
 /*   By: dbrandtn <dbrandtn@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 14:40:06 by alkane            #+#    #+#             */
-/*   Updated: 2022/04/05 20:41:41 by dbrandtn         ###   ########.fr       */
+/*   Updated: 2022/04/05 20:47:22 by dbrandtn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,4 +88,5 @@ void	parser(t_data *data, char *buf)
 		// line is here because parse_args doesnt work as intended just yet
 		i++;
 	}
+	// !!!!! free split (args)
 }
