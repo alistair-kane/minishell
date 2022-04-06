@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 #include <stdlib.h>
-#include "minishell.h"
+#include "../minishell.h"
 
 static void	init_environment(t_data *data);
 static int	get_name_length(char *entry);

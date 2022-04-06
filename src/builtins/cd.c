@@ -6,7 +6,7 @@
 /*   By: alkane <alkane@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 14:22:37 by alkane            #+#    #+#             */
-/*   Updated: 2022/04/06 14:56:04 by alkane           ###   ########.fr       */
+/*   Updated: 2022/04/06 15:34:48 by alkane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 // cd modifiers 'current directory' char* each time it modifies the current dir
 // 		current directory var initialized as home directory (from path vector)
 
-int	builtin_cd(t_data *data)
-{
+// int	builtin_cd(t_data *data)
+// {
 	// update pwd
-}
+// }

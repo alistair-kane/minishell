@@ -1,6 +1,6 @@
 // !!!!!
 
-#include "minishell.h"
+#include "../minishell.h"
 
 static int	count_arguments(char *line);
 static char	*goto_next_whitespace(char *line);

@@ -1,6 +1,6 @@
 // !!!!!
 
-#include "minishell.h"
+#include "../minishell.h"
 
 // searching path to match
 // int	check_binaries(t_data *data, char **arg)
