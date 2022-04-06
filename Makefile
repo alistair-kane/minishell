@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dbrandtn <dbrandtn@student.42wolfsburg.    +#+  +:+       +#+         #
+#    By: alkane <alkane@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/02 17:22:40 by dbrandtn          #+#    #+#              #
-#    Updated: 2022/04/05 20:40:45 by dbrandtn         ###   ########.fr        #
+#    Updated: 2022/04/06 14:23:16 by alkane           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ CC		= gcc
 CFLAGS	= -Wall -Werror -Wextra
 LIB_LOC = ./libft
 LIBRARY = libft.a
-SRCS	= minishell.c data_structs.c parser.c builtins.c split.c
+SRCS	= minishell.c data_structs.c parser.c builtins/echo.c split.c
 OBJS	= ${SRCS:.c=.o}
 
 all: $(NAME)

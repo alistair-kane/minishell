@@ -6,7 +6,7 @@
 /*   By: dbrandtn <dbrandtn@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 14:40:06 by alkane            #+#    #+#             */
-/*   Updated: 2022/04/05 20:47:22 by dbrandtn         ###   ########.fr       */
+/*   Updated: 2022/04/06 14:35:57 by dbrandtn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,9 @@ void	parser(t_data *data, char *buf)
 	while (args[i])
 	{
 		i += parse_args(data, &args[i]);
-		// line is here because parse_args doesnt work as intended just yet
-		i++;
+		
+		// line is here incase parse_args not functioning as intended
+		// i++;
 	}
 	// !!!!! free split (args)
 }
