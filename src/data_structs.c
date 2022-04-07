@@ -47,24 +47,25 @@ static void	init_environment(t_data *data)
 
 	data->environment = vector_init(100, 100, sizeof(t_environment));
 	if (data->environment == NULL)
-		return ; // !!!!!
+		builtin_exit(1);
 	i = 0;
 	while (environ[i] != NULL)
 	{
 		length_name = get_name_length(environ[i]);
 		entry.name = malloc(length_name + 1);
 		if (entry.name == NULL)
-			return ; // !!!!!
+			builtin_exit(1);
 		ft_strlcpy(entry.name, environ[i], length_name + 1);
 		length_value = ft_strlen(&environ[i][length_name + 1]);
 		entry.value = malloc(length_value + 1);
 		if (entry.value == NULL)
-			return ; // !!!!!
+			builtin_exit(1);
 		ft_strlcpy(entry.value, &environ[i][length_name + 1], length_value + 1);
 		init_paths(data, entry); // checks for PATH, adds to data struct
 		vector_add(data->environment, &entry);
 		i++;
 	}
+	sort_all_entries(data->environment);
 }
 
 int	get_name_length(char *entry)
