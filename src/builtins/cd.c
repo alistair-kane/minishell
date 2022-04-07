@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alistair <alistair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alkane <alkane@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 14:22:37 by alkane            #+#    #+#             */
-/*   Updated: 2022/04/07 01:34:16 by alistair         ###   ########.fr       */
+/*   Updated: 2022/04/07 13:00:37 by alkane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static char	*get_home_dir(t_data *data)
 	return (NULL);
 }
 
-static int	check_paths(t_data *data, char *end)
+static char	*check_paths(t_data *data, char *end)
 {
 	int		i;
 	char	*temp;
@@ -47,11 +47,13 @@ static int	check_paths(t_data *data, char *end)
 		temp = ft_strjoin(temp, end);
 		// printf("Path: %s\n", temp);
 		// dir = opendir(temp);
+
+		// test with munkilib
 		if (!chdir(temp))
-			printf("Found a dir: %s\n", temp);
-		free(temp);
+			return(temp);
 	}
-	return (0);
+	// !!!!! other error
+	return ("not found");
 }
 
 int	builtin_cd(t_data *data, char **buf)
@@ -62,33 +64,35 @@ int	builtin_cd(t_data *data, char **buf)
 	
 	if (!data)
 		return (0);
-
 	i = 1;
 	j = 0;
-	// condition met when only "cd" is input -> change to home directory
-	// if home unset, keep current directory
+	cur_path = NULL;	
 	if (!buf[i])
 	{
+		// condition met when only "cd" is input -> change to home directory
+		// if home unset, keep current directory
 		cur_path = get_home_dir(data);
-		printf("home dir %s\n", cur_path);
-		
+		printf("home dir (navigate & update pwd) %s\n", cur_path);
 		// checking if home unset
 		if (!cur_path)
 			return(1); // !!!!!
-		// update pwd !!!!!
-		chdir(cur_path);
-		return(1);
+		// chdir and update pwd !!!!!
 	}
 	// !!!!! does "\" also need to be supported? How to test
 	else if (buf[i][j] == '/')
 	{
-		printf("Slash found\n");
-		cur_path = buf[i];
+		// add pwd to this curpath
+		cur_path = ft_strjoin(data->pwd, buf[i]);
+		printf("new dir (navigate & update pwd) %s\n", cur_path);
 	}
 	else if (buf[i])
 	{
-		check_paths(data, buf[i]);
+		// step 5
+		cur_path = check_paths(data, buf[i]);
+		printf("new dir (navigate & update pwd) %s\n", cur_path);
 	}
+	chdir(cur_path);
+	data->pwd = cur_path;
 	return (1); // !!!!!
 }
 

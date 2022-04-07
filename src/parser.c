@@ -33,8 +33,8 @@ int	check_builtin(t_data *data, char **arg)
 		return(builtin_echo(data, arg));
 	else if (!ft_strncmp("cd", arg[0], ft_strlen(arg[0])))
 		return(builtin_cd(data, arg));
-	// else if (!ft_strncmp("pwd", arg[0], 3))
-	// 	return(builtin_pwd(data));
+	else if (!ft_strncmp("pwd", arg[0], ft_strlen(arg[0])))
+		return(builtin_pwd(data));
 	else if (!ft_strncmp("export", arg[0], 6))
 		return (builtin_export(data, arg));
 	// else if (!ft_strncmp("unset", arg[0], 3))
