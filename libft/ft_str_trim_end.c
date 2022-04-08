@@ -1,30 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   ft_str_trim_end.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dbrandtn <dbrandtn@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/25 02:50:58 by alkane            #+#    #+#             */
-/*   Updated: 2022/04/07 15:49:14 by dbrandtn         ###   ########.fr       */
+/*   Created: 2022/04/08 15:48:51 by dbrandtn          #+#    #+#             */
+/*   Updated: 2022/04/08 15:49:22 by dbrandtn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
+void	str_trim_end(char *line)
 {
-	unsigned int	i;
+	int	count;
 
-	i = 0;
-	if (n != 0)
+	if (*line == '\0')
+		return ;
+	count = 0;
+	while (*line != '\0')
 	{
-		while (i < n)
-		{
-			if ((s1[i] != s2[i]) || s1[i] == '\0' || s2[i] == '\0')
-				return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-		i++;
-		}
+		count++;
+		line++;
 	}
-	return (0);
+	line--;
+	while (is_whitespace(*line) == 1 && count > 0)
+	{
+		*line = '\0';
+		count--;
+	}
 }

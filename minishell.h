@@ -24,6 +24,7 @@ typedef struct s_environment
 
 typedef struct s_data
 {
+	t_vector	*env;
 	t_vector	*environment;
 	t_vector	*history;
 	char		**path;
@@ -31,8 +32,8 @@ typedef struct s_data
 }				t_data;
 
 t_data	*data_init(void);
+
 void	data_cleanup(t_data *data);
-int		get_name_length(char *entry);
 
 void	parser(t_data *data, char *buf);
 
@@ -40,8 +41,15 @@ int		builtin_echo(t_data *data, char **buf);
 int		builtin_cd(t_data *data, char **args);
 int		builtin_pwd(t_data *data);
 int		builtin_export(t_data *data, char **args);
+int		builtin_unset(t_data *data, char **args);
+int		builtin_env(t_data *data);
 void	builtin_exit(int status);
 
 char	**ms_split(char *line);
+
+int		is_reserved_symbol(char *argument);
+int		get_name_length(char *entry);
+
+void	sort_all_entries(t_vector *env);
 
 #endif
