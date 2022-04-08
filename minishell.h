@@ -6,6 +6,7 @@
 # include <stdio.h>
 # include <dirent.h>
 # include <sys/stat.h>
+# include <limits.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "libft/libft.h"
@@ -36,7 +37,7 @@ int		get_name_length(char *entry);
 void	parser(t_data *data, char *buf);
 
 int		builtin_echo(t_data *data, char **buf);
-int		builtin_cd(t_data *data, char **buf);
+int		builtin_cd(t_data *data, char **args);
 int		builtin_pwd(t_data *data);
 int		builtin_export(t_data *data, char **args);
 void	builtin_exit(int status);
