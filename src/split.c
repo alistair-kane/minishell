@@ -6,8 +6,6 @@ static int	count_arguments(char *line);
 static char	*goto_next_whitespace(char *line);
 static void	skip_whitespaces(char **line);
 static void	handle_quotes(char c, int *double_quotes, int *single_quotes);
-static void	str_trim_end(char *line);
-static int	is_whitespace(char c);
 
 /*
 returns an array of strings - splits the line when finding a whitespace-char, 
@@ -26,23 +24,22 @@ char	**ms_split(char *line)
 	count = count_arguments(line);
 	array = ft_calloc(count + 1, sizeof(void *));
 	if (array == NULL)
-		return (NULL);
+		builtin_exit(1);
 	i = 0;
 	last_pos = line;
 	pos = goto_next_whitespace(line);
 	while (pos != NULL)
 	{
-		array[i] = malloc((pos - last_pos) + 1);
+		array[i] = malloc((pos - last_pos) + 1); // !!!!!
 		ft_strlcpy(array[i], last_pos, (pos - last_pos) + 1);
 		skip_whitespaces(&pos);
 		i++;
 		last_pos = pos;
 		pos = goto_next_whitespace(pos);
 	}
-	array[i] = malloc(ft_strlen(last_pos) + 1);
+	array[i] = malloc(ft_strlen(last_pos) + 1); // !!!!!
 	ft_strlcpy(array[i], last_pos, ft_strlen(last_pos) + 1);
-	i++;
-	array[i] = NULL;
+	array[i + 1] = NULL;
 	return (array);
 }
 
@@ -62,7 +59,6 @@ static int	count_arguments(char *line)
 }
 
 // this will skip multiple whitespace-chars at the start of the string
-// 
 static char	*goto_next_whitespace(char *line)
 {
 	int	double_quotes_open;
@@ -115,41 +111,4 @@ static void	handle_quotes(char c, int *double_quotes, int *single_quotes)
 		if (*double_quotes == 0)
 			*single_quotes = 1;
 	}
-}
-
-static void	str_trim_end(char *line)
-{
-	int	count;
-
-	if (*line == '\0')
-		return ;
-	count = 0;
-	while (*line != '\0')
-	{
-		count++;
-		line++;
-	}
-	line--;
-	while (is_whitespace(*line) == 1 && count > 0)
-	{
-		*line = '\0';
-		count--;
-	}
-}
-
-static int	is_whitespace(char c)
-{
-	if (c == ' ')
-		return (1);
-	if (c == '\r')
-		return (1);
-	if (c == '\n')
-		return (1);
-	if (c == '\f')
-		return (1);
-	if (c == '\t')
-		return (1);
-	if (c == '\v')
-		return (1);
-	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: dbrandtn <dbrandtn@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 17:04:29 by alkane            #+#    #+#             */
-/*   Updated: 2022/04/07 15:54:52 by dbrandtn         ###   ########.fr       */
+/*   Updated: 2022/04/08 15:49:33 by dbrandtn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 
 int		ft_strcmp(const char *s1, const char *s2);
+int		is_whitespace(char c);
+void	str_trim_end(char *line);
 
 typedef struct s_list
 {

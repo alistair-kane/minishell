@@ -6,22 +6,17 @@ static void	export_print_list(t_data *data);
 static void	get_key_value_pair(char *argument, t_environment *entry);
 static int	get_entry_index(t_vector *env, char *name);
 static void	update_existing_entry(t_vector *env, int index, char *new_value);
+static char	*remove_surrounding_quotes(char *input);
 
 /*
 without any arguments, this prints all variables available
 */
-// TODO - 1. !!!!! enter in ms -> remove extra newline !!!!!
 int	builtin_export(t_data *data, char **args)
 {
 	int				index;
 	t_environment	entry;
 
-	if (args[1] == NULL)
-	{
-		export_print_list(data);
-		return (1);
-	}
-	if (is_reserved_symbol(args[1]) == 1)
+	if (args[1] == NULL || is_reserved_symbol(args[1]) == 1)
 	{
 		export_print_list(data);
 		return (1);
@@ -64,6 +59,7 @@ static void	get_key_value_pair(char *argument, t_environment *entry)
 	int	length_name;
 	int	length_value;
 
+	argument = remove_surrounding_quotes(argument);
 	length_name = get_name_length(argument);
 	entry->name = malloc(length_name + 1);
 	if (entry->name == NULL)
@@ -72,11 +68,41 @@ static void	get_key_value_pair(char *argument, t_environment *entry)
 	length_value = 0;
 	if (argument[length_name] == '=')
 		length_value = ft_strlen(&argument[length_name + 1]);
-	// !!!!! remove single and double quotes from input (just the one pair around the input)
 	entry->value = malloc(length_value + 1);
 	if (entry->value == NULL)
 		builtin_exit(1);
 	ft_strlcpy(entry->value, &argument[length_name + 1], length_value + 1);
+}
+
+// removes quotes around the name and the value of the current argument
+static char	*remove_surrounding_quotes(char *input)
+{
+	char	*result;
+	int		length;
+	int		length_name;
+
+	length = ft_strlen(input);
+	length_name = get_name_length(input);
+	result = malloc(length + 1);
+	if (result == NULL)
+		builtin_exit(1);
+	if ((input[0] == '"' && input[length_name - 1] == '"')
+		|| (input[0] == '\'' && input[length_name - 1] == '\''))
+		ft_strlcpy(result, &input[1], length_name - 2 + 1);
+	else
+		ft_strlcpy(result, input, length_name + 1);
+	if (length_name != length)
+	{
+		result[ft_strlen(result) + 1] = '\0'; // !!!!!
+		result[ft_strlen(result)] = '=';
+		if ((input[length_name + 1] == '"' && input[length - 1] == '"')
+			|| (input[length_name + 1] == '\'' && input[length - 1] == '\''))
+			ft_strlcpy(&result[ft_strlen(result)], &input[length_name + 2], length - length_name - 2);
+		else
+			ft_strlcpy(&result[ft_strlen(result)], &input[length_name + 1], length - length_name);
+	}
+	free(input);
+	return (result);
 }
 
 // returns the index of an existing entry name
