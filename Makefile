@@ -6,8 +6,9 @@ CFLAGS	= -Wall -Werror -Wextra
 LIB_LOC = ./libft
 LIBRARY = libft.a
 SRCS	= minishell.c src/data_structs.c src/parser.c src/split.c src/builtins/echo.c \
-			src/builtins/cd.c src/builtins/pwd.c src/builtins/exit.c src/builtins/export.c\
-			src/utils.c src/builtins/unset.c src/env_sort.c
+			src/builtins/cd.c src/builtins/pwd.c src/builtins/exit.c src/builtins/export.c \
+			src/utils.c src/builtins/unset.c src/env_sort.c src/data_cleanup.c \
+			src/builtins/env.c
 OBJS	= ${SRCS:.c=.o}
 
 all: $(NAME)

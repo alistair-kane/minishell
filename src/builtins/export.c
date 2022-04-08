@@ -11,6 +11,7 @@ static char	*remove_surrounding_quotes(char *input);
 /*
 without any arguments, this prints all variables available
 */
+// !!!!! add new entries to data->env !!!!!
 int	builtin_export(t_data *data, char **args)
 {
 	int				index;
