@@ -1,14 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   cd.c                                               :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: alistair <alistair@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/06 14:22:37 by alkane            #+#    #+#             */
-/*   Updated: 2022/04/09 02:47:38 by alistair         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#include "errno.h"
 
 #include "../../minishell.h"
 
@@ -146,43 +136,39 @@ static char	*handle_dotdot(char *path)
 		}
 	}
 	path[dynlen] = '\0';
+	if (dynlen == 0 || dynlen == 1 || path == NULL)
+		ft_strlcpy(path, "/", 2);
 	return (path);
 }
 
 static void	parse_cur_path(char *path, char *cur_path)
 {
-	cur_path = path;
-	
+	cur_path = path; // !!!!! v stupid code
 	cur_path = remove_dup_slash(path);
-	// printf("no double slash: %s\n\n", path);
-	
 	cur_path = remove_dotslash(cur_path);
-	// printf("no ./'s: %s\n\n", cur_path);
-	
 	cur_path = handle_dotdot(cur_path);
-	// printf("after .. handle: %s\n\n", cur_path);
-	return;
+	return ;
 }
 
-static	char *path_lower(char *path)
-{
-	char	*ret;
-	int		i;
+// static	char *path_lower(char *path)
+// {
+// 	char	*ret;
+// 	int		i;
 
-	ret = ft_calloc(ft_strlen(path) + 1, sizeof(char));
-	i = -1;
-	while (path[++i])
-		ret[i] = tolower(path[i]);
-	return (ret);
-}
+// 	ret = ft_calloc(ft_strlen(path) + 1, sizeof(char));
+// 	i = -1;
+// 	while (path[++i])
+// 		ret[i] = tolower(path[i]);
+// 	return (ret);
+// }
 
 // !!!!! needs norming
 
 int	builtin_cd(t_data *data, char **dir)
 {
 	char	*cur_path;
-	char	*temp;
 	int		temp_len;
+	// char	*temp;
 
 	if (!data)
 		builtin_exit(1);
@@ -193,32 +179,38 @@ int	builtin_cd(t_data *data, char **dir)
 	// absolute path 
 	else if (dir[1][0] == '/')
 		parse_cur_path(dir[1], cur_path);
-	// dot / dotdot path start
-	else if (dir[1][0] == '.' || !ft_strncmp(dir[1], "..", 2))
+	// dot / dotdot
+	else if (dir[1][0] == '.' || !ft_strcmp(dir[1], ".."))
 	{
 		temp_len = ft_strlcpy(cur_path, data->pwd, ft_strlen(data->pwd) + 1);
-		temp_len = ft_strlcat(cur_path, "/", temp_len + 2);
-		ft_strlcat(cur_path, dir[1], temp_len + ft_strlen(dir[1]) + 1);
+		// check for root
+		if (ft_strcmp(cur_path, "/") && ft_strcmp(cur_path, "/.."))
+		{
+			temp_len = ft_strlcat(cur_path, "/", temp_len + 2);
+			ft_strlcat(cur_path, dir[1], temp_len + ft_strlen(dir[1]) + 1);
+		}
 		parse_cur_path(cur_path, cur_path);
+
 	}
 	// step 5 checking CDPATH
 	else if (dir[1])
 	{
 		cur_path = check_paths(data, dir[1], cur_path);
-		if (*cur_path == '\0')
-		{
-			temp_len = ft_strlcpy(cur_path, data->pwd, ft_strlen(data->pwd) + 1);
-			temp_len = ft_strlcat(cur_path, "/", temp_len + 2);
-			ft_strlcat(cur_path, dir[1], temp_len + ft_strlen(dir[1]) + 1);
-		}
+		temp_len = ft_strlcpy(cur_path, data->pwd, ft_strlen(data->pwd) + 1);
+		temp_len = ft_strlcat(cur_path, "/", temp_len + 2);
+		ft_strlcat(cur_path, dir[1], temp_len + ft_strlen(dir[1]) + 1);
 		parse_cur_path(cur_path, cur_path);
 	}
-	temp = path_lower(cur_path);
-	if (!chdir(temp))
+	// so it seems depending on the version of linux, chdir is case sensitive (not accepting capitals) 
+	// and sometimes it doesnt care :) this was a fun hour of my life
+	// temp = path_lower(cur_path);
+
+	if (chdir(cur_path) == 0)
 		ft_strlcpy(data->pwd, cur_path, ft_strlen(cur_path) + 1);
 	else
-		printf("no such file or directory\n");
-	free(temp);
+		printf("No such file or directory\n");
+	// free(temp);
 	free(cur_path);
 	return (1);
 }
+

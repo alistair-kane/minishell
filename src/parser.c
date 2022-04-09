@@ -29,19 +29,19 @@
 
 int	check_builtin(t_data *data, char **arg)
 {
-	if (!ft_strncmp("echo", arg[0], ft_strlen(arg[0])))
+	if (!ft_strcmp("echo", arg[0]))
 		return (builtin_echo(data, arg));
-	else if (!ft_strncmp("cd", arg[0], ft_strlen(arg[0])))
+	else if (!ft_strcmp("cd", arg[0]))
 		return (builtin_cd(data, arg));
-	else if (!ft_strncmp("pwd", arg[0], ft_strlen(arg[0])))
+	else if (!ft_strcmp("pwd", arg[0]))
 		return (builtin_pwd(data));
-	else if (!ft_strncmp("export", arg[0], ft_strlen(arg[0])))
+	else if (!ft_strcmp("export", arg[0]))
 		return (builtin_export(data, arg));
-	else if (!ft_strncmp("unset", arg[0], 3))
+	else if (!ft_strcmp("unset", arg[0]))
 		return (builtin_unset(data, arg));
-	else if (!ft_strncmp("env", arg[0], ft_strlen(arg[0])))
+	else if (!ft_strcmp("env", arg[0]))
 		return (builtin_env(data));
-	else if (!ft_strncmp("exit", arg[0], ft_strlen(arg[0])))
+	else if (!ft_strcmp("exit", arg[0]))
 		// 0 represents exit code
 		builtin_exit(0);
 
