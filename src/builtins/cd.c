@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alkane <alkane@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alistair <alistair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 14:22:37 by alkane            #+#    #+#             */
-/*   Updated: 2022/04/08 20:29:11 by alkane           ###   ########.fr       */
+/*   Updated: 2022/04/09 02:47:38 by alistair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static char	*get_home_dir(t_data *data)
 	return (NULL);
 }
 
-static char	*check_paths(t_data *data, char *end)
+static char	*check_paths(t_data *data, char *end, char *cur_path)
 {
 	int		i;
 	char	*temp;
@@ -47,16 +47,16 @@ static char	*check_paths(t_data *data, char *end)
 		temp = ft_strjoin(temp, end);
 		// test with munkilib
 		if (!chdir(temp))
-			return(temp);
+			ft_strlcpy(cur_path, temp, ft_strlen(temp));
 	}
+	free(temp);
 	// !!!!! other error
-	return (NULL);
+	return (cur_path);
 }
 
-static char* remove_dup_slash(char *path)
+static char	*remove_dup_slash(char *path)
 {
 	char	temp[PATH_MAX];
-	char	*ret;
 	size_t	i;
 	size_t	j;
 
@@ -75,15 +75,13 @@ static char* remove_dup_slash(char *path)
 			temp[j++] = path[i];
 		i++;
 	}
-	ret = ft_calloc(j + 1, sizeof(char));
-	ft_strlcpy(ret, temp, j);
-	return (ret);
+	ft_strlcpy(path, temp, j);
+	return (path);
 }
 
 static char	*remove_dotslash(char *path)
 {
 	char	temp[PATH_MAX];
-	char	*ret;
 	size_t	i;
 	size_t	j;
 
@@ -97,159 +95,130 @@ static char	*remove_dotslash(char *path)
 			temp[j++] = path[i];
 		i++;
 	}
-	ret = ft_calloc(j + 1, sizeof(char));
-	ft_strlcpy(ret, temp, j);
-	return (ret);
+	ft_strlcpy(path, temp, j + 1);
+	return (path);
+}
+
+/**
+	if there is a char > than 46 (46 is .) update pre_start
+	check for dot dot ..
+	if found remove text from pre_start
+**/
+
+// norminette function
+
+static size_t	iterate_path(char *path, size_t *i)
+{
+	size_t	j;
+			
+	j = 0;
+	while (path[*i])
+	{
+		if (path[*i] == '/')
+			break ;
+		(*i)++;
+		j++;
+	}
+	return (j);
 }
 
 static char	*handle_dotdot(char *path)
 {
-	// if there is a char > than 46 (46 is .) update PRECEDING_START
-	// if found, look for a / , if found increment PRECEDING
-	// check for dot dot ..
-	//		if found remove text from PRECEDING_START and decrement PRECEDING
-	// int	pre;
-	int	pre_start;
-	int	len;
-	int	i;
-	
-	len = ft_strlen(path);
-	i = 0;
-	while (i <= len)
+	size_t	pre_start;
+	size_t	i;
+	size_t	j;
+	size_t	dynlen;
+
+	dynlen = ft_strlen(path);
+	i = -1;
+	while (++i <= ft_strlen(path))
 	{
 		if (path[i] > '.')
 		{
 			pre_start = i;
-			// pre += 1;
-			while (path[i])
-			{
-				if (path[i++] == '/')
-				{
-					// pre += 1;
-					break;
-				}
-			}
+			j = iterate_path(path, &i);
 		}
 		if (!ft_strncmp(&path[i], "..", 2))
 		{
-			// start of cut = pre start
-			// i + 2
-			
-			// home/ test/.. /more/stillmore
-			// 		i		j
-			ft_memmove(path, &path[pre_start], (len - (i - pre_start)));
-			printf("Path after cut: %s", path);
+			dynlen -= j + 3;
+			ft_memmove(&path[pre_start - 1], &path[i + 2], dynlen);
+			i = -1;
 		}
-		i++;
 	}
+	path[dynlen] = '\0';
 	return (path);
 }
 
-static void	parse_cur_path(char *path)
+static void	parse_cur_path(char *path, char *cur_path)
 {
-
-
-	path = remove_dup_slash(path);
-	printf("no double slash: %s\n", path);
+	cur_path = path;
 	
-	path = remove_dotslash(path);
-	printf("no ./'s: %s\n", path);
+	cur_path = remove_dup_slash(path);
+	// printf("no double slash: %s\n\n", path);
 	
-	path = handle_dotdot(path);
-	printf("after .. handle: %s\n", path);
+	cur_path = remove_dotslash(cur_path);
+	// printf("no ./'s: %s\n\n", cur_path);
 	
+	cur_path = handle_dotdot(cur_path);
+	// printf("after .. handle: %s\n\n", cur_path);
 	return;
 }
 
-// static char	*chop_path(t_data *data)
-// {
-// 	char	*last_dir;
-// 	size_t	len;
-// 	char	*ret;
+static	char *path_lower(char *path)
+{
+	char	*ret;
+	int		i;
 
-// 	last_dir = ft_strrchr(data->pwd, '/');
-// 	ret = NULL;
-// 	if (last_dir)
-// 	{
-// 		len = (size_t)(last_dir - data->pwd);
-// 		ret = ft_calloc(len + 1, sizeof(char));
-// 		ft_memcpy(ret, data->pwd, len);
-// 	}
-// 	return(ret);
-// }
+	ret = ft_calloc(ft_strlen(path) + 1, sizeof(char));
+	i = -1;
+	while (path[++i])
+		ret[i] = tolower(path[i]);
+	return (ret);
+}
+
+// !!!!! needs norming
 
 int	builtin_cd(t_data *data, char **dir)
 {
 	char	*cur_path;
-	
+	char	*temp;
+	int		temp_len;
+
 	if (!data)
-		return (1); // !!!!!
-	cur_path = NULL;
-	
-	// condition met when only "cd" is input -> change to home directory
-	// if home unset, keep current directory
+		builtin_exit(1);
+	cur_path = ft_calloc(PATH_MAX, sizeof(char));
+	// if home unset, keep current directory? !!!!!
 	if (!dir[1])
 		cur_path = get_home_dir(data);
-
-
 	// absolute path 
 	else if (dir[1][0] == '/')
+		parse_cur_path(dir[1], cur_path);
+	// dot / dotdot path start
+	else if (dir[1][0] == '.' || !ft_strncmp(dir[1], "..", 2))
 	{
-		cur_path = dir[1];
-		parse_cur_path(dir[1]);
+		temp_len = ft_strlcpy(cur_path, data->pwd, ft_strlen(data->pwd) + 1);
+		temp_len = ft_strlcat(cur_path, "/", temp_len + 2);
+		ft_strlcat(cur_path, dir[1], temp_len + ft_strlen(dir[1]) + 1);
+		parse_cur_path(cur_path, cur_path);
 	}
-
 	// step 5 checking CDPATH
 	else if (dir[1])
-		cur_path = check_paths(data, dir[1]);
-	
-	// printf("cur path after 5%s\n", cur_path);
-	// step 7 adding slash (does not check if / already in pwd)
-	if (!cur_path)
-		cur_path = ft_strjoin(data->pwd, ft_strjoin("/", dir[1]));
-	
-	if (cur_path[0] != '/')
-		cur_path = ft_strjoin(data->pwd, ft_strjoin("/", dir[1]));
-
-	// printf("cur_path b4 8: %s\n", cur_path);
-	
-	// step 8
-	// printf("Current path: %s\n", cur_path);
-	// on success zero is returned
-	if (!chdir(cur_path))
-		data->pwd = cur_path;
+	{
+		cur_path = check_paths(data, dir[1], cur_path);
+		if (*cur_path == '\0')
+		{
+			temp_len = ft_strlcpy(cur_path, data->pwd, ft_strlen(data->pwd) + 1);
+			temp_len = ft_strlcat(cur_path, "/", temp_len + 2);
+			ft_strlcat(cur_path, dir[1], temp_len + ft_strlen(dir[1]) + 1);
+		}
+		parse_cur_path(cur_path, cur_path);
+	}
+	temp = path_lower(cur_path);
+	if (!chdir(temp))
+		ft_strlcpy(data->pwd, cur_path, ft_strlen(cur_path) + 1);
 	else
 		printf("no such file or directory\n");
-	// chdir and update pwd !!!!!
+	free(temp);
+	free(cur_path);
 	return (1);
 }
-
-/** Starting with the first pathname in the <colon>-separated
-    pathnames of CDPATH (see the ENVIRONMENT VARIABLES section)
-           
-	if the pathname is non-null, 
-	
-	test if the concatenation of that pathname, 
-	
-	(+ a <slash> character if that pathname did not end with a <slash> character)
-	, and the directory operand names a directory. 
-		
-	If the pathname is null, test if the concatenation of dot, a <slash> character, 
-	and the operand names a directory. In either case, if the resulting string
-    names an existing directory, set curpath to that string and
-    proceed to step 7. 
-
-Otherwise, repeat this step with the next
-pathname in CDPATH until all pathnames have been tested.
-
-For all path names inside CDPATH
-	check if null
-	if not null, add '/' to the path if it does not end with one
-	add together the path with / at end and input, check if its a path
-	
-if the pathname is null test if ./input is a directory
-
-if at any point a directory is found set it to the current path and go forward
-
-//|| dir[1][0] == '.' || (ft_strncmp(dir[1], "..", 2) == 0))
-**/

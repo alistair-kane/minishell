@@ -6,6 +6,7 @@
 # include <stdio.h>
 # include <dirent.h>
 # include <sys/stat.h>
+# include <linux/limits.h> // maybe unnecessary for final submission?
 # include <limits.h>
 # include <readline/readline.h>
 # include <readline/history.h>

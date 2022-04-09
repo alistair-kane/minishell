@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alkane <alkane@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alistair <alistair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 14:42:29 by alkane            #+#    #+#             */
-/*   Updated: 2021/12/07 22:28:29 by alkane           ###   ########.fr       */
+/*   Updated: 2022/04/09 01:03:04 by alistair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	*ft_memmove(void *dest, const void *src, size_t n)
 	else
 		while (n--)
 			*dp++ = *sp++;
+	*dp = '\0';
 	return (dest);
 }
 
