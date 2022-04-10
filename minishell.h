@@ -52,5 +52,6 @@ int		is_reserved_symbol(char *argument);
 int		get_name_length(char *entry);
 
 void	sort_all_entries(t_vector *env);
+void	env_expansion(t_data *data, char **args);
 
 #endif
