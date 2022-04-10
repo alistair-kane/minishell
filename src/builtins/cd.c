@@ -78,12 +78,13 @@ static char	*remove_dup_slash(char *path)
 
 static char	*remove_dotslash(char *path)
 {
-	char	temp[PATH_MAX];
+	char	*temp;
 	size_t	i;
 	size_t	j;
 
 	i = 0;
 	j = 0;
+	temp = ft_calloc(PATH_MAX, sizeof(char));
 	while (path[i])
 	{
 		if (path[i] == '/' && path[i + 1] == '.' && path[i + 2] != '.')
@@ -93,6 +94,7 @@ static char	*remove_dotslash(char *path)
 		i++;
 	}
 	ft_strlcpy(path, temp, j + 1);
+	free(temp);
 	return (path);
 }
 
@@ -172,6 +174,7 @@ int	builtin_cd(t_data *data, char **dir)
 
 	if (!data)
 		builtin_exit(1);
+
 	cur_path = ft_calloc(PATH_MAX, sizeof(char));
 	// if home unset, keep current directory? !!!!!
 	if (!dir[1])
