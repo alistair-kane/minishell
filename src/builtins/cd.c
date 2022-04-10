@@ -38,15 +38,16 @@ static char	*check_paths(t_data *data, char *end, char *cur_path)
 	i = -1;
 	while (data->path[++i])
 	{
-		temp = data->path[i];
+		temp = ft_calloc(PATH_MAX, sizeof(char));
+		ft_strlcpy(temp, data->path[i], ft_strlen(data->path[i]));
 		if (temp[ft_strlen(temp) - 1] != '/') // !!!!! need to support \ ?
-			temp = ft_strjoin(temp, "/");
-		temp = ft_strjoin(temp, end);
+			ft_strlcat(temp, "/", ft_strlen(temp) + 1);
+		ft_strlcat(temp, end, ft_strlen(temp) + ft_strlen(end));
 		// test with munkilib
 		if (!chdir(temp))
 			ft_strlcpy(cur_path, temp, ft_strlen(temp));
+		free(temp);
 	}
-	free(temp);
 	// !!!!! other error
 	return (cur_path);
 }
