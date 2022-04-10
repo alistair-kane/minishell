@@ -5,8 +5,15 @@
 // should return int of "args consumed"
 
 // cd for example consumes itself = return 1
-// cd modifiers 'current directory' char* each time it modifies the current dir
-// 		current directory var initialized as home directory (from path vector)
+// cd modifiers pwd char* each time it modifies the current dir
+// current directory var initialized as home directory (from path vector)
+
+static int	max(int val1, int val2) // !!!!! could be added to utils if needed elsewhere? 
+{
+    if (val1 > val2)
+		return (val1);
+    return (val2);
+}
 
 static char	*get_home_dir(t_data *data)
 {
@@ -97,9 +104,9 @@ static char	*remove_dotslash(char *path)
 
 // norminette function
 
-static size_t	iterate_path(char *path, size_t *i)
+static int	iterate_path(char *path, int *i)
 {
-	size_t	j;
+	int	j;
 			
 	j = 0;
 	while (path[*i])
@@ -114,14 +121,14 @@ static size_t	iterate_path(char *path, size_t *i)
 
 static char	*handle_dotdot(char *path)
 {
-	size_t	pre_start;
-	size_t	i;
-	size_t	j;
-	size_t	dynlen;
+	int	pre_start;
+	int	i;
+	int	j;
+	int	dynlen;
 
 	dynlen = ft_strlen(path);
 	i = -1;
-	while (++i <= ft_strlen(path))
+	while (++i <= (int)ft_strlen(path))
 	{
 		if (path[i] > '.')
 		{
@@ -131,24 +138,68 @@ static char	*handle_dotdot(char *path)
 		if (!ft_strncmp(&path[i], "..", 2))
 		{
 			dynlen -= j + 3;
-			ft_memmove(&path[pre_start - 1], &path[i + 2], dynlen);
+			ft_memmove(&path[max(0, (pre_start - 1))], &path[i + 2], dynlen);
 			i = -1;
 		}
 	}
 	path[dynlen] = '\0';
-	if (dynlen == 0 || dynlen == 1 || path == NULL)
+	if (dynlen < 3 || path == NULL)
 		ft_strlcpy(path, "/", 2);
 	return (path);
 }
 
-static void	parse_cur_path(char *path, char *cur_path)
+static void	parse_cur_path(char *cur_path)
 {
-	cur_path = path; // !!!!! v stupid code
-	cur_path = remove_dup_slash(path);
+	cur_path = remove_dup_slash(cur_path);
 	cur_path = remove_dotslash(cur_path);
 	cur_path = handle_dotdot(cur_path);
 	return ;
 }
+
+static void	add_pwd_parse(t_data *data, char **dir, char *cur_path)
+{
+	int	temp_len;
+
+	temp_len = ft_strlcpy(cur_path, data->pwd, ft_strlen(data->pwd) + 1);
+	temp_len = ft_strlcat(cur_path, "/", temp_len + 2);
+	ft_strlcat(cur_path, dir[1], temp_len + ft_strlen(dir[1]) + 1);
+	parse_cur_path(cur_path);
+}
+
+int	builtin_cd(t_data *data, char **dir)
+{
+	char	*cur_path;
+
+	if (!data)
+		builtin_exit(1);
+	cur_path = ft_calloc(PATH_MAX, sizeof(char));
+	// if home unset, keep current directory? !!!!!
+	if (!dir[1])
+		cur_path = get_home_dir(data);
+	// absolute path 
+	else if (dir[1][0] == '/')
+	{
+		ft_strlcpy(cur_path, dir[1], ft_strlen(dir[1]) + 1);
+		parse_cur_path(cur_path);
+	}
+	// dot / dotdot
+	else if (dir[1][0] == '.' || !ft_strcmp(dir[1], ".."))
+		add_pwd_parse(data, dir, cur_path);
+	// step 5 checking CDPATH
+	else if (dir[1])
+	{
+		cur_path = check_paths(data, dir[1], cur_path);
+		add_pwd_parse(data, dir, cur_path);
+	}
+	if (chdir(cur_path) == 0)
+		ft_strlcpy(data->pwd, cur_path, ft_strlen(cur_path) + 1);
+	else
+		printf("No such file or directory\n");
+	free(cur_path);
+	return (1);
+}
+
+// depending on the version of linux, chdir is case sensitive (not accepting capitals) ??
 
 // static	char *path_lower(char *path)
 // {
@@ -161,56 +212,3 @@ static void	parse_cur_path(char *path, char *cur_path)
 // 		ret[i] = tolower(path[i]);
 // 	return (ret);
 // }
-
-// !!!!! needs norming
-
-int	builtin_cd(t_data *data, char **dir)
-{
-	char	*cur_path;
-	int		temp_len;
-	// char	*temp;
-
-	if (!data)
-		builtin_exit(1);
-	cur_path = ft_calloc(PATH_MAX, sizeof(char));
-	// if home unset, keep current directory? !!!!!
-	if (!dir[1])
-		cur_path = get_home_dir(data);
-	// absolute path 
-	else if (dir[1][0] == '/')
-		parse_cur_path(dir[1], cur_path);
-	// dot / dotdot
-	else if (dir[1][0] == '.' || !ft_strcmp(dir[1], ".."))
-	{
-		temp_len = ft_strlcpy(cur_path, data->pwd, ft_strlen(data->pwd) + 1);
-		// check for root
-		if (ft_strcmp(cur_path, "/") && ft_strcmp(cur_path, "/.."))
-		{
-			temp_len = ft_strlcat(cur_path, "/", temp_len + 2);
-			ft_strlcat(cur_path, dir[1], temp_len + ft_strlen(dir[1]) + 1);
-		}
-		parse_cur_path(cur_path, cur_path);
-
-	}
-	// step 5 checking CDPATH
-	else if (dir[1])
-	{
-		cur_path = check_paths(data, dir[1], cur_path);
-		temp_len = ft_strlcpy(cur_path, data->pwd, ft_strlen(data->pwd) + 1);
-		temp_len = ft_strlcat(cur_path, "/", temp_len + 2);
-		ft_strlcat(cur_path, dir[1], temp_len + ft_strlen(dir[1]) + 1);
-		parse_cur_path(cur_path, cur_path);
-	}
-	// so it seems depending on the version of linux, chdir is case sensitive (not accepting capitals) 
-	// and sometimes it doesnt care :) this was a fun hour of my life
-	// temp = path_lower(cur_path);
-
-	if (chdir(cur_path) == 0)
-		ft_strlcpy(data->pwd, cur_path, ft_strlen(cur_path) + 1);
-	else
-		printf("No such file or directory\n");
-	// free(temp);
-	free(cur_path);
-	return (1);
-}
-
