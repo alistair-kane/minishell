@@ -99,14 +99,6 @@ static char	*remove_dotslash(char *path)
 	return (path);
 }
 
-/**
-	if there is a char > than 46 (46 is .) update pre_start
-	check for dot dot ..
-	if found remove text from pre_start
-**/
-
-// norminette function
-
 static int	iterate_path(char *path, int *i)
 {
 	int	j;
@@ -169,38 +161,43 @@ static void	add_pwd_parse(t_data *data, char **dir, char *cur_path)
 	parse_cur_path(cur_path);
 }
 
-int	builtin_cd(t_data *data, char **dir)
+static int	test_chdir(t_data *data, char *cur_path)
 {
-	char	*cur_path;
-
-	if (!data)
-		builtin_exit(1);
-
-	cur_path = ft_calloc(PATH_MAX, sizeof(char));
-	// if home unset, keep current directory? !!!!!
-	if (!dir[1])
-		cur_path = get_home_dir(data);
-	// absolute path 
-	else if (dir[1][0] == '/')
-	{
-		ft_strlcpy(cur_path, dir[1], ft_strlen(dir[1]) + 1);
-		parse_cur_path(cur_path);
-	}
-	// dot / dotdot
-	else if (dir[1][0] == '.' || !ft_strcmp(dir[1], ".."))
-		add_pwd_parse(data, dir, cur_path);
-	// step 5 checking CDPATH
-	else if (dir[1])
-	{
-		cur_path = check_paths(data, dir[1], cur_path);
-		add_pwd_parse(data, dir, cur_path);
-	}
 	if (chdir(cur_path) == 0)
 		ft_strlcpy(data->pwd, cur_path, ft_strlen(cur_path) + 1);
 	else
 		printf("No such file or directory\n");
 	free(cur_path);
 	return (1);
+}
+
+int	builtin_cd(t_data *data, char **dir)
+{
+	char	*cur_path;
+
+	if (!data)
+		builtin_exit(1);
+	if (data->args_len > 1)
+	{
+		printf("cd: too many arguments\n");
+		return (data->args_len);
+	}
+	cur_path = ft_calloc(PATH_MAX, sizeof(char));
+	if (!dir[1])
+		cur_path = get_home_dir(data);
+	else if (dir[1][0] == '/')
+	{
+		ft_strlcpy(cur_path, dir[1], ft_strlen(dir[1]) + 1);
+		parse_cur_path(cur_path);
+	}
+	else if (dir[1][0] == '.' || !ft_strcmp(dir[1], ".."))
+		add_pwd_parse(data, dir, cur_path);
+	else if (dir[1])
+	{
+		cur_path = check_paths(data, dir[1], cur_path);
+		add_pwd_parse(data, dir, cur_path);
+	}
+	return (test_chdir(data, cur_path));
 }
 
 // depending on the version of linux, chdir is case sensitive (not accepting capitals) ??

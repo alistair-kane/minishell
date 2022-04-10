@@ -45,7 +45,7 @@ int	check_builtin(t_data *data, char **arg)
 		builtin_exit(0);
 
 	// 1 returned for testing only
-	return (1);
+	return (0);
 }
 
 int	parse_args(t_data *data, char **arg)
@@ -53,14 +53,14 @@ int	parse_args(t_data *data, char **arg)
 	int	consumed;
 	
 	// check for pipe and redirects
-	
+	// check for -1 return e.g. cd = too many arguments 
 	consumed = check_builtin(data, arg);
-	if (!consumed)
+	if (consumed)
 		return (consumed);
 	
-	// consumed = check_binaries(data, arg);
+	consumed = check_binaries(data, arg);
 	// if (!consumed)
-		return (consumed);
+	return (consumed);
 }
 
 void	parser(t_data *data, char *buf)
@@ -72,13 +72,13 @@ void	parser(t_data *data, char *buf)
 
 	// !!!!! split must be replaced
 	// new pre-parser should handle all whitespace chars and ___ " ' $ ___ (not splitting inside)
-	args = ms_split(buf);
+	args = ms_split(data, buf);
 	env_expansion(data, args);
 	i = 0;
 	while (args[i])
 	{
 		i += parse_args(data, &args[i]);
-		
+		printf("\nargs parsed: %i\n", i);
 		// line is here incase parse_args not functioning as intended
 		// i++;
 	}

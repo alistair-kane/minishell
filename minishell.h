@@ -21,7 +21,14 @@ typedef struct s_environment
 {
 	char	*name;
 	char	*value;
-}				t_environment;
+}			t_environment;
+
+typedef struct s_args
+{
+	char	**array;
+	size_t	length;
+}			t_args;
+
 
 typedef struct s_data
 {
@@ -30,6 +37,7 @@ typedef struct s_data
 	t_vector	*history;
 	char		**path;
 	char		*pwd;
+	size_t		args_len;
 }				t_data;
 
 t_data	*data_init(void);
@@ -46,7 +54,8 @@ int		builtin_unset(t_data *data, char **args);
 int		builtin_env(t_data *data);
 void	builtin_exit(int status);
 
-char	**ms_split(char *line);
+char	**ms_split(t_data *data, char *line);
+int		check_binaries(t_data *data, char **args);
 
 int		is_reserved_symbol(char *argument);
 int		get_name_length(char *entry);

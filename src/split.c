@@ -12,7 +12,7 @@ returns an array of strings - splits the line when finding a whitespace-char,
 that's not part of any string (surrounded by ' or " quotes)
 */
 // !!!!! currently returns the quotes -> remove !? echo "test" => test
-char	**ms_split(char *line)
+char	**ms_split(t_data *data, char *line)
 {
 	char	**array;
 	char	*last_pos;
@@ -40,6 +40,7 @@ char	**ms_split(char *line)
 	array[i] = malloc(ft_strlen(last_pos) + 1); // !!!!!
 	ft_strlcpy(array[i], last_pos, ft_strlen(last_pos) + 1);
 	array[i + 1] = NULL;
+	data->args_len = i;
 	return (array);
 }
 
