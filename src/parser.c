@@ -56,6 +56,7 @@ void	env_var_replace(t_data *data, char **argp, char *arg)
 	char			*ret;
 
 	i = -1;
+	ret = NULL;
 	while (++i < data->environment->total)
 	{
 		temp = vector_get(data->environment, i);
@@ -66,6 +67,11 @@ void	env_var_replace(t_data *data, char **argp, char *arg)
 			*argp = ret;
 			// !!!!! I thought reassigning the pointer like this would cause leaks, valgrind shows nothing though
 		}
+	}
+	if (!ret)
+	{
+		ret = ft_calloc(1, sizeof(char));
+		*argp = ret;
 	}
 }
 
