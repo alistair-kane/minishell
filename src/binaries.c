@@ -42,15 +42,41 @@ int	check_binaries(t_data *data, char **args)
 {
 	extern  char    **environ;
 	char		    *path;
-    
-    path = seek_path(data, args[0]);
+	pid_t           pid;
+	int				res;
+
+	path = seek_path(data, args[0]);
 	if (!path)
 	{
 		// free_double(input, 0);
 		// exit_error("command not found");
-        printf("command not found\n");
+		printf("command not found\n");
 	}
-	execve(path, args, environ);
+	else
+	{
+		res = 0;
+		pid = fork();
+    	if(pid == 0) //child
+   		{
+        	printf("in child\n");
+			res = execve(path, args, environ);
+        	if(res < 0) 
+       		{
+        		printf("error: child1: %d exec failed %d\n", pid, errno);
+        		exit(91); //must exit child
+			}
+		}
+		else if(pid > 0) //cid>0, parent, waitfor child
+		{
+			waitpid(pid, NULL, 0);
+			printf("child: %d res %d\n", pid, res);
+			return (1);
+		}
+		else //cid1 < 0, error
+		{
+			printf("error: child fork failed\n");
+		}
+	}
 	// exit_error(path);
-    return (1);
+	return (1);
 }

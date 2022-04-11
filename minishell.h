@@ -10,12 +10,14 @@
 #  include <linux/limits.h> // maybe unnecessary for final submission?
 # endif
 # include <limits.h>
+# include <errno.h>
+# include <unistd.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "libft/libft.h"
 # include "libft/vector.h"
-
-# include <stdio.h>
+# include <sys/wait.h>
+# include <stdlib.h>
 
 # define PROMPT "$ "
 
