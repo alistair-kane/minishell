@@ -9,10 +9,7 @@ static void	update_existing_entry(t_vector *env, int index, char *new_value);
 static char	*remove_surrounding_quotes(char *input);
 static int	get_new_initial_index(t_vector *env);
 
-/*
-without any arguments, this prints all variables available
-*/
-// !!!!! add new entries to data->env !!!!!
+// without any arguments, this prints all variables available
 int	builtin_export(t_data *data, char **args)
 {
 	int				index;
@@ -26,7 +23,7 @@ int	builtin_export(t_data *data, char **args)
 	get_key_value_pair(args[1], &entry);
 	if (ft_strncmp("PATH", entry.name, ft_strlen(entry.name)) == 0)
 	{
-		// !!!!! free old path
+		free_path(data);
 		data->path = ft_split(entry.value, ':');
 	}
 	index = get_entry_index(data->environment, entry.name);

@@ -23,6 +23,7 @@ t_data	*data_init(void)
 		return (NULL);
 	}
 	init_environment(data);
+	vector_custom_cleanup(data->environment, cleanup_environment);
 	init_paths(data);
 	return (data);
 }

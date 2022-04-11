@@ -2,9 +2,7 @@
 
 #include "../../minishell.h"
 
-/*
-if no viable argument is found, return without doing anything
-*/
+// if no viable argument is found, return without doing anything
 int	builtin_unset(t_data *data, char **args)
 {
 	int				i;
@@ -23,7 +21,7 @@ int	builtin_unset(t_data *data, char **args)
 			vector_delete(data->environment, i);
 			if (ft_strncmp("PATH", args[1], ft_strlen(args[1])) == 0)
 			{
-				// todo !!!!! free data->path
+				free_path(data);
 				data->path = NULL;
 			}
 			return (2);

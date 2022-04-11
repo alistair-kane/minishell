@@ -45,6 +45,8 @@ typedef struct s_data
 t_data	*data_init(void);
 
 void	data_cleanup(t_data *data);
+void	free_path(t_data *data);
+void	cleanup_environment(void *data);
 
 void	parser(t_data *data, char *buf);
 
