@@ -7,6 +7,7 @@ static void	get_key_value_pair(char *argument, t_environment *entry);
 static int	get_entry_index(t_vector *env, char *name);
 static void	update_existing_entry(t_vector *env, int index, char *new_value);
 static char	*remove_surrounding_quotes(char *input);
+static int	get_new_initial_index(t_vector *env);
 
 /*
 without any arguments, this prints all variables available
@@ -32,7 +33,10 @@ int	builtin_export(t_data *data, char **args)
 	if (index >= 0)
 		update_existing_entry(data->environment, index, entry.value);
 	else
+	{
+		entry.initial_index = get_new_initial_index(data->environment);
 		vector_add(data->environment, &entry);
+	}
 	sort_all_entries(data->environment);
 	return (2);
 }
@@ -136,4 +140,26 @@ static void	update_existing_entry(t_vector *env, int index, char *new_value)
 	if (entry->value == NULL)
 		builtin_exit(1);
 	ft_strlcpy(entry->value, new_value, ft_strlen(new_value) + 1);
+}
+
+// if all variables are removed at some point, 
+// the starting index will be 1, not 0 anymore
+static int	get_new_initial_index(t_vector *env)
+{
+	int				i;
+	int				highest_index;
+	t_environment	*entry;
+
+	highest_index = 0;
+	i = 0;
+	entry = vector_get(env, i);
+	while (entry != NULL)
+	{
+		if (entry->initial_index > highest_index)
+			highest_index = entry->initial_index;
+		i++;
+		entry = vector_get(env, i);
+	}
+	highest_index++;
+	return (highest_index);
 }

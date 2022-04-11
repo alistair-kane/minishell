@@ -37,7 +37,8 @@ void	sort_all_entries(t_vector *env)
 static void	swap_entries(t_environment *first, t_environment *second)
 {
 	char	name[4096];
-	char	value[4096];
+	char	value[16384]; // !!!!!
+	int		tmp;
 
 	ft_strlcpy(name, first->name, ft_strlen(first->name) + 1);
 	ft_strlcpy(value, first->value, ft_strlen(first->value) + 1);
@@ -61,6 +62,9 @@ static void	swap_entries(t_environment *first, t_environment *second)
 	if (second->value == NULL)
 		builtin_exit(1);
 	ft_strlcpy(second->value, value, ft_strlen(value) + 1);
+	tmp = first->initial_index;
+	first->initial_index = second->initial_index;
+	second->initial_index = tmp;
 }
 
 static void	env_var_replace(t_data *data, char **argp, char *arg)

@@ -6,7 +6,9 @@
 # include <stdio.h>
 # include <dirent.h>
 # include <sys/stat.h>
-# include <linux/limits.h> // maybe unnecessary for final submission?
+# ifdef __linux__
+#  include <linux/limits.h> // maybe unnecessary for final submission?
+# endif
 # include <limits.h>
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -21,6 +23,7 @@ typedef struct s_environment
 {
 	char	*name;
 	char	*value;
+	int		initial_index;
 }			t_environment;
 
 typedef struct s_args
@@ -32,7 +35,6 @@ typedef struct s_args
 
 typedef struct s_data
 {
-	t_vector	*env;
 	t_vector	*environment;
 	t_vector	*history;
 	char		**path;

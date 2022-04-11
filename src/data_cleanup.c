@@ -8,7 +8,6 @@ void	data_cleanup(t_data *data)
 		return ;
 	// !!!!! cleanup mallocs of the environment structs -> custom_cleanup
 	vector_cleanup(data->environment);
-	vector_cleanup(data->env);
 	vector_cleanup(data->history);
 	free(data);
 }

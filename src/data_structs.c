@@ -49,8 +49,8 @@ static void	init_environment(t_data *data)
 		if (entry.value == NULL)
 			builtin_exit(1);
 		ft_strlcpy(entry.value, &environ[i][length_name + 1], length_value + 1);
+		entry.initial_index = i;
 		vector_add(data->environment, &entry);
-		// vector_add(data->env, &entry); !!!!! needs its own allocations -> remove allocations completely !?
 		i++;
 	}
 	sort_all_entries(data->environment);
@@ -60,9 +60,6 @@ static void	init_env_structs(t_data *data)
 {
 	data->environment = vector_init(100, 100, sizeof(t_environment));
 	if (data->environment == NULL)
-		builtin_exit(1);
-	data->env = vector_init(100, 100, sizeof(t_environment));
-	if (data->env == NULL)
 		builtin_exit(1);
 }
 
