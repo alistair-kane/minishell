@@ -112,6 +112,7 @@ void	env_expansion(t_data *data, char **args)
 		// closed "" handled
 		else if (args[i][0] == '"' && args[i][1] == '$')
 		{
+			// needs to behave like printf , ie printing all other chars around $
 			temp = args[i] + 2;
 			temp = ft_strtrim(temp, "\"");
 			env_var_replace(data, &args[i], temp);
