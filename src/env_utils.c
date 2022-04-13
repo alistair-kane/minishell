@@ -67,86 +67,69 @@ static void	swap_entries(t_environment *first, t_environment *second)
 	second->initial_index = tmp;
 }
 
-// static void	env_var_replace(t_data *data, char **argp, char *arg)
-// {
-// 	t_environment	*temp;
-// 	size_t			i;
-// 	char			*ret;
+static void env_var_replace(t_data *data, char **var_holder)
+{
+	t_environment	*temp;
+	size_t			i;
 
-// 	i = -1;
-// 	ret = NULL;
-// 	while (++i < data->environment->total && argp)
-// 	{
-// 		temp = vector_get(data->environment, i);
-// 		printf("%s\n", arg);
-// 		if (!ft_strcmp(temp->name, arg))
-// 		{
-// 			printf("arg in replace func %s\n", arg);
-			// ret = ft_calloc(ft_strlen(temp->value) + 1, sizeof(char));
-			// ft_strlcpy(ret, temp->value, ft_strlen(temp->value) + 1);
-	// 		*argp = ret;
-	// 		// !!!!! I thought reassigning the pointer like this would cause leaks, valgrind shows nothing though
-		// }
-	// }
-	// if (!ret)
-	// {
-	// 	ret = ft_calloc(1, sizeof(char));
-	// 	*argp = ret;
-// 	}
-// }
+	i = -1;
+	while (++i < data->environment->total)
+	{
+		temp = vector_get(data->environment, i);
+		if (!ft_strcmp(temp->name, *var_holder))
+		{
+			ft_strlcpy(*var_holder, temp->value, ft_strlen(temp->value) + 1);
+			return ;
+		}
+	}
+	*var_holder = '\0';
+}
+
+static void expansion_ops(t_data *data, char **args, int i, int j)
+{
+	int		start; // could be removed/substituted for j only, but makes code less clear
+	int		end;
+	int		total_len;
+	char	*var_holder;
+	char	trailing[4096];
+
+	total_len = ft_strlen(args[i]) + 1;
+	var_holder = ft_calloc(PATH_MAX, 1);
+	start = j + 1;
+	end = start + get_name_length_whitespace(&args[i][start]);
+	ft_strlcpy(var_holder, &args[i][start], end - start + 1);
+	ft_strlcpy(trailing, &args[i][end], total_len - end);
+	// printf("trailing %s\n", trailing);
+	env_var_replace(data, &var_holder);
+	// printf("var holder: %s\n", var_holder);
+	args[i][start - 1] = '\0';
+	if (var_holder == NULL)
+		ft_strlcat(args[i], trailing, total_len);
+	else
+	{
+		total_len = ft_strlcat(args[i], var_holder, total_len);
+		ft_strlcat(args[i], trailing, total_len + ft_strlen(trailing) + 1);
+	}
+	free(var_holder);
+}
 
 void	env_expansion(t_data *data, char **args)
 {
 	int	i;
 	int	j;
-	int	start;
-	int	end;
-	// char *temp;
 
 	i = -1;
 	while (args[++i] != NULL && data)
 	{
-		// get the environmental variables
-		// loop through environ.name looking for a full match with arg[i] + 1 (after $)
-		// if found, change the text where arg[i] is to be the text held in envion.value
-		printf("arg passed in: %s\n", args[i]);
-
 		j = 0;
 		while (args[i][j])
 		{
 			if (args[i][j] == '\\')
 				j += 2;
 			else if (args[i][j] == '$')
-			{
-				start = j + 1;
-				// end = start + get_name_length_whitespace(&args[i][j]);
-				// printf("string: %s\nstart:%d\nend:%d\n", &args[i][j], start, end);
-				// temp = ft_strnstr(args[i], &args[i][j + 1], (end - j));
-				// printf("temp: %s\n", ft_strnstr(args[i], &args[i][start], end - start));
-				// env_var_replace(data, args, NULL);
-				// printf("strnstr: %s\n",);
-				// temp = &args[i][j]
-			}
+				expansion_ops(data, args, i, j);
 			j++;
-
 		}
-// "asdbf '$PATH' dsfgad"
-
-
-
-		// if (args[i][0] == '$')
-		// {
-		// 	temp = args[i] + 1;
-		// 	env_var_replace(data, &args[i], temp);
-		// }
-		// // closed "" handled
-		// else if (args[i][0] == '"' && args[i][1] == '$')
-		// {
-		// 	// needs to behave like printf , ie printing all other chars around $
-		// 	temp = args[i] + 2;
-		// 	temp = ft_strtrim(temp, "\"");
-		// 	env_var_replace(data, &args[i], temp);
-		// 	free(temp);	
-		// }
 	}
 }
+
