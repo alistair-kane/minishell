@@ -56,7 +56,7 @@ static void	export_print_list(t_data *data)
 	}
 }
 
-static void	get_key_value_pair(t_data *data, char *argument, t_environment *entry)
+static void	get_key_value_pair(char *argument, t_environment *entry)
 {
 	int	length_name;
 	int	length_value;
@@ -65,7 +65,7 @@ static void	get_key_value_pair(t_data *data, char *argument, t_environment *entr
 	length_name = get_name_length(argument);
 	entry->name = malloc(length_name + 1);
 	if (entry->name == NULL)
-		builtin_exit(data, 1);
+		builtin_exit(1);
 	ft_strlcpy(entry->name, argument, length_name + 1);
 	length_value = 0;
 	if (argument[length_name] == '=')

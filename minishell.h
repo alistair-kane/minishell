@@ -49,7 +49,6 @@ t_data	*data_init(void);
 void	data_cleanup(t_data *data);
 void	free_path(t_data *data);
 void	cleanup_environment(void *data);
-
 void	parser(t_data *data, char *buf);
 
 int		builtin_echo(t_data *data, char **buf);
@@ -65,6 +64,8 @@ int		check_binaries(t_data *data, char **args);
 
 int		is_reserved_symbol(char *argument);
 int		get_name_length(char *entry);
+int		get_name_length_whitespace(char *entry);
+
 
 void	sort_all_entries(t_vector *env);
 void	env_expansion(t_data *data, char **args);

@@ -31,3 +31,18 @@ int	get_name_length(char *entry)
 	}
 	return (length);
 }
+
+int	get_name_length_whitespace(char *entry)
+{
+	int	length;
+
+	length = 0;
+	while (*entry != '\0')
+	{
+		if (is_whitespace(*entry) || *entry == '\'')
+			break ;
+		length++;
+		entry++;
+	}
+	return (length);
+}

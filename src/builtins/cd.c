@@ -168,7 +168,8 @@ static int	test_chdir(t_data *data, char *cur_path)
 	else
 		printf("No such file or directory\n");
 	free(cur_path);
-	return (1);
+	// two arguments consumed, therefore returns 2
+	return (2);
 }
 
 int	builtin_cd(t_data *data, char **dir)
