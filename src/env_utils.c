@@ -73,6 +73,7 @@ static void env_var_replace(t_data *data, char **var_holder)
 	size_t			i;
 
 	i = -1;
+	printf("var holder %s\n", *var_holder);
 	while (++i < data->environment->total)
 	{
 		temp = vector_get(data->environment, i);
@@ -82,7 +83,7 @@ static void env_var_replace(t_data *data, char **var_holder)
 			return ;
 		}
 	}
-	*var_holder = '\0';
+	*var_holder = NULL;
 }
 
 static void expansion_ops(t_data *data, char **args, int i, int j)
@@ -99,15 +100,15 @@ static void expansion_ops(t_data *data, char **args, int i, int j)
 	end = start + get_name_length_whitespace(&args[i][start]);
 	ft_strlcpy(var_holder, &args[i][start], end - start + 1);
 	ft_strlcpy(trailing, &args[i][end], total_len - end);
-	// printf("trailing %s\n", trailing);
+	printf("trailing %s\n", trailing);
 	env_var_replace(data, &var_holder);
-	// printf("var holder: %s\n", var_holder);
+	printf("var holder: %s\n", var_holder);
 	args[i][start - 1] = '\0';
 	if (var_holder == NULL)
 		ft_strlcat(args[i], trailing, total_len);
 	else
 	{
-		total_len = ft_strlcat(args[i], var_holder, total_len);
+		total_len = ft_strlcat(args[i], var_holder, total_len + ft_strlen(var_holder));
 		ft_strlcat(args[i], trailing, total_len + ft_strlen(trailing) + 1);
 	}
 	free(var_holder);
@@ -122,6 +123,8 @@ void	env_expansion(t_data *data, char **args)
 	while (args[++i] != NULL && data)
 	{
 		j = 0;
+		if (args[i][j] == '\'' && args[i][ft_strlen(args[i]) - 1] == '\'')
+			return ;
 		while (args[i][j])
 		{
 			if (args[i][j] == '\\')
