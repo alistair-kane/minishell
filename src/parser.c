@@ -43,8 +43,6 @@ int	check_builtin(t_data *data, char **arg)
 		return (builtin_env(data));
 	else if (!ft_strcmp("exit", arg[0]))
 		builtin_exit(0);
-
-	// 1 returned for testing only
 	return (0);
 }
 

@@ -39,7 +39,7 @@ int	get_name_length_whitespace(char *entry)
 	length = 0;
 	while (*entry != '\0')
 	{
-		if (is_whitespace(*entry) || *entry == '\'' || *entry == '\"')
+		if (is_whitespace(*entry) || *entry == '\'' || *entry == '\"' || *entry == '$')
 			break ;
 		length++;
 		entry++;
