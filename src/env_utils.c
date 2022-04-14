@@ -67,13 +67,12 @@ static void	swap_entries(t_environment *first, t_environment *second)
 	second->initial_index = tmp;
 }
 
-static void env_var_replace(t_data *data, char **var_holder)
+static void	env_var_replace(t_data *data, char **var_holder)
 {
 	t_environment	*temp;
 	size_t			i;
 
 	i = -1;
-	// printf("var holder %s\n", *var_holder);
 	while (++i < data->environment->total)
 	{
 		temp = vector_get(data->environment, i);
@@ -92,43 +91,47 @@ static char	*expansion_ops(t_data *data, char *arg, int j)
 	int		total_len;
 	char	*new_arg;
 	char	*var_holder;
-	char	trailing[4096];
+	char	trail[4096];
 
 	total_len = ft_strlen(arg) + 1;
 	new_arg = ft_calloc(PATH_MAX, 1);
 	var_holder = ft_calloc(PATH_MAX, 1);
-
 	j += 1;
 	end = j + get_name_length_whitespace(&arg[j]);
-	// put first part of string into new_arg
 	ft_strlcpy(new_arg, arg, j);
-	// moves actual ENV part of string into holder to send to env_var_replace
 	ft_strlcpy(var_holder, &arg[j], end - j + 1);
-	// puts trailing part for later
-	ft_strlcpy(trailing, &arg[end], total_len - end);
-	// printf("trailing [%s]\n", trailing);
-
-	// replaces the ENV in var holder with data or null
+	ft_strlcpy(trail, &arg[end], total_len - end);
 	env_var_replace(data, &var_holder);
-	// printf("var holder[%s]\n", var_holder);
-
-	// build string back based on return of env_var_replace
 	if (var_holder == NULL)
-		ft_strlcat(new_arg, trailing, ft_strlen(new_arg) + ft_strlen(trailing) + 1);
+		ft_strlcat(new_arg, trail, ft_strlen(new_arg) + ft_strlen(trail) + 1);
 	else
 	{
-		total_len = ft_strlcat(new_arg, var_holder, ft_strlen(new_arg) + ft_strlen(var_holder) + 1);
-		ft_strlcat(new_arg, trailing, total_len + ft_strlen(trailing) + 1);
+		total_len = ft_strlcat(new_arg, var_holder, ft_strlen(new_arg) \
+			+ ft_strlen(var_holder) + 1);
+		ft_strlcat(new_arg, trail, total_len + ft_strlen(trail) + 1);
 	}
 	free(var_holder);
-	return(new_arg);
+	return (new_arg);
+}
+
+void	check_reset(char *arg, int *delp1, int *delp2, int *i)
+{
+	if (*delp1 != -1 && *delp2 != -1)
+	{
+		*delp2 -= 1;
+		ft_memmove(&arg[*delp1], &arg[*delp1 + 1], ft_strlen(arg) - *delp1);
+		ft_memmove(&arg[*delp2], &arg[*delp2 + 1], ft_strlen(arg) - *delp2);
+		*delp1 = -1;
+		*delp2 = -1;
+		*i -= 2;
+	}
 }
 
 void	char_cleanup(char *arg)
 {
-	int i;
-	int delp1;
-	int delp2;
+	int	i;
+	int	delp1;
+	int	delp2;
 	int	single;
 	int	dbl;
 
@@ -136,8 +139,8 @@ void	char_cleanup(char *arg)
 	dbl = 0;
 	delp1 = -1;
 	delp2 = -1;
-	i = 0;
-	while (arg[i])
+	i = -1;
+	while (arg[++i])
 	{
 		if (arg[i] == '\'' || arg[i] == '"')
 		{
@@ -149,22 +152,7 @@ void	char_cleanup(char *arg)
 					delp2 = i;
 			}
 		}
-		/*if (arg[i] == c && delp1 == -1)
-		{
-			delp1 = i;
-			i++;
-		}
-		if (arg[i] == c && delp1 != -1)*/
-		if (delp1 != -1 && delp2 != -1)
-		{
-			delp2--;
-			printf("p1:%d\np2:%d\n",delp1,delp2);
-			ft_memmove(&arg[delp1], &arg[delp1 + 1], ft_strlen(arg) - delp1);
-			ft_memmove(&arg[delp2], &arg[delp2 + 1], ft_strlen(arg) - delp2);
-			delp1 = -1;
-			delp2 = -1;
-		}
-		i++;
+		check_reset(arg, &delp1, &delp2, &i);
 	}
 }
 
@@ -173,24 +161,25 @@ void	env_expansion(t_data *data, char **args)
 	int	i;
 	int	j;
 	int	sqf;
+	int	dqf;
 
 	i = -1;
 	sqf = -1;
+	dqf = -1;
 	while (args[++i] != NULL)
 	{
-		j = 0;
-		while (args[i][j])
+		j = -1;
+		while (args[i][++j])
 		{
-			if (args[i][j] == '\'')
+			if (args[i][j] == '\"')
+				dqf *= -1;
+			if (args[i][j] == '\'' && dqf == -1)
 				sqf *= -1;
 			if (args[i][j] == '\\')
 				j++;
 			else if (args[i][j] == '$' && sqf == -1)
 				args[i] = expansion_ops(data, args[i], j);
-			j++;
 		}
-		// printf("args mainloop:%s\n", args[i]);
 		char_cleanup(args[i]);
 	}
 }
-

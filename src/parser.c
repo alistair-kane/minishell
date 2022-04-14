@@ -78,7 +78,7 @@ void	parser(t_data *data, char *buf)
 	while (args[i])
 	{
 		i += parse_args(data, &args[i]);
-		printf("\nargs parsed: %i\n", i);
+		// printf("\nargs parsed: %i\n", i);
 		// line is here incase parse_args not functioning as intended
 		// i++;
 	}
