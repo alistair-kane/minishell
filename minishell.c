@@ -14,17 +14,14 @@ int	main(void)
 	if (data == NULL)
 		return (-1);
 	buf = readline(PROMPT);
-	if (ft_strlen(buf))
-		add_history(buf);
 	while (buf != NULL)
 	{
+		if (ft_strlen(buf))
+			add_history(buf);
 		vector_add(data->history, buf);
 		parser(data, buf);
 		buf = readline(PROMPT);
-		if (ft_strlen(buf))
-			add_history(buf);
 	}
 	data_cleanup(data);
 	return (0);
 }
-

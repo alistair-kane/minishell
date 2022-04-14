@@ -124,28 +124,45 @@ static char	*expansion_ops(t_data *data, char *arg, int j)
 	return(new_arg);
 }
 
-void	char_cleanup(char *arg, int c)
+void	char_cleanup(char *arg)
 {
 	int i;
 	int delp1;
 	int delp2;
+	int	single;
+	int	dbl;
 
+	single = 0;
+	dbl = 0;
 	delp1 = -1;
+	delp2 = -1;
 	i = 0;
 	while (arg[i])
 	{
-		if (arg[i] == c && delp1 == -1)
+		if (arg[i] == '\'' || arg[i] == '"')
+		{
+			if (handle_quotes(arg[i], &dbl, &single) == 1)
+			{
+				if (delp1 == -1)
+					delp1 = i;
+				else
+					delp2 = i;
+			}
+		}
+		/*if (arg[i] == c && delp1 == -1)
 		{
 			delp1 = i;
 			i++;
 		}
-		if (arg[i] == c && delp1 != -1)
+		if (arg[i] == c && delp1 != -1)*/
+		if (delp1 != -1 && delp2 != -1)
 		{
-			delp2 = i - 1;
-			// printf("p1:%d\np2:%d\n",delp1,delp2);
+			delp2--;
+			printf("p1:%d\np2:%d\n",delp1,delp2);
 			ft_memmove(&arg[delp1], &arg[delp1 + 1], ft_strlen(arg) - delp1);
 			ft_memmove(&arg[delp2], &arg[delp2 + 1], ft_strlen(arg) - delp2);
 			delp1 = -1;
+			delp2 = -1;
 		}
 		i++;
 	}
@@ -173,8 +190,7 @@ void	env_expansion(t_data *data, char **args)
 			j++;
 		}
 		// printf("args mainloop:%s\n", args[i]);
-		char_cleanup(args[i], '\'');
-		char_cleanup(args[i], '\"');
+		char_cleanup(args[i]);
 	}
 }
 

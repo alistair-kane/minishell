@@ -5,7 +5,6 @@
 static int	count_arguments(char *line);
 static char	*goto_next_whitespace(char *line);
 static void	skip_whitespaces(char **line);
-static void	handle_quotes(char c, int *double_quotes, int *single_quotes);
 
 /*
 returns an array of strings - splits the line when finding a whitespace-char, 
@@ -88,28 +87,30 @@ static void	skip_whitespaces(char **line)
 		(*line)++;
 }
 
-static void	handle_quotes(char c, int *double_quotes, int *single_quotes)
+// returns 1, if something changes
+int	handle_quotes(char c, int *double_quotes, int *single_quotes)
 {
 	if (c == '"')
 	{
 		if (*double_quotes == 1)
-		{
 			*double_quotes = 0;
-		}
 		else
 		{
 			if (*single_quotes == 0)
 				*double_quotes = 1;
+			else
+				return (0);
 		}
-		return ;
+		return (1);
 	}
 	if (*single_quotes == 1)
-	{
 		*single_quotes = 0;
-	}
 	else
 	{
 		if (*double_quotes == 0)
 			*single_quotes = 1;
+		else
+			return (0);
 	}
+	return (1);
 }

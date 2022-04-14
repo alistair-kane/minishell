@@ -1,13 +1,14 @@
 // !!!!!
 
 #include <stdio.h>
-
+#include <signal.h>
 #include <stdlib.h>
 #include "../minishell.h"
 
 static void	init_environment(t_data *data);
 static void	init_env_structs(t_data *data);
 static void	init_paths(t_data *data);
+static void	init_signals(void);
 
 t_data	*data_init(void)
 {
@@ -25,6 +26,7 @@ t_data	*data_init(void)
 	init_environment(data);
 	vector_custom_cleanup(data->environment, cleanup_environment);
 	init_paths(data);
+	init_signals();
 	return (data);
 }
 
@@ -80,4 +82,24 @@ static void	init_paths(t_data *data)
 		i++;
 		entry = vector_get(data->environment, i);
 	}
+}
+
+static void	init_signals(void)
+{
+	struct sigaction	sa;
+
+	ft_bzero(&sa, sizeof(sa));
+	sa.sa_handler = &signal_handler;
+	sa.sa_flags = SA_RESTART; // remove this?
+	if (sigaction(SIGINT, &sa, NULL) < 0)
+	{
+		printf("ERROR! SIGINT\n");
+		return ;
+	}
+	/*if (sigaction(SIGQUIT, &sa, NULL) < 0)
+	{
+		printf("ERROR! SIGQUIT\n"); // !!!!!
+		return ;
+	}*/
+	signal(SIGQUIT, SIG_IGN); //!!!!! <- also an option
 }

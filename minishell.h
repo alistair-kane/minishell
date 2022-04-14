@@ -34,7 +34,6 @@ typedef struct s_args
 	size_t	length;
 }			t_args;
 
-
 typedef struct s_data
 {
 	t_vector	*environment;
@@ -61,13 +60,15 @@ void	builtin_exit(int status);
 
 char	**ms_split(t_data *data, char *line);
 int		check_binaries(t_data *data, char **args);
+int		handle_quotes(char c, int *double_quotes, int *single_quotes);
 
 int		is_reserved_symbol(char *argument);
 int		get_name_length(char *entry);
 int		get_name_length_whitespace(char *entry);
 
-
 void	sort_all_entries(t_vector *env);
 void	env_expansion(t_data *data, char **args);
+
+void	signal_handler(int signal);
 
 #endif
