@@ -50,3 +50,16 @@ int	get_name_length_whitespace(char *entry)
 	}
 	return (length);
 }
+
+void	free_vector(char **vector)
+{
+	int	i;
+
+	i = 0;
+	while (vector[i] != NULL)
+	{
+		free(vector[i]);
+		i++;
+	}
+	free(vector);
+}

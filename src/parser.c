@@ -73,6 +73,13 @@ void	parser(t_data *data, char *buf)
 	args = ms_split(data, buf);
 	env_expansion(data, args);
 	data->exec = prep_exec(args);
+	if (data->exec == NULL)
+	{
+		printf("syntax error\n");
+		free_vector(args);
+		cleanup_exec(data->exec);
+		return ;
+	}
 	i = 0;
 	while (args[i])
 	{
@@ -81,5 +88,6 @@ void	parser(t_data *data, char *buf)
 		// line is here incase parse_args not functioning as intended
 		// i++;
 	}
-	// !!!!! free split (args)
+	free_vector(args);
+	cleanup_exec(data->exec);
 }

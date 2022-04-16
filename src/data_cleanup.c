@@ -2,8 +2,6 @@
 
 #include "../minishell.h"
 
-static void	cleanup_exec(t_exec *exec);
-
 void	data_cleanup(t_data *data)
 {
 	if (data == NULL)
@@ -38,21 +36,4 @@ void	cleanup_environment(void *data)
 		free(entry->name);
 	if (entry->value != NULL)
 		free(entry->value);
-}
-
-static void	cleanup_exec(t_exec *exec)
-{
-	int	i;
-
-	if (exec == NULL)
-		return ;
-	if (exec->input_file != NULL)
-		free(exec->input_file);
-	i = 0;
-	while (exec->output_files[i] != NULL)
-	{
-		free(exec->output_files[i]);
-		i++;
-	}
-	vector_cleanup(exec->commands);
 }

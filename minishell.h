@@ -84,6 +84,7 @@ int		handle_quotes(char c, int *double_quotes, int *single_quotes);
 int		is_reserved_symbol(char *argument);
 int		get_name_length(char *entry);
 int		get_name_length_whitespace(char *entry);
+void	free_vector(char **vector);
 
 void	sort_all_entries(t_vector *env);
 void	env_expansion(t_data *data, char **args);
@@ -92,5 +93,6 @@ void	signal_handler(int signal);
 
 t_exec	*prep_exec(char **arguments);
 t_exec	*init_exec(void);
+void	cleanup_exec(t_exec *exec);
 
 #endif

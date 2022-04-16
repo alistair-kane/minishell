@@ -102,6 +102,8 @@ static int	handle_commands(t_exec *exec, char **arguments)
 			builtin_exit(1);
 		ft_strlcpy(command[i], arguments[i], length + 1);
 		i++;
+		if (arguments[i] == NULL)
+			break ;
 	}
 	vector_add(exec->commands, command);
 	return (i);

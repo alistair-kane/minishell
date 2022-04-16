@@ -14,3 +14,21 @@ t_exec	*init_exec(void)
 		builtin_exit(1);
 	return (exec);
 }
+
+void	cleanup_exec(t_exec *exec)
+{
+	int	i;
+
+	if (exec == NULL)
+		return ;
+	if (exec->input_file != NULL)
+		free(exec->input_file);
+	i = 0;
+	while (exec->output_files[i] != NULL)
+	{
+		free(exec->output_files[i]);
+		i++;
+	}
+	vector_cleanup(exec->commands);
+	ft_bzero(exec, sizeof(t_exec));
+}
