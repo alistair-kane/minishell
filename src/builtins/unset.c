@@ -10,7 +10,7 @@ int	builtin_unset(t_data *data, char **args)
 
 	if (args[1] == NULL)
 		return (1);
-	if (is_reserved_symbol(args[1]) == 1)
+	if (is_reserved_symbol(args[1]) > 0)
 		return (1);
 	i = 0;
 	entry = vector_get(data->environment, i);

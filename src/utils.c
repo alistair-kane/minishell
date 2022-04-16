@@ -2,18 +2,22 @@
 
 #include "../minishell.h"
 
+// if a reserved symbol is found, a positive value is returned;
+// the functions also check for invalid inputs like "<<<" or "||"
 int	is_reserved_symbol(char *argument)
 {
-	if (ft_strncmp("<<", argument, 2) == 0)
-		return (1);
-	if (ft_strncmp(">>", argument, 2) == 0)
-		return (1);
-	if (argument[0] == '|')
-		return (1);
-	if (argument[0] == '<')
-		return (1);
-	if (argument[0] == '>')
-		return (1);
+	if (ft_strcmp("|", argument) == 0)
+		return (RESERVED_SYMBOL_PIPE);
+	if (ft_strcmp("<", argument) == 0)
+		return (RESERVED_SYMBOL_REDIRECT_INPUT);
+	if (ft_strcmp(">", argument) == 0)
+		return (RESERVED_SYMBOL_REDIRECT_OUTPUT);
+	if (ft_strcmp("<<", argument) == 0)
+		return (RESERVED_SYMBOL_DELIMITER);
+	if (ft_strcmp(">>", argument) == 0)
+		return (RESERVED_SYMBOL_APPEND_OUTPUT);
+	if (argument[1] == '|' || argument[1] == '<' || argument[1] == '>')
+		return (-1);
 	return (0);
 }
 

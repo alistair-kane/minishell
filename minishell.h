@@ -21,6 +21,24 @@
 
 # define PROMPT "$ "
 
+// 1 = |, 2 = <, 3 = >, 4 = <<, 5 = >>
+enum e_reserved_symbol
+{
+	RESERVED_SYMBOL_PIPE = 1,
+	RESERVED_SYMBOL_REDIRECT_INPUT,
+	RESERVED_SYMBOL_REDIRECT_OUTPUT,
+	RESERVED_SYMBOL_DELIMITER,
+	RESERVED_SYMBOL_APPEND_OUTPUT,
+};
+
+// each command is a >> char** <<
+typedef struct s_exec
+{
+	char		*input_file;
+	char		*output_files[128];
+	t_vector	*commands;
+}				t_exec;
+
 typedef struct s_environment
 {
 	char	*name;
@@ -41,6 +59,7 @@ typedef struct s_data
 	char		**path;
 	char		*pwd;
 	size_t		args_len;
+	t_exec		*exec;
 }				t_data;
 
 t_data	*data_init(void);
@@ -70,5 +89,8 @@ void	sort_all_entries(t_vector *env);
 void	env_expansion(t_data *data, char **args);
 
 void	signal_handler(int signal);
+
+t_exec	*prep_exec(char **arguments);
+t_exec	*init_exec(void);
 
 #endif

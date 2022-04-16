@@ -72,6 +72,7 @@ void	parser(t_data *data, char *buf)
 	// new pre-parser should handle all whitespace chars and ___ " ' $ ___ (not splitting inside)
 	args = ms_split(data, buf);
 	env_expansion(data, args);
+	data->exec = prep_exec(args);
 	i = 0;
 	while (args[i])
 	{

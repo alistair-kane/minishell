@@ -15,7 +15,7 @@ int	builtin_export(t_data *data, char **args)
 	int				index;
 	t_environment	entry;
 
-	if (args[1] == NULL || is_reserved_symbol(args[1]) == 1)
+	if (args[1] == NULL || is_reserved_symbol(args[1]) > 0)
 	{
 		export_print_list(data);
 		return (1);

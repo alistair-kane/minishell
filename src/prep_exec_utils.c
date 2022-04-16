@@ -1,0 +1,16 @@
+/// !!!!!
+
+#include "../minishell.h"
+
+t_exec	*init_exec(void)
+{
+	t_exec	*exec;
+
+	exec = ft_calloc(1, sizeof(t_exec));
+	if (exec == NULL)
+		builtin_exit(1);
+	exec->commands = vector_init(10, 10, sizeof(char **));
+	if (exec->commands == NULL)
+		builtin_exit(1);
+	return (exec);
+}

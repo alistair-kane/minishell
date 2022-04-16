@@ -8,7 +8,8 @@ LIBRARY = libft.a
 SRCS	= minishell.c src/data_structs.c src/parser.c src/split.c src/builtins/echo.c \
 			src/builtins/cd.c src/builtins/pwd.c src/builtins/exit.c src/builtins/export.c \
 			src/utils.c src/builtins/unset.c src/env_utils.c src/data_cleanup.c \
-			src/builtins/env.c src/binaries.c src/signals.c
+			src/builtins/env.c src/binaries.c src/signals.c src/prep_exec.c \
+			src/prep_exec_utils.c
 OBJS	= ${SRCS:.c=.o}
 
 all: $(NAME)
