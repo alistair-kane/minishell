@@ -8,7 +8,7 @@
 static void	init_environment(t_data *data);
 static void	init_env_structs(t_data *data);
 static void	init_paths(t_data *data);
-static void	init_signals(void);
+static void	init_signals(int sig);
 
 t_data	*data_init(void)
 {
@@ -26,7 +26,8 @@ t_data	*data_init(void)
 	init_environment(data);
 	vector_custom_cleanup(data->environment, cleanup_environment);
 	init_paths(data);
-	init_signals();
+	init_signals(SIGINT);
+	init_signals(SIGQUIT);
 	data->exec = vector_init(10, 10, 0);
 	if (data->exec == NULL)
 		builtin_exit(1);
@@ -88,14 +89,16 @@ static void	init_paths(t_data *data)
 	}
 }
 
-static void	init_signals(void)
+static void	init_signals(int sig)
 {
 	struct sigaction	sa;
 
-	ft_bzero(&sa, sizeof(sa));
+	//ft_bzero(&sa, sizeof(sa));
+	sigemptyset(&sa.sa_mask);
+	sigaddset(&sa.sa_mask, sig);
 	sa.sa_handler = &signal_handler;
 	sa.sa_flags = SA_RESTART; // remove this?
-	if (sigaction(SIGINT, &sa, NULL) < 0)
+	if (sigaction(sig, &sa, NULL) < 0)
 	{
 		printf("ERROR! SIGINT\n");
 		return ;
@@ -105,5 +108,5 @@ static void	init_signals(void)
 		printf("ERROR! SIGQUIT\n"); // !!!!!
 		return ;
 	}*/
-	signal(SIGQUIT, SIG_IGN); //!!!!! <- also an option
+	//signal(SIGQUIT, SIG_IGN); //!!!!! <- also an option
 }

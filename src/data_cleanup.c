@@ -54,5 +54,12 @@ void	cleanup_exec(void *data)
 		free(exec->output_files[i]);
 		i++;
 	}
+	i = 0;
+	while (exec->temp_files[i] != NULL)
+	{
+		unlink(exec->temp_files[i]);
+		free(exec->temp_files[i]);
+		i++;
+	}
 	vector_cleanup(exec->commands); // !!!!! todo: custom cleanup commands
 }

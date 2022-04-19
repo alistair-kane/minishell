@@ -7,7 +7,7 @@
 # include <dirent.h>
 # include <sys/stat.h>
 # ifdef __linux__
-#  include <linux/limits.h> // maybe unnecessary for final submission?
+#  include <linux/limits.h> // !!!!! maybe unnecessary for final submission?
 # endif
 # include <limits.h>
 # include <errno.h>
@@ -37,6 +37,7 @@ typedef struct s_exec
 	char		*input_file;
 	char		*output_files[128];
 	int			append_output[128];
+	char		*temp_files[128];
 	t_vector	*commands;
 }				t_exec;
 
@@ -96,5 +97,6 @@ void	signal_handler(int signal);
 
 int		prep_exec(t_data *data, char **arguments);
 t_exec	*init_exec(void);
+char	*handle_here_doc(t_exec *exec, char *delimiter);
 
 #endif

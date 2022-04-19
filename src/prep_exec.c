@@ -43,6 +43,8 @@ int	prep_exec(t_data *data, char **arguments)
 static int	handle_reserved_symbols(t_exec *exec, char **arguments, int symbol,
 	int *output)
 {
+	char	*filename;
+
 	if (symbol == RESERVED_SYMBOL_REDIRECT_INPUT)
 	{
 		handle_input(exec, arguments[1]);
@@ -60,7 +62,9 @@ static int	handle_reserved_symbols(t_exec *exec, char **arguments, int symbol,
 	}
 	if (symbol == RESERVED_SYMBOL_HERE_DOC)
 	{
-		// todo !!!!!
+		filename = handle_here_doc(exec, arguments[1]);
+		handle_input(exec, filename);
+		return (2);
 	}
 	return (1);
 }
