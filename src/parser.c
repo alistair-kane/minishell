@@ -66,20 +66,48 @@ void	parser(t_data *data, char *buf)
 	char	**args;
 	int		i;
 
-	// line preprocessing goes here
-
-	// !!!!! split must be replaced
 	// new pre-parser should handle all whitespace chars and ___ " ' $ ___ (not splitting inside)
 	args = ms_split(data, buf);
 	env_expansion(data, args);
-	data->exec = prep_exec(args);
-	if (data->exec == NULL)
+	if (prep_exec(data, args) != 0)
 	{
 		printf("syntax error\n");
 		free_vector(args);
-		cleanup_exec(data->exec);
+		vector_clear(data->exec);
 		return ;
 	}
+	#ifdef _DEBUG
+	char	**tmp;
+	int		j;
+	int		k;
+	t_exec	*exec;
+	i = 0;
+	while (i < (int)data->exec->total)
+	{
+		exec = vector_get(data->exec, i);
+		printf ("!!!input: %s\n", exec->input_file);
+		j = 0;
+		while (exec->output_files[j] != NULL)
+		{
+			printf("!!!output: %s\n", exec->output_files[j]);
+			j++;
+		}
+		k = 0;
+		tmp = vector_get(exec->commands, k);
+		while (tmp != NULL)
+		{
+			j = 0;
+			while (tmp[j] != NULL)
+			{
+				printf("!!!%s\n", tmp[j]);
+				j++;
+			}
+			k++;
+			tmp = vector_get(exec->commands, k);
+		}
+		i++;
+	}
+	#endif // _DEBUG
 	i = 0;
 	while (args[i])
 	{
@@ -89,5 +117,5 @@ void	parser(t_data *data, char *buf)
 		// i++;
 	}
 	free_vector(args);
-	cleanup_exec(data->exec);
+	vector_clear(data->exec);
 }

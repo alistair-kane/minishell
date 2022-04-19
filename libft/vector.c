@@ -6,7 +6,7 @@
 /*   By: dbrandtn <dbrandtn@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 16:02:24 by dbrandtn          #+#    #+#             */
-/*   Updated: 2022/04/11 18:11:12 by dbrandtn         ###   ########.fr       */
+/*   Updated: 2022/04/19 12:07:12 by dbrandtn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	vector_cleanup(t_vector *vector)
 	free(vector);
 }
 
-void	vector_custom_cleanup(t_vector *vector, 
+void	vector_custom_cleanup(t_vector *vector,
 			void (*vector_cleanup_cb)(void *data))
 {
 	vector->cleanup_cb = vector_cleanup_cb;
@@ -67,14 +67,14 @@ void	vector_clear(t_vector *vector)
 
 	if (vector == NULL)
 		return ;
-	if (vector->data_size == 0)
+	i = 0;
+	while (i < vector->total)
 	{
-		i = 0;
-		while (i < vector->total)
-		{
+		if (vector->cleanup_cb != NULL)
+			vector->cleanup_cb(vector_get(vector, i));
+		if (vector->data_size == 0)
 			free(vector->nodes[i]);
-			i++;
-		}
+		i++;
 	}
 	vector->total = 0;
 }

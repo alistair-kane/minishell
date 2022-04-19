@@ -55,11 +55,11 @@ typedef struct s_args
 typedef struct s_data
 {
 	t_vector	*environment;
+	t_vector	*exec;
 	t_vector	*history;
 	char		**path;
 	char		*pwd;
 	size_t		args_len;
-	t_exec		*exec;
 }				t_data;
 
 t_data	*data_init(void);
@@ -67,6 +67,8 @@ t_data	*data_init(void);
 void	data_cleanup(t_data *data);
 void	free_path(t_data *data);
 void	cleanup_environment(void *data);
+void	cleanup_exec(void *data);
+
 void	parser(t_data *data, char *buf);
 
 int		builtin_echo(t_data *data, char **buf);
@@ -91,8 +93,7 @@ void	env_expansion(t_data *data, char **args);
 
 void	signal_handler(int signal);
 
-t_exec	*prep_exec(char **arguments);
+int		prep_exec(t_data *data, char **arguments);
 t_exec	*init_exec(void);
-void	cleanup_exec(t_exec *exec);
 
 #endif

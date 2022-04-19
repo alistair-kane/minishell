@@ -2,38 +2,46 @@
 
 #include "../minishell.h"
 
-static int	handle_reserved_symbols(t_exec *exec, char **arguments, int symbol);
+static int	handle_reserved_symbols(t_exec *exec, char **arguments, int symbol,
+				int *output);
 static void	handle_input(t_exec *exec, char *filename);
 static void	handle_output(t_exec *exec, char *filename);
 static int	handle_commands(t_exec *exec, char **arguments);
 
-t_exec	*prep_exec(char **arguments)
+// !!!!! todo? problem if last arguments is a '|' e.g. echo "test" |
+int	prep_exec(t_data *data, char **arguments)
 {
 	int		i;
+	int		output;
 	int		symbol;
 	t_exec	*exec;
 
 	exec = init_exec();
+	output = 0;
 	i = 0;
 	while (arguments[i] != NULL)
 	{
 		symbol = is_reserved_symbol(arguments[i]);
 		if (symbol < 0)
-			return (NULL); // !!!!! printf("syntax error\n");
+			return (-1); // !!!!! printf("syntax error\n");
+		if (symbol == RESERVED_SYMBOL_PIPE && output == 1)
+		{
+			vector_add(data->exec, exec);
+			output = 0;
+			exec = init_exec();
+		}
 		if (symbol > 0)
-		{
-			i += handle_reserved_symbols(exec, &arguments[i], symbol);
-		}
+			i += handle_reserved_symbols(exec, &arguments[i], symbol, &output);
 		else
-		{
 			i += handle_commands(exec, &arguments[i]);
-		}
 	}
-	return (exec);
+	vector_add(data->exec, exec);
+	return (0);
 }
 
 // returns the number of 'consumed' arguments (returns 1 for the pipe)
-static int	handle_reserved_symbols(t_exec *exec, char **arguments, int symbol)
+static int	handle_reserved_symbols(t_exec *exec, char **arguments, int symbol,
+	int *output)
 {
 	if (symbol == RESERVED_SYMBOL_REDIRECT_INPUT)
 	{
@@ -42,6 +50,7 @@ static int	handle_reserved_symbols(t_exec *exec, char **arguments, int symbol)
 	}
 	if (symbol == RESERVED_SYMBOL_REDIRECT_OUTPUT)
 	{
+		*output = 1;
 		handle_output(exec, arguments[1]);
 		return (2);
 	}
@@ -105,6 +114,7 @@ static int	handle_commands(t_exec *exec, char **arguments)
 		if (arguments[i] == NULL)
 			break ;
 	}
+	command[i] = NULL;
 	vector_add(exec->commands, command);
 	return (i);
 }

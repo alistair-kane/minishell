@@ -27,6 +27,10 @@ t_data	*data_init(void)
 	vector_custom_cleanup(data->environment, cleanup_environment);
 	init_paths(data);
 	init_signals();
+	data->exec = vector_init(10, 10, 0);
+	if (data->exec == NULL)
+		builtin_exit(1);
+	vector_custom_cleanup(data->exec, cleanup_exec);
 	return (data);
 }
 

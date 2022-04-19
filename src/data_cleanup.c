@@ -7,7 +7,7 @@ void	data_cleanup(t_data *data)
 	if (data == NULL)
 		return ;
 	free_path(data);
-	cleanup_exec(data->exec);
+	vector_cleanup(data->exec);
 	vector_cleanup(data->environment);
 	vector_cleanup(data->history);
 	free(data);
@@ -36,4 +36,23 @@ void	cleanup_environment(void *data)
 		free(entry->name);
 	if (entry->value != NULL)
 		free(entry->value);
+}
+
+void	cleanup_exec(void *data)
+{
+	int		i;
+	t_exec	*exec;
+
+	if (data == NULL)
+		return ;
+	exec = data;
+	if (exec->input_file != NULL)
+		free(exec->input_file);
+	i = 0;
+	while (exec->output_files[i] != NULL)
+	{
+		free(exec->output_files[i]);
+		i++;
+	}
+	vector_cleanup(exec->commands); // !!!!! todo: custom cleanup commands
 }
