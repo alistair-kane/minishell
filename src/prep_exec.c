@@ -5,7 +5,7 @@
 static int	handle_reserved_symbols(t_exec *exec, char **arguments, int symbol,
 				int *output);
 static void	handle_input(t_exec *exec, char *filename);
-static void	handle_output(t_exec *exec, char *filename);
+static void	handle_output(t_exec *exec, char *filename, int append);
 static int	handle_commands(t_exec *exec, char **arguments);
 
 // !!!!! todo? problem if last arguments is a '|' e.g. echo "test" |
@@ -48,13 +48,20 @@ static int	handle_reserved_symbols(t_exec *exec, char **arguments, int symbol,
 		handle_input(exec, arguments[1]);
 		return (2);
 	}
-	if (symbol == RESERVED_SYMBOL_REDIRECT_OUTPUT)
+	if (symbol == RESERVED_SYMBOL_REDIRECT_OUTPUT
+		|| symbol == RESERVED_SYMBOL_APPEND_OUTPUT)
 	{
 		*output = 1;
-		handle_output(exec, arguments[1]);
+		if (symbol == RESERVED_SYMBOL_APPEND_OUTPUT)
+			handle_output(exec, arguments[1], 1);
+		else
+			handle_output(exec, arguments[1], 0);
 		return (2);
 	}
-	// todo !!!!!
+	if (symbol == RESERVED_SYMBOL_HERE_DOC)
+	{
+		// todo !!!!!
+	}
 	return (1);
 }
 
@@ -73,7 +80,7 @@ static void	handle_input(t_exec *exec, char *filename)
 	ft_strlcpy(exec->input_file, filename, length + 1);
 }
 
-static void	handle_output(t_exec *exec, char *filename)
+static void	handle_output(t_exec *exec, char *filename, int append)
 {
 	int	i;
 	int	length;
@@ -85,6 +92,7 @@ static void	handle_output(t_exec *exec, char *filename)
 		i++;
 	if (i >= 128)
 		return ;
+	exec->append_output[i] = append;
 	length = ft_strlen(filename);
 	exec->output_files[i] = ft_calloc(length + 1, sizeof(char));
 	if (exec->output_files[i] == NULL)

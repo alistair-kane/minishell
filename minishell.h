@@ -27,7 +27,7 @@ enum e_reserved_symbol
 	RESERVED_SYMBOL_PIPE = 1,
 	RESERVED_SYMBOL_REDIRECT_INPUT,
 	RESERVED_SYMBOL_REDIRECT_OUTPUT,
-	RESERVED_SYMBOL_DELIMITER,
+	RESERVED_SYMBOL_HERE_DOC,
 	RESERVED_SYMBOL_APPEND_OUTPUT,
 };
 
@@ -36,6 +36,7 @@ typedef struct s_exec
 {
 	char		*input_file;
 	char		*output_files[128];
+	int			append_output[128];
 	t_vector	*commands;
 }				t_exec;
 

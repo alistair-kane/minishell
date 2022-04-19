@@ -13,10 +13,10 @@ int	is_reserved_symbol(char *argument)
 	if (ft_strcmp(">", argument) == 0)
 		return (RESERVED_SYMBOL_REDIRECT_OUTPUT);
 	if (ft_strcmp("<<", argument) == 0)
-		return (RESERVED_SYMBOL_DELIMITER);
+		return (RESERVED_SYMBOL_HERE_DOC);
 	if (ft_strcmp(">>", argument) == 0)
 		return (RESERVED_SYMBOL_APPEND_OUTPUT);
-	if (argument[1] == '|' || argument[1] == '<' || argument[1] == '>')
+	if (argument[0] == '|' || argument[0] == '<' || argument[0] == '>')
 		return (-1);
 	return (0);
 }
