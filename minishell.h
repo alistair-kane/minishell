@@ -7,7 +7,7 @@
 # include <dirent.h>
 # include <sys/stat.h>
 # ifdef __linux__
-#  include <linux/limits.h> // maybe unnecessary for final submission?
+#  include <linux/limits.h> // !!!!! maybe unnecessary for final submission?
 # endif
 # include <limits.h>
 # include <errno.h>
@@ -38,6 +38,7 @@ typedef struct s_exec
 	char		*input_file;
 	char		*output_files[128];
 	int			append_output[128];
+	char		*temp_files[128];
 	t_vector	*commands;
 }				t_exec;
 
@@ -59,6 +60,7 @@ typedef struct s_data
 	t_vector	*environment;
 	t_vector	*exec;
 	t_vector	*history;
+	char		**envp;
 	char		**path;
 	// !!!!! **envp needed 
 	char		*pwd;
@@ -69,6 +71,7 @@ t_data	*data_init(void);
 
 void	data_cleanup(t_data *data);
 void	free_path(t_data *data);
+void	free_c_vector(char **vec);
 void	cleanup_environment(void *data);
 void	cleanup_exec(void *data);
 
@@ -95,10 +98,12 @@ void	free_vector(char **vector);
 
 void	sort_all_entries(t_vector *env);
 void	env_expansion(t_data *data, char **args);
+void	add_to_envp(t_data *data, char *name, char *value);
 
 void	signal_handler(int signal);
 
 int		prep_exec(t_data *data, char **arguments);
 t_exec	*init_exec(void);
+char	*handle_here_doc(t_exec *exec, char *delimiter);
 
 #endif
