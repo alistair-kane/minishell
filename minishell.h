@@ -59,6 +59,7 @@ typedef struct s_data
 	t_vector	*environment;
 	t_vector	*exec;
 	t_vector	*history;
+	char		**envp;
 	char		**path;
 	char		*pwd;
 	size_t		args_len;
@@ -68,6 +69,7 @@ t_data	*data_init(void);
 
 void	data_cleanup(t_data *data);
 void	free_path(t_data *data);
+void	free_c_vector(char **vec);
 void	cleanup_environment(void *data);
 void	cleanup_exec(void *data);
 
@@ -92,6 +94,7 @@ void	free_vector(char **vector);
 
 void	sort_all_entries(t_vector *env);
 void	env_expansion(t_data *data, char **args);
+void	add_to_envp(t_data *data, char *name, char *value);
 
 void	signal_handler(int signal);
 

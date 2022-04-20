@@ -59,6 +59,7 @@ static void	init_environment(t_data *data)
 		ft_strlcpy(entry.value, &environ[i][length_name + 1], length_value + 1);
 		entry.initial_index = i;
 		vector_add(data->environment, &entry);
+		add_to_envp(data, entry.name, entry.value);
 		i++;
 	}
 	sort_all_entries(data->environment);

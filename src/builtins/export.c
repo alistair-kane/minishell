@@ -33,6 +33,7 @@ int	builtin_export(t_data *data, char **args)
 	{
 		entry.initial_index = get_new_initial_index(data->environment);
 		vector_add(data->environment, &entry);
+		add_to_envp(data, entry.name, entry.value);
 	}
 	sort_all_entries(data->environment);
 	return (2);
@@ -129,14 +130,17 @@ static void	update_existing_entry(t_vector *env, int index, char *new_value)
 {
 	t_environment	*entry;
 
-	entry = vector_get(env, index);
-	if (entry == NULL)
-		return ;
-	free(entry->value);
-	entry->value = malloc(ft_strlen(new_value) + 1);
-	if (entry->value == NULL)
-		builtin_exit(1);
-	ft_strlcpy(entry->value, new_value, ft_strlen(new_value) + 1);
+	if (new_value != NULL)
+	{
+		entry = vector_get(env, index);
+		if (entry == NULL)
+			return ;
+		free(entry->value);
+		entry->value = malloc(ft_strlen(new_value) + 1);
+		if (entry->value == NULL)
+			builtin_exit(1);
+		ft_strlcpy(entry->value, new_value, ft_strlen(new_value) + 1);
+	}
 }
 
 // if all variables are removed at some point, 

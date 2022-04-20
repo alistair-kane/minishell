@@ -48,10 +48,15 @@ static void	swap_entries(t_environment *first, t_environment *second)
 		builtin_exit(1);
 	ft_strlcpy(first->name, second->name, ft_strlen(second->name) + 1);
 	free(first->value);
-	first->value = malloc(ft_strlen(second->value) + 1);
-	if (first->value == NULL)
-		builtin_exit(1);
-	ft_strlcpy(first->value, second->value, ft_strlen(second->value) + 1);
+	if (second->value != NULL)
+	{
+		first->value = malloc(ft_strlen(second->value) + 1);
+		if (first->value == NULL)
+			builtin_exit(1);
+		ft_strlcpy(first->value, second->value, ft_strlen(second->value) + 1);
+	}
+	else
+		first->value = NULL;
 	free(second->name);
 	second->name = malloc(ft_strlen(name) + 1);
 	if (second->name == NULL)
@@ -182,4 +187,28 @@ void	env_expansion(t_data *data, char **args)
 		}
 		char_cleanup(args[i]);
 	}
+}
+
+void	add_to_envp(t_data *data, char *name, char *value)
+{
+	int	i;
+
+	if (value == NULL)
+		return ;
+	if (data->envp == NULL)
+	{
+		data->envp = ft_calloc(1024, sizeof(char *)); // !!!!!
+		if (data->envp == NULL)
+			builtin_exit(1);
+	}
+	i = 0;
+	while (data->envp[i] != NULL)
+		i++;
+	data->envp[i] = malloc(ft_strlen(name) + ft_strlen(value) + 2);
+	if (data->envp[i] == NULL)
+		builtin_exit(1);
+	ft_strlcpy(data->envp[i], name, ft_strlen(name) + 1);
+	data->envp[i][ft_strlen(name)] = '=';
+	ft_strlcpy(&data->envp[i][ft_strlen(name) + 1], value, 
+		ft_strlen(value) + 1);
 }
