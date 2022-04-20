@@ -18,6 +18,7 @@
 # include "libft/vector.h"
 # include <sys/wait.h>
 # include <stdlib.h>
+# include <fcntl.h>
 
 # define PROMPT "$ "
 
@@ -59,6 +60,7 @@ typedef struct s_data
 	t_vector	*exec;
 	t_vector	*history;
 	char		**path;
+	// !!!!! **envp needed 
 	char		*pwd;
 	size_t		args_len;
 }				t_data;
@@ -71,6 +73,7 @@ void	cleanup_environment(void *data);
 void	cleanup_exec(void *data);
 
 void	parser(t_data *data, char *buf);
+void	exec(t_data *data);
 
 int		builtin_echo(t_data *data, char **buf);
 int		builtin_cd(t_data *data, char **args);
@@ -82,6 +85,7 @@ void	builtin_exit(int status);
 
 char	**ms_split(t_data *data, char *line);
 int		check_binaries(t_data *data, char **args);
+int		check_builtin(t_data *data, char **args);
 int		handle_quotes(char c, int *double_quotes, int *single_quotes);
 
 int		is_reserved_symbol(char *argument);

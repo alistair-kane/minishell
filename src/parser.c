@@ -27,44 +27,43 @@
 // 	return (NULL);
 // }
 
-int	check_builtin(t_data *data, char **arg)
+int	check_builtin(t_data *data, char **args)
 {
-	if (!ft_strcmp("echo", arg[0]))
-		return (builtin_echo(data, arg));
-	else if (!ft_strcmp("cd", arg[0]))
-		return (builtin_cd(data, arg));
-	else if (!ft_strcmp("pwd", arg[0]))
+	if (!ft_strcmp("echo", args[0]))
+		return (builtin_echo(data, args));
+	else if (!ft_strcmp("cd", args[0]))
+		return (builtin_cd(data, args));
+	else if (!ft_strcmp("pwd", args[0]))
 		return (builtin_pwd(data));
-	else if (!ft_strcmp("export", arg[0]))
-		return (builtin_export(data, arg));
-	else if (!ft_strcmp("unset", arg[0]))
-		return (builtin_unset(data, arg));
-	else if (!ft_strcmp("env", arg[0]))
+	else if (!ft_strcmp("export", args[0]))
+		return (builtin_export(data, args));
+	else if (!ft_strcmp("unset", args[0]))
+		return (builtin_unset(data, args));
+	else if (!ft_strcmp("env", args[0]))
 		return (builtin_env(data));
-	else if (!ft_strcmp("exit", arg[0]))
+	else if (!ft_strcmp("exit", args[0]))
 		builtin_exit(0);
 	return (0);
 }
 
-int	parse_args(t_data *data, char **arg)
-{
-	int	consumed;
+// int	parse_args(t_data *data, char **arg)
+// {
+// 	int	consumed;
 	
-	// check for pipe and redirects
-	// check for -1 return e.g. cd = too many arguments 
-	consumed = check_builtin(data, arg);
-	if (consumed)
-		return (consumed);
+// 	// check for pipe and redirects
+// 	// check for -1 return e.g. cd = too many arguments 
+// 	consumed = check_builtin(data, arg);
+// 	if (consumed)
+// 		return (consumed);
 	
-	consumed = check_binaries(data, arg);
-	// if (!consumed)
-	return (consumed);
-}
+// 	consumed = check_binaries(data, arg);
+// 	// if (!consumed)
+// 	return (consumed);
+// }
 
 void	parser(t_data *data, char *buf)
 {
 	char	**args;
-	int		i;
 
 	// new pre-parser should handle all whitespace chars and ___ " ' $ ___ (not splitting inside)
 	args = ms_split(data, buf);
@@ -76,46 +75,48 @@ void	parser(t_data *data, char *buf)
 		vector_clear(data->exec);
 		return ;
 	}
-	#ifdef _DEBUG
-	char	**tmp;
-	int		j;
-	int		k;
-	t_exec	*exec;
-	i = 0;
-	while (i < (int)data->exec->total)
-	{
-		exec = vector_get(data->exec, i);
-		printf ("!!!input: %s\n", exec->input_file);
-		j = 0;
-		while (exec->output_files[j] != NULL)
-		{
-			printf("!!!output: %s\n", exec->output_files[j]);
-			j++;
-		}
-		k = 0;
-		tmp = vector_get(exec->commands, k);
-		while (tmp != NULL)
-		{
-			j = 0;
-			while (tmp[j] != NULL)
-			{
-				printf("!!!%s\n", tmp[j]);
-				j++;
-			}
-			k++;
-			tmp = vector_get(exec->commands, k);
-		}
-		i++;
-	}
-	#endif // _DEBUG
-	i = 0;
-	while (args[i])
-	{
-		i += parse_args(data, &args[i]);
-		// printf("\nargs parsed: %i\n", i);
-		// line is here incase parse_args not functioning as intended
-		// i++;
-	}
+	exec(data);
+	// // #ifdef _DEBUG
+	// char	**tmp;
+	// int		j;
+	// int		k;
+	// t_exec	*exec;
+	// i = 0;
+	// while (i < (int)data->exec->total)
+	// {
+	// 	exec = vector_get(data->exec, i);
+	// 	printf ("!!!input: %s\n", exec->input_file);
+	// 	j = 0;
+	// 	while (exec->output_files[j] != NULL)
+	// 	{
+	// 		printf("!!!output: %s\n", exec->output_files[j]);
+	// 		j++;
+	// 	}
+	// 	k = 0;
+	// 	tmp = vector_get(exec->commands, k);
+	// 	while (tmp != NULL)
+	// 	{
+	// 		j = 0;
+	// 		printf("test: %s", *tmp);
+	// 		while (tmp[j] != NULL)
+	// 		{
+	// 			printf("!params:§%s, %d\n", tmp[j], j);
+	// 			j++;
+	// 		}
+	// 		k++;
+	// 		tmp = vector_get(exec->commands, k);
+	// 	}
+	// 	i++;
+	// }
+	// #endif // _DEBUG
+	// i = 0;
+	// while (args[i])
+	// {
+	// 	i += parse_args(data, &args[i]);
+	// 	// printf("\nargs parsed: %i\n", i);
+	// 	// line is here incase parse_args not functioning as intended
+	// 	// i++;
+	// }
 	free_vector(args);
 	vector_clear(data->exec);
 }
