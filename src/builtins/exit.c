@@ -4,7 +4,13 @@
 
 #include "../../minishell.h"
 
-void	builtin_exit(int status)
+// !!!!! returns a value between 0 and 255
+void	builtin_exit(t_data *data, char **args)
 {
-	exit(status);
+	data->exit = 1;
+	if (args[1] == NULL)
+		data->exit_value = 0;
+	else
+		data->exit_value = ft_atoi(args[1]);
+	//exit(status);
 }

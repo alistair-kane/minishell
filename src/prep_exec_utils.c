@@ -11,10 +11,11 @@ t_exec	*init_exec(void)
 
 	exec = ft_calloc(1, sizeof(t_exec));
 	if (exec == NULL)
-		builtin_exit(1);
+		exit(1);
 	exec->commands = vector_init(10, 10, 0);
 	if (exec->commands == NULL)
-		builtin_exit(1);
+		exit(1);
+	vector_custom_cleanup(exec->commands, &cleanup_exec_commands);
 	return (exec);
 }
 

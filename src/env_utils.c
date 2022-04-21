@@ -45,14 +45,14 @@ static void	swap_entries(t_environment *first, t_environment *second)
 	free(first->name);
 	first->name = malloc(ft_strlen(second->name) + 1);
 	if (first->name == NULL)
-		builtin_exit(1);
+		exit(1);
 	ft_strlcpy(first->name, second->name, ft_strlen(second->name) + 1);
 	free(first->value);
 	if (second->value != NULL)
 	{
 		first->value = malloc(ft_strlen(second->value) + 1);
 		if (first->value == NULL)
-			builtin_exit(1);
+			exit(1);
 		ft_strlcpy(first->value, second->value, ft_strlen(second->value) + 1);
 	}
 	else
@@ -60,12 +60,12 @@ static void	swap_entries(t_environment *first, t_environment *second)
 	free(second->name);
 	second->name = malloc(ft_strlen(name) + 1);
 	if (second->name == NULL)
-		builtin_exit(1);
+		exit(1);
 	ft_strlcpy(second->name, name, ft_strlen(name) + 1);
 	free(second->value);
 	second->value = malloc(ft_strlen(value) + 1);
 	if (second->value == NULL)
-		builtin_exit(1);
+		exit(1);
 	ft_strlcpy(second->value, value, ft_strlen(value) + 1);
 	tmp = first->initial_index;
 	first->initial_index = second->initial_index;
@@ -199,14 +199,14 @@ void	add_to_envp(t_data *data, char *name, char *value)
 	{
 		data->envp = ft_calloc(1024, sizeof(char *)); // !!!!!
 		if (data->envp == NULL)
-			builtin_exit(1);
+			exit(1);
 	}
 	i = 0;
 	while (data->envp[i] != NULL)
 		i++;
 	data->envp[i] = malloc(ft_strlen(name) + ft_strlen(value) + 2);
 	if (data->envp[i] == NULL)
-		builtin_exit(1);
+		exit(1);
 	ft_strlcpy(data->envp[i], name, ft_strlen(name) + 1);
 	data->envp[i][ft_strlen(name)] = '=';
 	ft_strlcpy(&data->envp[i][ft_strlen(name) + 1], value, 

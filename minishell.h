@@ -62,18 +62,19 @@ typedef struct s_data
 	t_vector	*history;
 	char		**envp;
 	char		**path;
-	// !!!!! **envp needed 
 	char		*pwd;
 	size_t		args_len;
+	int			exit;
+	int			exit_value;
 }				t_data;
 
 t_data	*data_init(void);
 
 void	data_cleanup(t_data *data);
 void	free_path(t_data *data);
-void	free_c_vector(char **vec);
 void	cleanup_environment(void *data);
 void	cleanup_exec(void *data);
+void	cleanup_exec_commands(void *data);
 
 void	parser(t_data *data, char *buf);
 void	exec(t_data *data);
@@ -84,7 +85,7 @@ int		builtin_pwd(t_data *data);
 int		builtin_export(t_data *data, char **args);
 int		builtin_unset(t_data *data, char **args);
 int		builtin_env(t_data *data);
-void	builtin_exit(int status);
+void	builtin_exit(t_data *data, char **args);
 
 char	**ms_split(t_data *data, char *line);
 int		check_binaries(t_data *data, char **args);
@@ -94,7 +95,7 @@ int		handle_quotes(char c, int *double_quotes, int *single_quotes);
 int		is_reserved_symbol(char *argument);
 int		get_name_length(char *entry);
 int		get_name_length_whitespace(char *entry);
-void	free_vector(char **vector);
+void	free_c_vector(char **vector);
 
 void	sort_all_entries(t_vector *env);
 void	env_expansion(t_data *data, char **args);

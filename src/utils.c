@@ -51,17 +51,17 @@ int	get_name_length_whitespace(char *entry)
 	return (length);
 }
 
-void	free_vector(char **vector)
+void	free_c_vector(char **vector)
 {
 	int	i;
 
 	if (vector == NULL)
 		return ;
-	i = -1;
-	while (vector[++i] != NULL)
+	i = 0;
+	while (vector[i] != NULL)
 	{
 		free(vector[i]);
-		// i++;
+		i++;
 	}
 	free(vector);
 }
