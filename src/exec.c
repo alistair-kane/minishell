@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbrandtn <dbrandtn@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: alistair <alistair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 18:54:42 by alkane            #+#    #+#             */
-/*   Updated: 2022/04/20 18:18:50 by dbrandtn         ###   ########.fr       */
+/*   Updated: 2022/04/22 01:08:08 by alistair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,15 @@ void	exit_error(const char *s)
 	exit(EXIT_FAILURE);
 }
 
-static int	file_open(const char *name, int o_flags)
-{
-	int	fd;
+// static int	file_open(const char *name, int o_flags)
+// {
+// 	int	fd;
 
-	fd = open(name, o_flags, 0644);
-	if (fd < 0)
-		exit_error(name);
-	return (fd);
-}
+// 	fd = open(name, o_flags, 0644);
+// 	if (fd < 0)
+// 		exit_error(name);
+// 	return (fd);
+// }
 
 static char	*return_path(char **paths, char *execname)
 {
@@ -71,64 +71,73 @@ static void	exec_cmd(t_data *data, char **argv)
 	exit_error(path);
 }
 
-static void	piping(t_data *data, char **argv, int i, t_exec *exec)
+static void close_ends(int *fds)
 {
-	int		pid;
-	int		fd[2];
-	int		j;
-	char 	buf[100];
+	close(fds[READ_END]);
+	close(fds[WRITE_END]);
+}
 
-	printf("!in piping %s\n", argv[0]);
-	if (pipe(fd) == -1)
-		exit_error("pipe");
-	pid = fork();
-	if (pid < 0)
-		exit_error("fork");
-	if (pid > 0) // parent process
-	{	
-		close(fd[1]);
-		// dup2(fd[0], STDIN_FILENO);
-		waitpid(pid, NULL, 0);
-		read(fd[0], buf, 100);
-		printf("buf: %s", buf);
-		close(fd[0]);
-	}
-	else // child process
-	{		
-		if (i == 0)
+static void	piping(t_data *data, t_exec *exec)
+{
+	pid_t	pid;
+	int		new_fds[2];
+	int		old_fds[2];
+	int		i;
+	char	**cmd_1;
+
+	i = 0;
+	cmd_1 = vector_get(exec->commands, i);
+	while (cmd_1 != NULL)
+	{
+		if (vector_get(exec->commands, i + 1) != NULL) // if there is a next cmd
 		{
-			if (exec->input_file != NULL)
-			{
-				fd[0] = file_open(exec->input_file, O_RDONLY);
-			}
-			dup2(fd[0], STDIN_FILENO);
+			if (pipe(new_fds) == -1)
+				exit_error("pipe");
 		}
-		if (i == (int)exec->commands->total - 1)
+		pid = fork();
+		if (pid < 0)
+			exit_error("fork");
+		if (pid == 0) // child process
 		{
-			j = 0;
-			while (exec->output_files[j] != NULL)
+			if (i > 0) // if there is a previous cmd
 			{
-				fd[1] = file_open(exec->output_files[j], O_WRONLY | O_CREAT | O_TRUNC);
-				j++;
+				dup2(old_fds[READ_END], STDIN_FILENO);
+				close_ends(old_fds);
 			}
-			// printf("!in child\n");
-			dup2(fd[1], STDOUT_FILENO);
+			if (vector_get(exec->commands, i + 1) != NULL) // if there is a next cmd
+			{
+				close(new_fds[READ_END]);
+				dup2(new_fds[WRITE_END], STDOUT_FILENO);
+				close(new_fds[WRITE_END]);
+			}
+			if (check_builtin(data, cmd_1))
+				exit(0); // exit child after finding built-in
+			exec_cmd(data, cmd_1);
+			printf("Failed to execute '%s'\n", *cmd_1);
+			exit(1);
 		}
-		printf("!in child2222\n");
-		// !!!!! read from child in parent here
-		close(fd[0]);
-		// dup2(fd[1], STDOUT_FILENO);
-		if (check_builtin(data, argv) == 0)
-			exec_cmd(data, argv);
-		close(fd[1]);
+		else // parent process
+		{
+			if (i > 0) // if there is a previous cmd
+				close_ends(old_fds);
+			waitpid(pid, NULL, 0);
+			if (vector_get(exec->commands, i + 1) != NULL) // if there is a next cmd
+			{
+				old_fds[READ_END] = new_fds[READ_END];
+				old_fds[WRITE_END] = new_fds[WRITE_END];
+			}
+			check_builtin(data, cmd_1);
+		}
+		i++;
+		cmd_1 = vector_get(exec->commands, i);
 	}
+	if (exec->commands->total > 1) // if multiple cmds after loop
+		close_ends(old_fds);
 }
 
 void	exec(t_data *data)
 {
 	int		i;
-	int		j;
-	// int		fd[2];
 	t_exec	*exec;
 	char	**cmd;
 
@@ -145,21 +154,37 @@ void	exec(t_data *data)
 		// }
 		// else
 		// {
-		j = 0;
-		cmd = vector_get(exec->commands, j);
-		while (cmd != NULL)
-		{
-			if (ft_strcmp(cmd[0], "exit") == 0 && exec->commands->total == 1)
-				builtin_exit(data, cmd); // !!!!! need to check output behaviour
-			else	
-				piping(data, cmd, j, exec);
-			j++;
-			cmd = vector_get(exec->commands, j);
-		}
-		// exec_cmd(data, cmd);
-		// close(fd[0]);
-		// close(fd[1]);
+		// j = 0;
+		cmd = vector_get(exec->commands, 0);
+		if (ft_strcmp(cmd[0], "exit") == 0 && exec->commands->total == 1)
+			builtin_exit(data, cmd); // !!!!! need to check output behaviour
+		else
+			piping(data, exec);
 		i++;
 		// return (EXIT_SUCCESS);
 	}
 }
+
+
+/**
+ * ignore
+if (i == 0)
+{
+	if (exec->input_file != NULL)
+	{
+		fd[0] = file_open(exec->input_file, O_RDONLY);
+		dup2(fd[READ_END], STDIN_FILENO);
+	}
+}
+if (i == (int)exec->commands->total - 1)
+{
+	j = 0;
+	while (exec->output_files[j] != NULL)
+	{
+		fd[1] = file_open(exec->output_files[j], O_WRONLY | O_CREAT | O_TRUNC);
+		j++;
+	}
+	// printf("!in child\n");
+	dup2(fd[1], STDOUT_FILENO);
+}
+**/

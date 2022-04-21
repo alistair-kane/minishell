@@ -22,6 +22,9 @@
 
 # define PROMPT "$ "
 
+# define READ_END 0
+# define WRITE_END 1
+
 // 1 = |, 2 = <, 3 = >, 4 = <<, 5 = >>
 enum e_reserved_symbol
 {
