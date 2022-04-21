@@ -5,6 +5,7 @@
 int	main(void)
 {
 	char	*buf;
+	int		ret;
 	t_data	*data;
 
 	data = data_init();
@@ -23,6 +24,7 @@ int	main(void)
 				break ;
 		}
 	}
+	ret = data->exit_value;
 	data_cleanup(data);
-	return (data->exit_value);
+	return (ret);
 }

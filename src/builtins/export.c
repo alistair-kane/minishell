@@ -75,6 +75,7 @@ static void	get_key_value_pair(char *argument, t_environment *entry)
 	if (entry->value == NULL)
 		exit(1);
 	ft_strlcpy(entry->value, &argument[length_name + 1], length_value + 1);
+	free(argument);
 }
 
 // removes quotes around the name and the value of the current argument
@@ -104,7 +105,7 @@ static char	*remove_surrounding_quotes(char *input)
 		else
 			ft_strlcpy(&result[ft_strlen(result)], &input[length_name + 1], length - length_name);
 	}
-	free(input);
+	//free(input);
 	return (result);
 }
 

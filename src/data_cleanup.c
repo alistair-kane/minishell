@@ -26,7 +26,7 @@ void	free_path(t_data *data)
 		free(data->path[i]);
 		i++;
 	}
-	// free(data->path); ? !!!!!
+	free(data->path); //? !!!!!
 }
 
 void	cleanup_environment(void *data)
