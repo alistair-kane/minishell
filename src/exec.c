@@ -73,10 +73,10 @@ static void	exec_cmd(t_data *data, char **argv)
 
 static void	piping(t_data *data, char **argv, int i, t_exec *exec)
 {
-	int	pid;
-	int	fd[2];
-	int	j;
-	char buf[1000];
+	int		pid;
+	int		fd[2];
+	int		j;
+	char 	buf[100];
 
 	printf("!in piping %s\n", argv[0]);
 	if (pipe(fd) == -1)
@@ -84,24 +84,24 @@ static void	piping(t_data *data, char **argv, int i, t_exec *exec)
 	pid = fork();
 	if (pid < 0)
 		exit_error("fork");
-	if (pid > 0)
+	if (pid > 0) // parent process
 	{	
 		close(fd[1]);
 		// dup2(fd[0], STDIN_FILENO);
 		waitpid(pid, NULL, 0);
-		read(fd[0], buf, 1000);
+		read(fd[0], buf, 100);
 		printf("buf: %s", buf);
 		close(fd[0]);
 	}
-	else
+	else // child process
 	{		
 		if (i == 0)
 		{
 			if (exec->input_file != NULL)
 			{
 				fd[0] = file_open(exec->input_file, O_RDONLY);
-				dup2(fd[0], STDIN_FILENO);
 			}
+			dup2(fd[0], STDIN_FILENO);
 		}
 		if (i == (int)exec->commands->total - 1)
 		{
@@ -111,7 +111,7 @@ static void	piping(t_data *data, char **argv, int i, t_exec *exec)
 				fd[1] = file_open(exec->output_files[j], O_WRONLY | O_CREAT | O_TRUNC);
 				j++;
 			}
-			printf("!in child\n");
+			// printf("!in child\n");
 			dup2(fd[1], STDOUT_FILENO);
 		}
 		printf("!in child2222\n");
@@ -128,7 +128,7 @@ void	exec(t_data *data)
 {
 	int		i;
 	int		j;
-	int		fd[2];
+	// int		fd[2];
 	t_exec	*exec;
 	char	**cmd;
 
@@ -157,8 +157,8 @@ void	exec(t_data *data)
 			cmd = vector_get(exec->commands, j);
 		}
 		// exec_cmd(data, cmd);
-		close(fd[0]);
-		close(fd[1]);
+		// close(fd[0]);
+		// close(fd[1]);
 		i++;
 		// return (EXIT_SUCCESS);
 	}
