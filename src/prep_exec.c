@@ -80,7 +80,7 @@ static void	handle_input(t_exec *exec, char *filename)
 	length = ft_strlen(filename);
 	exec->input_file = ft_calloc(length + 1, sizeof(char));
 	if (exec->input_file == NULL)
-		builtin_exit(1);
+		exit(1);
 	ft_strlcpy(exec->input_file, filename, length + 1);
 }
 
@@ -100,7 +100,7 @@ static void	handle_output(t_exec *exec, char *filename, int append)
 	length = ft_strlen(filename);
 	exec->output_files[i] = ft_calloc(length + 1, sizeof(char));
 	if (exec->output_files[i] == NULL)
-		builtin_exit(1);
+		exit(1);
 	ft_strlcpy(exec->output_files[i], filename, length + 1);
 }
 
@@ -113,14 +113,14 @@ static int	handle_commands(t_exec *exec, char **arguments)
 
 	command = ft_calloc(128, sizeof(char *));
 	if (command == NULL)
-		builtin_exit(1);
+		exit(1);
 	i = 0;
 	while (is_reserved_symbol(arguments[i]) == 0)
 	{
 		length = ft_strlen(arguments[i]);
 		command[i] = malloc(length + 1);
 		if (command[i] == NULL)
-			builtin_exit(1);
+			exit(1);
 		ft_strlcpy(command[i], arguments[i], length + 1);
 		i++;
 		if (arguments[i] == NULL)

@@ -177,7 +177,7 @@ int	builtin_cd(t_data *data, char **dir)
 	char	*cur_path;
 
 	if (!data)
-		builtin_exit(1);
+		exit(1);
 	if (data->args_len > 1)
 	{
 		printf("cd: too many arguments\n");

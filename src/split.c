@@ -10,7 +10,6 @@ static void	skip_whitespaces(char **line);
 returns an array of strings - splits the line when finding a whitespace-char, 
 that's not part of any string (surrounded by ' or " quotes)
 */
-// !!!!! currently returns the quotes -> remove !? echo "test" => test
 char	**ms_split(t_data *data, char *line)
 {
 	char	**array;
@@ -23,20 +22,24 @@ char	**ms_split(t_data *data, char *line)
 	count = count_arguments(line);
 	array = ft_calloc(count + 1, sizeof(void *));
 	if (array == NULL)
-		builtin_exit(1);
+		exit(1);
 	i = 0;
 	last_pos = line;
 	pos = goto_next_whitespace(line);
 	while (pos != NULL)
 	{
-		array[i] = malloc((pos - last_pos) + 1); // !!!!!
+		array[i] = malloc((pos - last_pos) + 1);
+		if (array[i] == NULL)
+			exit(1);
 		ft_strlcpy(array[i], last_pos, (pos - last_pos) + 1);
 		skip_whitespaces(&pos);
 		i++;
 		last_pos = pos;
 		pos = goto_next_whitespace(pos);
 	}
-	array[i] = malloc(ft_strlen(last_pos) + 1); // !!!!!
+	array[i] = malloc(ft_strlen(last_pos) + 1);
+	if (array[i] == NULL)
+		exit(1);
 	ft_strlcpy(array[i], last_pos, ft_strlen(last_pos) + 1);
 	array[i + 1] = NULL;
 	data->args_len = i;

@@ -29,21 +29,6 @@ void	free_path(t_data *data)
 	// free(data->path); ? !!!!!
 }
 
-void	free_c_vector(char **vec)
-{
-	int	i;
-
-	if (vec == NULL)
-		return ;
-	i = 0;
-	while (vec[i] != NULL)
-	{
-		free(vec[i]);
-		i++;
-	}
-	free(vec);
-}
-
 void	cleanup_environment(void *data)
 {
 	t_environment	*entry;
@@ -78,5 +63,21 @@ void	cleanup_exec(void *data)
 		free(exec->temp_files[i]);
 		i++;
 	}
-	vector_cleanup(exec->commands); // !!!!! todo: custom cleanup commands
+	vector_cleanup(exec->commands);
+}
+
+void	cleanup_exec_commands(void *data)
+{
+	char	**commands;
+	int		i;
+
+	if (data == NULL)
+		return ;
+	commands = data;
+	i = 0;
+	while (commands[i] != NULL)
+	{
+		free(commands[i]);
+		i++;
+	}
 }

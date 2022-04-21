@@ -1,8 +1,5 @@
 // !!!!!
 
-#include <stdio.h>
-#include <readline/readline.h>
-#include <readline/history.h>
 #include "minishell.h"
 
 int	main(void)
@@ -13,15 +10,19 @@ int	main(void)
 	data = data_init();
 	if (data == NULL)
 		return (-1);
-	buf = readline(PROMPT);
-	while (buf != NULL)
+	while (1)
 	{
-		if (ft_strlen(buf))
-			add_history(buf);
-		vector_add(data->history, buf);
-		parser(data, buf);
 		buf = readline(PROMPT);
+		if (buf != NULL)
+		{
+			if (ft_strlen(buf))
+				add_history(buf);
+			vector_add(data->history, buf);
+			parser(data, buf);
+			if (data->exit != 0)
+				break ;
+		}
 	}
 	data_cleanup(data);
-	return (0);
+	return (data->exit_value);
 }

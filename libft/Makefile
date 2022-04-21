@@ -20,6 +20,9 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	ar rcs $(NAME) $(OBJS)
 
+debug: CFLAGS += -g3
+debug: re
+
 clean:
 	rm -f $(OBJS) $(BONUS_OBJS)
 
@@ -31,7 +34,7 @@ re: fclean all
 bonus: $(BONUS_OBJS)
 	ar rcs $(NAME) $(BONUS_OBJS)
 
-.PHONY: all clean fclean re bonus
+.PHONY: all debug clean fclean re bonus
 
 # so:
 # 	$(CC) -nostartfiles -fPIC $(CFLAGS) $(SRCS)

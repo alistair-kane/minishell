@@ -66,14 +66,14 @@ static void	get_key_value_pair(char *argument, t_environment *entry)
 	length_name = get_name_length(argument);
 	entry->name = malloc(length_name + 1);
 	if (entry->name == NULL)
-		builtin_exit(1);
+		exit(1);
 	ft_strlcpy(entry->name, argument, length_name + 1);
 	length_value = 0;
 	if (argument[length_name] == '=')
 		length_value = ft_strlen(&argument[length_name + 1]);
 	entry->value = malloc(length_value + 1);
 	if (entry->value == NULL)
-		builtin_exit(1);
+		exit(1);
 	ft_strlcpy(entry->value, &argument[length_name + 1], length_value + 1);
 }
 
@@ -88,7 +88,7 @@ static char	*remove_surrounding_quotes(char *input)
 	length_name = get_name_length(input);
 	result = malloc(length + 1);
 	if (result == NULL)
-		builtin_exit(1);
+		exit(1);
 	if ((input[0] == '"' && input[length_name - 1] == '"')
 		|| (input[0] == '\'' && input[length_name - 1] == '\''))
 		ft_strlcpy(result, &input[1], length_name - 2 + 1);
@@ -138,7 +138,7 @@ static void	update_existing_entry(t_vector *env, int index, char *new_value)
 		free(entry->value);
 		entry->value = malloc(ft_strlen(new_value) + 1);
 		if (entry->value == NULL)
-			builtin_exit(1);
+			exit(1);
 		ft_strlcpy(entry->value, new_value, ft_strlen(new_value) + 1);
 	}
 }

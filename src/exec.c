@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alkane <alkane@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dbrandtn <dbrandtn@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 18:54:42 by alkane            #+#    #+#             */
-/*   Updated: 2022/04/20 16:55:49 by alkane           ###   ########.fr       */
+/*   Updated: 2022/04/20 18:18:50 by dbrandtn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ void	exec(t_data *data)
 		while (cmd != NULL)
 		{
 			if (ft_strcmp(cmd[0], "exit") == 0 && exec->commands->total == 1)
-				builtin_exit(0); // !!!!! need to check output behaviour
+				builtin_exit(data, cmd); // !!!!! need to check output behaviour
 			else	
 				piping(data, cmd, j, exec);
 			j++;

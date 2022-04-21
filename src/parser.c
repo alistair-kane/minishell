@@ -42,7 +42,7 @@ int	check_builtin(t_data *data, char **args)
 	else if (!ft_strcmp("env", args[0]))
 		return (builtin_env(data));
 	else if (!ft_strcmp("exit", args[0]))
-		builtin_exit(0);
+		builtin_exit(data, args);
 	return (0);
 }
 
@@ -71,52 +71,11 @@ void	parser(t_data *data, char *buf)
 	if (prep_exec(data, args) != 0)
 	{
 		printf("syntax error\n");
-		free_vector(args);
+		free_c_vector(args);
 		vector_clear(data->exec);
 		return ;
 	}
 	exec(data);
-	// // #ifdef _DEBUG
-	// char	**tmp;
-	// int		j;
-	// int		k;
-	// t_exec	*exec;
-	// i = 0;
-	// while (i < (int)data->exec->total)
-	// {
-	// 	exec = vector_get(data->exec, i);
-	// 	printf ("!!!input: %s\n", exec->input_file);
-	// 	j = 0;
-	// 	while (exec->output_files[j] != NULL)
-	// 	{
-	// 		printf("!!!output: %s\n", exec->output_files[j]);
-	// 		j++;
-	// 	}
-	// 	k = 0;
-	// 	tmp = vector_get(exec->commands, k);
-	// 	while (tmp != NULL)
-	// 	{
-	// 		j = 0;
-	// 		printf("test: %s", *tmp);
-	// 		while (tmp[j] != NULL)
-	// 		{
-	// 			printf("!params:§%s, %d\n", tmp[j], j);
-	// 			j++;
-	// 		}
-	// 		k++;
-	// 		tmp = vector_get(exec->commands, k);
-	// 	}
-	// 	i++;
-	// }
-	// #endif // _DEBUG
-	// i = 0;
-	// while (args[i])
-	// {
-	// 	i += parse_args(data, &args[i]);
-	// 	// printf("\nargs parsed: %i\n", i);
-	// 	// line is here incase parse_args not functioning as intended
-	// 	// i++;
-	// }
-	free_vector(args);
+	free_c_vector(args);
 	vector_clear(data->exec);
 }
