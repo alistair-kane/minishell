@@ -14,15 +14,14 @@ int	main(void)
 	while (1)
 	{
 		buf = readline(PROMPT);
-		if (buf != NULL)
-		{
-			if (ft_strlen(buf))
-				add_history(buf);
-			vector_add(data->history, buf);
-			parser(data, buf);
-			if (data->exit != 0)
-				break ;
-		}
+		if (buf == NULL) // !!!!! TODO
+			break ;
+		if (ft_strlen(buf))
+			add_history(buf);
+		vector_add(data->history, buf);
+		parser(data, buf);
+		if (data->exit != 0)
+			break ;
 	}
 	ret = data->exit_value;
 	data_cleanup(data);
