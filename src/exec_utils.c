@@ -30,7 +30,7 @@ void redirect_input(t_exec *exec)
 		unlink(exec->input_file);
 }
 
-void redirect_output(t_exec *exec)
+void redirect_output(t_exec *exec, int redir_flag)
 {
 	int j = 0;
 	int outputfd;
@@ -41,7 +41,7 @@ void redirect_output(t_exec *exec)
 			outputfd = file_open(exec->output_files[j], O_WRONLY | O_CREAT | O_APPEND);
 		else // >
 			outputfd = file_open(exec->output_files[j], O_WRONLY | O_CREAT | O_TRUNC);
-		if (exec->output_files[j + 1] == NULL)
+		if (exec->output_files[j + 1] == NULL && redir_flag)
 			dup2(outputfd, STDOUT_FILENO);
 		close(outputfd);
 		j++;

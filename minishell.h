@@ -85,7 +85,7 @@ void	exec(t_data *data);
 void	exit_error(const char *s);
 void	open_pipe(int *fds);
 void 	redirect_input(t_exec *exec);
-void	redirect_output(t_exec *exec);
+void	redirect_output(t_exec *exec, int redir_flag);
 void 	close_ends(int *fds);
 void	exec_cmd(t_data *data, char **argv);
 

@@ -26,7 +26,7 @@ static void	child_helper(t_data *data, t_exec *exec, int *fds, int i)
 		close(fds[WRITE_END]);
 	}
 	else if (exec->output_files[0] != NULL) // if there is no next cmd and output file
-		redirect_output(exec);
+		redirect_output(exec, 1);
 	if (check_builtin(cmd))
 		exit(0); // exit child after finding built-in
 	exec_cmd(data, cmd);
@@ -75,6 +75,8 @@ static void	piping(t_data *data, t_exec *exec)
 		close_ends(fds + 2);
 }
 
+// !!!!! echo doesnt get redirected into files
+
 void	exec(t_data *data)
 {
 	int		i;
@@ -87,7 +89,10 @@ void	exec(t_data *data)
 		exec = vector_get(data->exec, i);
 		cmd = vector_get(exec->commands, 0);
 		if (cmd == NULL)
-			return ; // !!!!! need to create output files
+		{
+			redirect_output(exec, 0); // create output files
+			return ; 
+		}
 		else
 		{
 			if (ft_strcmp(cmd[0], "exit") == 0 && exec->commands->total == 1)
