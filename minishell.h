@@ -83,8 +83,11 @@ void	cleanup_exec_commands(void *data);
 void	parser(t_data *data, char *buf);
 void	exec(t_data *data);
 void	exit_error(const char *s);
+void	open_pipe(int *fds);
 void 	redirect_input(t_exec *exec);
 void	redirect_output(t_exec *exec);
+void 	close_ends(int *fds);
+void	exec_cmd(t_data *data, char **argv);
 
 int		builtin_echo(t_data *data, char **buf);
 int		builtin_cd(t_data *data, char **args);

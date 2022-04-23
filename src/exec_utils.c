@@ -12,6 +12,12 @@ static int	file_open(const char *name, int o_flags)
 	return (fd);
 }
 
+void open_pipe(int *fds)
+{
+	if (pipe(fds) == -1)
+		exit_error("pipe");
+}
+
 void redirect_input(t_exec *exec)
 {
 	int inputfd;
@@ -40,4 +46,10 @@ void redirect_output(t_exec *exec)
 		close(outputfd);
 		j++;
 	}
+}
+
+void close_ends(int *fds)
+{
+	close(fds[READ_END]);
+	close(fds[WRITE_END]);
 }
