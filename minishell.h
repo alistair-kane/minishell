@@ -39,6 +39,7 @@ enum e_reserved_symbol
 typedef struct s_exec
 {
 	char		*input_file;
+	int			here_flag;
 	char		*output_files[128];
 	int			append_output[128];
 	char		*temp_files[128];
@@ -81,6 +82,9 @@ void	cleanup_exec_commands(void *data);
 
 void	parser(t_data *data, char *buf);
 void	exec(t_data *data);
+void	exit_error(const char *s);
+void 	redirect_input(t_exec *exec);
+void	redirect_output(t_exec *exec);
 
 int		builtin_echo(t_data *data, char **buf);
 int		builtin_cd(t_data *data, char **args);
@@ -92,7 +96,8 @@ void	builtin_exit(t_data *data, char **args);
 
 char	**ms_split(t_data *data, char *line);
 int		check_binaries(t_data *data, char **args);
-int		check_builtin(t_data *data, char **args);
+int		check_builtin(char **args);
+int		exec_builtin(t_data *data, char **args);
 int		handle_quotes(char c, int *double_quotes, int *single_quotes);
 
 int		is_reserved_symbol(char *argument);

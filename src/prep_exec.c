@@ -64,6 +64,7 @@ static int	handle_reserved_symbols(t_exec *exec, char **arguments, int symbol,
 	{
 		filename = handle_here_doc(exec, arguments[1]);
 		handle_input(exec, filename);
+		exec->here_flag = 1;
 		return (2);
 	}
 	return (1);

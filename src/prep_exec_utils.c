@@ -1,6 +1,5 @@
 /// !!!!!
 
-#include <fcntl.h>
 #include "../minishell.h"
 
 static char	*create_filename(t_exec *exec, char *filename);
@@ -15,6 +14,7 @@ t_exec	*init_exec(void)
 	exec->commands = vector_init(10, 10, 0);
 	if (exec->commands == NULL)
 		exit(1);
+	exec->here_flag = 0;
 	vector_custom_cleanup(exec->commands, &cleanup_exec_commands);
 	return (exec);
 }
