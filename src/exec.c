@@ -27,9 +27,15 @@ static void	child_helper(t_data *data, t_exec *exec, int *fds, int i)
 	}
 	else if (exec->output_files[0] != NULL) // if there is no next cmd and output file
 		redirect_output(exec, 1);
-	if (check_builtin(cmd))
-		exit(0); // exit child after finding built-in
-	exec_cmd(data, cmd);
+	if (!ft_strcmp(cmd[0], "cd"))
+		exit(0); // exit child after finding built-in cd
+	else if (check_builtin(cmd))
+	{
+		exec_builtin(data, cmd);
+		exit(0);
+	}
+	else
+		exec_cmd(data, cmd);
 	printf("Failed to execute '%s'\n", *cmd);
 	exit(1);
 }
@@ -67,7 +73,8 @@ static void	piping(t_data *data, t_exec *exec)
 		else // parent process
 		{
 			parent_helper(exec, fds, pid, i);
-			exec_builtin(data, cmd_1);
+			if (!ft_strcmp(cmd_1[0], "cd"))
+				builtin_cd(data, cmd_1);
 		}
 		cmd_1 = vector_get(exec->commands, ++i);
 	}
