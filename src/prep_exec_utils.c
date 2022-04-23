@@ -26,6 +26,8 @@ char	*handle_here_doc(t_exec *exec, char *delimiter)
 	char	*new_delimiter;
 	int		fd;
 
+	if (delimiter == NULL)
+		return (NULL);
 	new_delimiter = ft_strjoin(delimiter, "\n");
 	filename = create_filename(exec, "temp");
 	if (filename == NULL)

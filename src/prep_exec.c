@@ -4,8 +4,8 @@
 
 static int	handle_reserved_symbols(t_exec *exec, char **arguments, int symbol,
 				int *output);
-static void	handle_input(t_exec *exec, char *filename);
-static void	handle_output(t_exec *exec, char *filename, int append);
+static int	handle_input(t_exec *exec, char *filename);
+static int	handle_output(t_exec *exec, char *filename, int append);
 static int	handle_commands(t_exec *exec, char **arguments);
 
 // !!!!! todo? problem if last arguments is a '|' e.g. echo "test" |
@@ -47,35 +47,32 @@ static int	handle_reserved_symbols(t_exec *exec, char **arguments, int symbol,
 
 	if (symbol == RESERVED_SYMBOL_REDIRECT_INPUT)
 	{
-		handle_input(exec, arguments[1]);
-		return (2);
+		return (handle_input(exec, arguments[1]));
 	}
 	if (symbol == RESERVED_SYMBOL_REDIRECT_OUTPUT
 		|| symbol == RESERVED_SYMBOL_APPEND_OUTPUT)
 	{
 		*output = 1;
 		if (symbol == RESERVED_SYMBOL_APPEND_OUTPUT)
-			handle_output(exec, arguments[1], 1);
+			return (handle_output(exec, arguments[1], 1));
 		else
-			handle_output(exec, arguments[1], 0);
-		return (2);
+			return (handle_output(exec, arguments[1], 0));
 	}
 	if (symbol == RESERVED_SYMBOL_HERE_DOC)
 	{
-		filename = handle_here_doc(exec, arguments[1]);
-		handle_input(exec, filename);
 		exec->here_flag = 1;
-		return (2);
+		filename = handle_here_doc(exec, arguments[1]);
+		return (handle_input(exec, filename));
 	}
 	return (1);
 }
 
-static void	handle_input(t_exec *exec, char *filename)
+static int	handle_input(t_exec *exec, char *filename)
 {
 	int	length;
 
 	if (filename == NULL)
-		return ;
+		return (1);
 	if (exec->input_file != NULL)
 		free(exec->input_file);
 	length = ft_strlen(filename);
@@ -83,26 +80,28 @@ static void	handle_input(t_exec *exec, char *filename)
 	if (exec->input_file == NULL)
 		exit(1);
 	ft_strlcpy(exec->input_file, filename, length + 1);
+	return (2);
 }
 
-static void	handle_output(t_exec *exec, char *filename, int append)
+static int	handle_output(t_exec *exec, char *filename, int append)
 {
 	int	i;
 	int	length;
 
 	if (filename == NULL)
-		return ;
+		return (1);
 	i = 0;
 	while (exec->output_files[i] != NULL)
 		i++;
 	if (i >= 128)
-		return ;
+		return (2);
 	exec->append_output[i] = append;
 	length = ft_strlen(filename);
 	exec->output_files[i] = ft_calloc(length + 1, sizeof(char));
 	if (exec->output_files[i] == NULL)
 		exit(1);
 	ft_strlcpy(exec->output_files[i], filename, length + 1);
+	return (2);
 }
 
 // 'comsume' every argument until you hit the end or a reserved symbol
