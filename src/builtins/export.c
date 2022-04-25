@@ -12,31 +12,37 @@ static int	get_new_initial_index(t_vector *env);
 // without any arguments, this prints all variables available
 int	builtin_export(t_data *data, char **args)
 {
+	int				i;
 	int				index;
 	t_environment	entry;
 
-	if (args[1] == NULL || is_reserved_symbol(args[1]) > 0)
+	if (args[1] == NULL)
 	{
 		export_print_list(data);
 		return (1);
 	}
-	get_key_value_pair(args[1], &entry);
-	if (ft_strncmp("PATH", entry.name, ft_strlen(entry.name)) == 0)
+	i = 1;
+	while (args[i] != NULL)
 	{
-		free_path(data);
-		data->path = ft_split(entry.value, ':');
-	}
-	index = get_entry_index(data->environment, entry.name);
-	if (index >= 0)
-		update_existing_entry(data->environment, index, entry.value);
-	else
-	{
-		entry.initial_index = get_new_initial_index(data->environment);
-		vector_add(data->environment, &entry);
-		add_to_envp(data, entry.name, entry.value);
+		get_key_value_pair(args[i], &entry);
+		if (ft_strcmp("PATH", entry.name) == 0)
+		{
+			free_path(data);
+			data->path = ft_split(entry.value, ':');
+		}
+		index = get_entry_index(data->environment, entry.name);
+		if (index >= 0)
+			update_existing_entry(data->environment, index, entry.value);
+		else
+		{
+			entry.initial_index = get_new_initial_index(data->environment);
+			vector_add(data->environment, &entry);
+			add_to_envp(data, entry.name, entry.value);
+		}
+		i++;
 	}
 	sort_all_entries(data->environment);
-	return (2);
+	return (i);
 }
 
 static void	export_print_list(t_data *data)

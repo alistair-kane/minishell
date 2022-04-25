@@ -32,7 +32,6 @@ static char	*seek_path(t_data *data, char *execname)
 void	exec_cmd(t_data *data, char **argv)
 {
 	char		*path;
-	extern char	**environ;
 
 	// printf("!in exec %s\n", argv[0]);
 	if (ft_strrchr(argv[0], '/'))
@@ -41,6 +40,6 @@ void	exec_cmd(t_data *data, char **argv)
 		path = seek_path(data, argv[0]);
 	if (path == NULL)
 		exit_error("command not found");
-	execve(path, argv, environ);
+	execve(path, argv, data->envp);
 	exit_error(path);
 }

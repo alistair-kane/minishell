@@ -2,32 +2,56 @@
 
 #include "../../minishell.h"
 
-// if no viable argument is found, return without doing anything
+static void	empty_path(t_data *data);
+static void	rebuild_envp(t_data *data);
+
 int	builtin_unset(t_data *data, char **args)
+{
+	int				i;
+	int				j;
+	t_environment	*entry;
+
+	i = 1;
+	while (args[i] != NULL)
+	{
+		j = 0;
+		entry = vector_get(data->environment, j);
+		while (entry != NULL)
+		{
+			if (ft_strcmp(args[i], entry->name) == 0)
+			{
+				vector_delete(data->environment, j);
+				if (ft_strcmp("PATH", args[i]) == 0)
+					empty_path(data);
+			}
+			j++;
+			entry = vector_get(data->environment, j);
+		}
+		i++;
+	}
+	rebuild_envp(data);
+	return (i);
+}
+
+static void	empty_path(t_data *data)
+{
+	free_path(data);
+	data->path = NULL;
+}
+
+static void	rebuild_envp(t_data *data)
 {
 	int				i;
 	t_environment	*entry;
 
-	if (args[1] == NULL)
-		return (1);
-	if (is_reserved_symbol(args[1]) > 0)
-		return (1);
+	free_c_vector(data->envp);
+	data->envp = NULL;
 	i = 0;
 	entry = vector_get(data->environment, i);
 	while (entry != NULL)
 	{
-		if (ft_strncmp(args[1], entry->name, ft_strlen(entry->name)) == 0)
-		{
-			vector_delete(data->environment, i);
-			if (ft_strncmp("PATH", args[1], ft_strlen(args[1])) == 0)
-			{
-				free_path(data);
-				data->path = NULL;
-			}
-			return (2);
-		}
+		add_to_envp(data, entry->name, entry->value);
 		i++;
 		entry = vector_get(data->environment, i);
 	}
-	return (1);
 }

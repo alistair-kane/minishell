@@ -98,7 +98,6 @@ void	exec(t_data *data)
 		if (cmd == NULL)
 		{
 			redirect_output(exec, 0); // create output files
-			return ; 
 		}
 		else
 		{
