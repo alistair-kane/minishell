@@ -68,6 +68,8 @@ typedef struct s_data
 	char		**path;
 	char		*pwd;
 	size_t		args_len;
+	pid_t		pid;
+	int			status;
 	int			exit;
 	int			exit_value;
 }				t_data;
@@ -88,6 +90,7 @@ void 	redirect_input(t_exec *exec);
 void	redirect_output(t_exec *exec, int redir_flag);
 void 	close_ends(int *fds);
 void	exec_cmd(t_data *data, char **argv);
+int		check_parent_builtin(t_data *data, char **cmd, int exec);
 
 int		builtin_echo(t_data *data, char **buf);
 int		builtin_cd(t_data *data, char **args);

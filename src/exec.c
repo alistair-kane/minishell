@@ -27,8 +27,9 @@ static void	child_helper(t_data *data, t_exec *exec, int *fds, int i)
 	}
 	else if (exec->output_files[0] != NULL) // if there is no next cmd and output file
 		redirect_output(exec, 1);
-	if (!ft_strcmp(cmd[0], "cd"))
-		exit(0); // exit child after finding built-in cd
+	// if (ft_strcmp(cmd[0], "cd") == 0 || ft_strcmp(cmd[0], "unset") == 0)
+	if (check_parent_builtin(data, cmd, 0))
+		exit(0); // exit child after finding built-in cd or unset or export with params
 	else if (check_builtin(cmd))
 	{
 		exec_builtin(data, cmd);
@@ -40,22 +41,22 @@ static void	child_helper(t_data *data, t_exec *exec, int *fds, int i)
 	exit(1);
 }
 
-static void parent_helper(t_exec *exec, int *fds, pid_t pid, int i)
+static void parent_helper(t_data *data, t_exec *exec, int *fds, int i)
 {
 	if (i > 0) // if there is a previous cmd
 		close_ends(fds + 2);
-	waitpid(pid, NULL, 0);
+	waitpid(data->pid, &(data->status), 0);
 	if (vector_get(exec->commands, i + 1) != NULL) // if there is a next cmd
 	{
 		(fds +2)[READ_END] = fds[READ_END];
 		(fds +2)[WRITE_END] = fds[WRITE_END];
 	}
+	check_parent_builtin(data, vector_get(exec->commands, i), 1);
 }
 
 static void	piping(t_data *data, t_exec *exec)
 {
 	int		fds[4];
-	pid_t	pid;
 	int		i;
 	char	**cmd_1;
 
@@ -65,24 +66,18 @@ static void	piping(t_data *data, t_exec *exec)
 	{
 		if (vector_get(exec->commands, i + 1) != NULL) // if there is a next cmd
 			open_pipe(fds);
-		pid = fork();
-		if (pid < 0)
+		data->pid = fork();
+		if (data->pid < 0)
 			exit_error("fork");
-		if (pid == 0) // child process
+		if (data->pid == 0) // child process
 			child_helper(data, exec, fds, i);
 		else // parent process
-		{
-			parent_helper(exec, fds, pid, i);
-			if (!ft_strcmp(cmd_1[0], "cd"))
-				builtin_cd(data, cmd_1);
-		}
+			parent_helper(data, exec, fds, i);
 		cmd_1 = vector_get(exec->commands, ++i);
 	}
 	if (exec->commands->total > 1) // if multiple cmds after loop
 		close_ends(fds + 2);
 }
-
-// !!!!! echo doesnt get redirected into files
 
 void	exec(t_data *data)
 {
