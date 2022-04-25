@@ -8,7 +8,6 @@ int	check_parent_builtin(t_data *data, char **cmd, int exec)
 	{
 		if (exec == 1)
 		{
-			printf("in check-parent exec\n");
 			if (!ft_strcmp(cmd[0], "cd"))
 				builtin_cd(data, cmd);
 			else if (!ft_strcmp(cmd[0], "unset"))
