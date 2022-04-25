@@ -137,7 +137,7 @@ static int	handle_reserved_symbols(char **line)
 	{
 		(*line)++;
 		while (is_whitespace(**line) == 0 && **line != '<' && **line != '>'
-			&& **line != '|' && **line != '$' && **line != '\0')
+			&& **line != '|' && **line != '\0') // !!!!! does removing '$' break it
 			(*line)++;
 	}
 	else if (**line == '<')

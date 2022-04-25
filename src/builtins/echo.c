@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alkane <alkane@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alistair <alistair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 15:27:44 by alkane            #+#    #+#             */
-/*   Updated: 2022/04/06 15:44:04 by alkane           ###   ########.fr       */
+/*   Updated: 2022/04/25 23:30:58 by alistair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,9 @@ int	builtin_echo(t_data *data, char **buf)
 	// gives back next segment to be output position
 	i = flag_handler(buf, &n_flag);
 	// checking for ending conditions, current goes through all segments
-	while (buf[i] && ft_strncmp(buf[i], "|", 1))
+	while (buf[i])
 	{
-		// if a piping is needed, change of fd here?
+		// too late to fix the space problem with double env $ variable (changed split.c)
 		ft_putstr_fd(buf[i++], 1);
 		ft_putstr_fd(" ", 1);
 	}

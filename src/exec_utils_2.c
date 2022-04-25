@@ -14,6 +14,7 @@ int	check_parent_builtin(t_data *data, char **cmd, int exec)
 				builtin_unset(data, cmd);
 			else if (!ft_strcmp(cmd[0], "export"))
 				builtin_export(data, cmd);
+			data->status = 0;
 		}
 		else
 			return (1);

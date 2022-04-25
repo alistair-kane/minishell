@@ -76,8 +76,16 @@ static void	env_var_replace(t_data *data, char **var_holder)
 {
 	t_environment	*temp;
 	size_t			i;
+	char			*status;
 
 	i = -1;
+	if (var_holder[0][0] == '?')
+	{
+		status = ft_itoa(WEXITSTATUS(data->status));
+		ft_strlcpy(*var_holder, status, ft_strlen(status) + 1);
+		free(status);
+		return ;
+	}
 	while (++i < data->environment->total)
 	{
 		temp = vector_get(data->environment, i);
@@ -90,7 +98,8 @@ static void	env_var_replace(t_data *data, char **var_holder)
 	*var_holder = NULL;
 }
 
-static char	*expansion_ops(t_data *data, char *arg, int j)
+// nice signal tests https://stackoverflow.com/questions/1101957/are-there-any-standard-exit-status-codes-in-linux/1104641#1104641
+static char	*expansion_ops(t_data *data, char *arg, int i)
 {
 	int		end;
 	int		total_len;
@@ -101,10 +110,9 @@ static char	*expansion_ops(t_data *data, char *arg, int j)
 	total_len = ft_strlen(arg) + 1;
 	new_arg = ft_calloc(PATH_MAX, 1);
 	var_holder = ft_calloc(PATH_MAX, 1);
-	j += 1;
-	end = j + get_name_length_whitespace(&arg[j]);
-	ft_strlcpy(new_arg, arg, j);
-	ft_strlcpy(var_holder, &arg[j], end - j + 1);
+	end = i + get_name_length_whitespace(&arg[i]);
+	ft_strlcpy(new_arg, arg, i);
+	ft_strlcpy(var_holder, &arg[i], end - i + 1);
 	ft_strlcpy(trail, &arg[end], total_len - end);
 	env_var_replace(data, &var_holder);
 	if (var_holder == NULL)
@@ -183,7 +191,7 @@ void	env_expansion(t_data *data, char **args)
 			if (args[i][j] == '\\')
 				j++;
 			else if (args[i][j] == '$' && sqf == -1)
-				args[i] = expansion_ops(data, args[i], j);
+				args[i] = expansion_ops(data, args[i], j + 1);
 		}
 		char_cleanup(args[i]);
 	}

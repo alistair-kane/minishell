@@ -2,31 +2,6 @@
 
 #include "../minishell.h"
 
-// searching path to match
-// int	check_binaries(t_data *data, char **arg)
-// {
-// 	int		i;
-// 	char	*temp;
-// 	char	*path;
-
-// 	i = -1;
-// 	// needs to refactored for t-vector struct!!!!!
-// 	while (paths[++i] != NULL)
-// 	{
-// 		if (i == 0)
-// 			//incremented forwartd by 5 to "look" past PATHS start of string
-// 			ft_memmove(paths[i], paths[i] + 5, ft_strlen(paths[i] + 5));
-// 		temp = ft_strjoin(paths[i], "/");
-// 		path = ft_strjoin(temp, arg);
-// 		free(temp);
-// 		if (!access(path, X_OK))
-// 			return (path);
-// 		free(path);
-// 	}
-// 	// only finding the path of the binary, need to decide when its executed later
-// 	return (NULL);
-// }
-
 int	check_builtin(char **args)
 {
 	if ((!ft_strcmp("echo", args[0]) || (!ft_strcmp("cd", args[0])) \
@@ -55,21 +30,6 @@ int	exec_builtin(t_data *data, char **args)
 		builtin_exit(data, args);
 	return (0);
 }
-
-// int	parse_args(t_data *data, char **arg)
-// {
-// 	int	consumed;
-	
-// 	// check for pipe and redirects
-// 	// check for -1 return e.g. cd = too many arguments 
-// 	consumed = check_builtin(data, arg);
-// 	if (consumed)
-// 		return (consumed);
-	
-// 	consumed = check_binaries(data, arg);
-// 	// if (!consumed)
-// 	return (consumed);
-// }
 
 void	parser(t_data *data, char *buf)
 {
