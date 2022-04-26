@@ -40,7 +40,6 @@ void	parser(t_data *data, char *buf)
 	if (check_argument_logic(args) != 0)
 	{
 		free_c_vector(args);
-		vector_clear(data->exec);
 		return ;
 	}
 	prep_exec(data, args);
