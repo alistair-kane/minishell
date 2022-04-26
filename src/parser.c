@@ -12,23 +12,22 @@ int	check_builtin(char **args)
 	return (0);
 }
 
-int	exec_builtin(t_data *data, char **args)
+void	exec_builtin(t_data *data, char **args)
 {
 	if (!ft_strcmp("echo", args[0]))
-		return (builtin_echo(data, args));
+		builtin_echo(data, args);
 	else if (!ft_strcmp("cd", args[0]))
-		return (builtin_cd(data, args));
+		builtin_cd(data, args);
 	else if (!ft_strcmp("pwd", args[0]))
-		return (builtin_pwd(data));
+		builtin_pwd(data);
 	else if (!ft_strcmp("export", args[0]))
-		return (builtin_export(data, args));
+		builtin_export(data, args);
 	else if (!ft_strcmp("unset", args[0]))
-		return (builtin_unset(data, args));
+		builtin_unset(data, args);
 	else if (!ft_strcmp("env", args[0]))
-		return (builtin_env(data));
+		builtin_env(data);
 	else if (!ft_strcmp("exit", args[0]))
 		builtin_exit(data, args);
-	return (0);
 }
 
 void	parser(t_data *data, char *buf)

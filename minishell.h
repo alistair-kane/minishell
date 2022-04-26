@@ -103,7 +103,7 @@ void	builtin_exit(t_data *data, char **args);
 char	**ms_split(t_data *data, char *line);
 int		check_binaries(t_data *data, char **args);
 int		check_builtin(char **args);
-int		exec_builtin(t_data *data, char **args);
+void	exec_builtin(t_data *data, char **args);
 int		handle_quotes(char c, int *double_quotes, int *single_quotes);
 
 int		is_reserved_symbol(char *argument);

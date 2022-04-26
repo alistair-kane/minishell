@@ -8,6 +8,7 @@ static int	get_entry_index(t_vector *env, char *name);
 static void	update_existing_entry(t_vector *env, int index, char *new_value);
 static char	*remove_surrounding_quotes(char *input);
 static int	get_new_initial_index(t_vector *env);
+static int	is_valid_entry_name(char *name);
 
 // without any arguments, this prints all variables available
 int	builtin_export(t_data *data, char **args)
@@ -25,6 +26,14 @@ int	builtin_export(t_data *data, char **args)
 	while (args[i] != NULL)
 	{
 		get_key_value_pair(args[i], &entry);
+		if (is_valid_entry_name(entry.name) == 0)
+		{
+			printf ("export: '%s': not a valid identifier\n", entry.name);
+			free(entry.name);
+			if (entry.value != NULL)
+				free(entry.value);
+			return (i);
+		}
 		if (ft_strcmp("PATH", entry.name) == 0)
 		{
 			free_path(data);
@@ -170,4 +179,17 @@ static int	get_new_initial_index(t_vector *env)
 	}
 	highest_index++;
 	return (highest_index);
+}
+
+static int	is_valid_entry_name(char *name)
+{
+	if (ft_isalpha(*name) == 0 && *name != '_')
+		return (0);
+	while (*name != '\0')
+	{
+		if (ft_isalnum(*name) == 0 && *name != '_')
+			return (0);
+		name++;
+	}
+	return (1);
 }
