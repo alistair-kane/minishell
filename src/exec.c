@@ -27,7 +27,6 @@ static void	child_helper(t_data *data, t_exec *exec, int *fds, int i)
 	}
 	else if (exec->output_files[0] != NULL) // if there is no next cmd and output file
 		redirect_output(exec, 1);
-	// if (ft_strcmp(cmd[0], "cd") == 0 || ft_strcmp(cmd[0], "unset") == 0)
 	if (check_parent_builtin(data, cmd, 0))
 		exit(0); // exit child after finding built-in cd or unset or export with params
 	else if (check_builtin(cmd))
