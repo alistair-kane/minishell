@@ -8,7 +8,6 @@ static int	handle_input(t_exec *exec, char *filename);
 static int	handle_output(t_exec *exec, char *filename, int append);
 static int	handle_commands(t_exec *exec, char **arguments);
 
-// !!!!! todo? problem if last arguments is a '|' e.g. echo "test" |
 int	prep_exec(t_data *data, char **arguments)
 {
 	int		i;
@@ -22,8 +21,6 @@ int	prep_exec(t_data *data, char **arguments)
 	while (arguments[i] != NULL)
 	{
 		symbol = is_reserved_symbol(arguments[i]);
-		if (symbol < 0)
-			return (-1); // !!!!! printf("syntax error\n");
 		if (symbol == RESERVED_SYMBOL_PIPE && output == 1)
 		{
 			vector_add(data->exec, exec);

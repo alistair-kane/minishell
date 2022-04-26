@@ -42,13 +42,7 @@ void	parser(t_data *data, char *buf)
 		vector_clear(data->exec);
 		return ;
 	}
-	if (prep_exec(data, args) != 0)
-	{
-		printf("syntax error\n");
-		free_c_vector(args);
-		vector_clear(data->exec);
-		return ;
-	}
+	prep_exec(data, args);
 	exec(data);
 	free_c_vector(args);
 	vector_clear(data->exec);
