@@ -35,8 +35,8 @@ void	parser(t_data *data, char *buf)
 	char	**args;
 
 	// new pre-parser should handle all whitespace chars and ___ " ' $ ___ (not splitting inside)
+	env_expansion(data, &buf);
 	args = ms_split(data, buf);
-	env_expansion(data, args);
 	if (prep_exec(data, args) != 0)
 	{
 		printf("syntax error\n");
