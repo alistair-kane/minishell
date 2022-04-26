@@ -34,7 +34,6 @@ void	parser(t_data *data, char *buf)
 {
 	char	**args;
 
-	// new pre-parser should handle all whitespace chars and ___ " ' $ ___ (not splitting inside)
 	env_expansion(data, &buf);
 	args = ms_split(data, buf);
 	if (check_argument_logic(args) != 0)
