@@ -20,7 +20,7 @@ char	**ms_split(t_data *data, char *line)
 	int		count;
 
 	str_trim_end(line);
-	// skip_whitespaces(line); ? !!!!!
+	skip_whitespaces(&line);
 	count = count_arguments(line);
 	array = ft_calloc(count + 1, sizeof(void *));
 	if (array == NULL)
