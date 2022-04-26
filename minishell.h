@@ -121,4 +121,6 @@ int		prep_exec(t_data *data, char **arguments);
 t_exec	*init_exec(void);
 char	*handle_here_doc(t_exec *exec, char *delimiter);
 
+int		check_argument_logic(char **args);
+
 #endif
