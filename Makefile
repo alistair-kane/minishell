@@ -2,7 +2,7 @@
 
 NAME	= minishell
 CC		= gcc
-CFLAGS	= -Wall -Werror -Wextra
+CFLAGS	= -Wall -Werror -Wextra -I $(HOME)/goinfre/.brew/opt/readline/include/
 LIB_LOC = ./libft
 LIBRARY = libft.a
 SRCS	= minishell.c src/data_structs.c src/parser.c src/split.c src/builtins/echo.c \
@@ -19,7 +19,7 @@ $(LIBRARY):
 	$(MAKE) -C $(LIB_LOC)
 
 $(NAME): $(OBJS) $(LIBRARY)
-	$(CC) $(CFLAGS) $(OBJS) -lreadline -o $(NAME) -L $(LIB_LOC) -lft
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -L $(LIB_LOC) -lft -L $(HOME)/goinfre/.brew/opt/readline/lib/ -lreadline
 
 debug: CFLAGS += -g3
 debug: re
