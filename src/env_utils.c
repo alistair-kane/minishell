@@ -84,7 +84,6 @@ static void	*env_var_replace(t_data *data, char *var_holder)
 	{
 		status = ft_itoa(WEXITSTATUS(data->status));
 		ft_strlcpy(trail, &var_holder[ft_strlen(status)], PATH_MAX);
-		printf("trail[%s]\n", trail);
 		ft_strlcpy(var_holder, status, ft_strlen(status) + 1);
 		ft_strlcat(var_holder, trail, PATH_MAX - ft_strlen(status));
 		free(status);
