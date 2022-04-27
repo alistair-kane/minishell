@@ -149,7 +149,9 @@ void	env_expansion(t_data *data, char **args)
 			if (args[i][j] == '\\')
 				j++;
 			else if (args[i][j] == '$' && sqf == -1)
+			{
 				args[i] = expansion_ops(data, args[i], j + 1);
+			}
 		}
 	}
 }

@@ -105,6 +105,7 @@ int		check_binaries(t_data *data, char **args);
 int		check_builtin(char **args);
 void	exec_builtin(t_data *data, char **args);
 int		handle_quotes(char c, int *double_quotes, int *single_quotes);
+void	quote_master(char **args);
 
 int		is_reserved_symbol(char *argument);
 int		get_name_length(char *entry);

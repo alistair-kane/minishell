@@ -10,7 +10,7 @@ SRCS	= minishell.c src/data_structs.c src/parser.c src/split.c src/builtins/echo
 			src/utils.c src/builtins/unset.c src/env_utils.c src/data_cleanup.c \
 			src/builtins/env.c src/binaries.c src/signals.c src/prep_exec.c \
 			src/prep_exec_utils.c src/exec.c src/exec_utils_1.c src/exec_utils_2.c \
-			src/logic_check.c
+			src/logic_check.c src/split_utils.c
 OBJS	= ${SRCS:.c=.o}
 
 all: $(NAME)

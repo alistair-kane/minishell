@@ -172,7 +172,7 @@ static int	test_chdir(t_data *data, char *cur_path)
 	return (2);
 }
 
-int	builtin_cd(t_data *data, char **dir)
+int	builtin_cd(t_data *data, char **args)
 {
 	char	*cur_path;
 
@@ -184,19 +184,19 @@ int	builtin_cd(t_data *data, char **dir)
 		return (data->args_len);
 	}
 	cur_path = ft_calloc(PATH_MAX, sizeof(char));
-	if (!dir[1])
-		cur_path = get_home_dir(data);
-	else if (dir[1][0] == '/')
+	if (!args[1])
+		ft_strlcpy(cur_path, get_home_dir(data), PATH_MAX);
+	else if (args[1][0] == '/')
 	{
-		ft_strlcpy(cur_path, dir[1], ft_strlen(dir[1]) + 1);
+		ft_strlcpy(cur_path, args[1], ft_strlen(args[1]) + 1);
 		parse_cur_path(cur_path);
 	}
-	else if (dir[1][0] == '.' || !ft_strcmp(dir[1], ".."))
-		add_pwd_parse(data, dir, cur_path);
-	else if (dir[1])
+	else if (args[1][0] == '.' || !ft_strcmp(args[1], ".."))
+		add_pwd_parse(data, args, cur_path);
+	else if (args[1])
 	{
-		cur_path = check_paths(data, dir[1], cur_path);
-		add_pwd_parse(data, dir, cur_path);
+		cur_path = check_paths(data, args[1], cur_path);
+		add_pwd_parse(data, args, cur_path);
 	}
 	return (test_chdir(data, cur_path));
 }
