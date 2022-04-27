@@ -127,48 +127,6 @@ static char	*expansion_ops(t_data *data, char *arg, int i)
 	return (new_arg);
 }
 
-void	check_reset(char *arg, int *delp1, int *delp2, int *i)
-{
-	if (*delp1 != -1 && *delp2 != -1)
-	{
-		*delp2 -= 1;
-		ft_memmove(&arg[*delp1], &arg[*delp1 + 1], ft_strlen(arg) - *delp1);
-		ft_memmove(&arg[*delp2], &arg[*delp2 + 1], ft_strlen(arg) - *delp2);
-		*delp1 = -1;
-		*delp2 = -1;
-		*i -= 2;
-	}
-}
-
-void	char_cleanup(char *arg)
-{
-	int	i;
-	int	delp1;
-	int	delp2;
-	int	single;
-	int	dbl;
-
-	single = 0;
-	dbl = 0;
-	delp1 = -1;
-	delp2 = -1;
-	i = -1;
-	while (arg[++i])
-	{
-		if (arg[i] == '\'' || arg[i] == '"')
-		{
-			if (handle_quotes(arg[i], &dbl, &single) == 1)
-			{
-				if (delp1 == -1)
-					delp1 = i;
-				else
-					delp2 = i;
-			}
-		}
-		check_reset(arg, &delp1, &delp2, &i);
-	}
-}
-
 void	env_expansion(t_data *data, char **args)
 {
 	int	i;
@@ -193,7 +151,6 @@ void	env_expansion(t_data *data, char **args)
 			else if (args[i][j] == '$' && sqf == -1)
 				args[i] = expansion_ops(data, args[i], j + 1);
 		}
-		char_cleanup(args[i]);
 	}
 }
 
