@@ -72,30 +72,34 @@ static void	swap_entries(t_environment *first, t_environment *second)
 	second->initial_index = tmp;
 }
 
-static void	env_var_replace(t_data *data, char **var_holder)
+static void	*env_var_replace(t_data *data, char *var_holder)
 {
 	t_environment	*temp;
 	size_t			i;
 	char			*status;
+	char			trail[PATH_MAX];
 
 	i = -1;
-	if (var_holder[0][0] == '?')
+	if (var_holder[0] == '?')
 	{
 		status = ft_itoa(WEXITSTATUS(data->status));
-		ft_strlcpy(*var_holder, status, ft_strlen(status) + 1);
+		ft_strlcpy(trail, &var_holder[ft_strlen(status)], PATH_MAX);
+		printf("trail[%s]\n", trail);
+		ft_strlcpy(var_holder, status, ft_strlen(status) + 1);
+		ft_strlcat(var_holder, trail, PATH_MAX - ft_strlen(status));
 		free(status);
-		return ;
+		return (var_holder);
 	}
 	while (++i < data->environment->total)
 	{
 		temp = vector_get(data->environment, i);
-		if (!ft_strcmp(temp->name, *var_holder))
+		if (!ft_strcmp(temp->name, var_holder))
 		{
-			ft_strlcpy(*var_holder, temp->value, ft_strlen(temp->value) + 1);
-			return ;
+			ft_strlcpy(var_holder, temp->value, ft_strlen(temp->value) + 1);
+			return (var_holder);
 		}
 	}
-	*var_holder = NULL;
+	return (NULL);
 }
 
 // nice signal tests https://stackoverflow.com/questions/1101957/are-there-any-standard-exit-status-codes-in-linux/1104641#1104641
@@ -114,7 +118,7 @@ static char	*expansion_ops(t_data *data, char *arg, int i)
 	ft_strlcpy(new_arg, arg, i);
 	ft_strlcpy(var_holder, &arg[i], end - i + 1);
 	ft_strlcpy(trail, &arg[end], total_len - end);
-	env_var_replace(data, &var_holder);
+	env_var_replace(data, var_holder);
 	if (var_holder == NULL)
 		ft_strlcat(new_arg, trail, ft_strlen(new_arg) + ft_strlen(trail) + 1);
 	else

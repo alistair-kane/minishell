@@ -8,3 +8,6 @@ echo 7 'asdf'$PATH"qwer"
 echo 8 "asdf"'qwer'$PATH adsf
 echo 9 "'asdf'"'qwer'$PATH adsf
 echo 10 'sdfafdg$PATH'
+echo 11 "cat lol.c | cat > lol.c"
+echo 12 $?poop
+echo 13 $USER $?test

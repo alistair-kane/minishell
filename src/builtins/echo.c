@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alistair <alistair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alkane <alkane@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 15:27:44 by alkane            #+#    #+#             */
-/*   Updated: 2022/04/25 23:30:58 by alistair         ###   ########.fr       */
+/*   Updated: 2022/04/27 17:32:02 by alkane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int	flag_handler(char **buf, int *n_flag)
 // should return int of "args consumed"
 // maybe passing data to this function is not needed?
 
-int	builtin_echo(t_data *data, char **buf)
+int	builtin_echo(t_data *data, char **args)
 {
 	int	i;
 	int n_flag;
@@ -50,12 +50,12 @@ int	builtin_echo(t_data *data, char **buf)
 		
 	// flag handler should parse through all -n -nnnn -n variations
 	// gives back next segment to be output position
-	i = flag_handler(buf, &n_flag);
+	i = flag_handler(args, &n_flag);
 	// checking for ending conditions, current goes through all segments
-	while (buf[i])
+	while (args[i])
 	{
 		// too late to fix the space problem with double env $ variable (changed split.c)
-		ft_putstr_fd(buf[i++], 1);
+		ft_putstr_fd(args[i++], 1);
 		ft_putstr_fd(" ", 1);
 	}
 	// if the -n flag is not active, putstr newline
