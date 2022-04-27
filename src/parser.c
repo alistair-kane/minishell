@@ -36,6 +36,7 @@ void	parser(t_data *data, char *buf)
 
 	env_expansion(data, &buf);
 	args = ms_split(data, buf);
+	quote_master(args);
 	if (check_argument_logic(args) != 0)
 	{
 		free_c_vector(args);
