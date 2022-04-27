@@ -42,8 +42,7 @@ static void	char_cleanup(char *arg)
 					delp2 = i;
 			}
 		}
-		if (check_reset(arg, &delp1, &delp2, &i) != 0)
-			break ;
+		check_reset(arg, &delp1, &delp2, &i);
 	}
 }
 

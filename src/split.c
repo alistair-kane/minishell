@@ -17,12 +17,12 @@ char	**ms_split(t_data *data, char *line)
 	char	*last_pos;
 	char	*pos;
 	int		i;
-	int		count;
+	//int		count;
 
 	str_trim_end(line);
 	skip_whitespaces(&line);
-	count = count_arguments(line);
-	array = ft_calloc(count + 1, sizeof(void *));
+	(void)count_arguments;//count = count_arguments(line);
+	array = ft_calloc(1024 + 1, sizeof(void *));
 	if (array == NULL)
 		exit(1);
 	i = 0;
