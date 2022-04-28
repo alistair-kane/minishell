@@ -3,7 +3,7 @@
 #include "../../minishell.h"
 
 static void	export_print_list(t_data *data);
-static void	get_key_value_pair(char *argument, t_environment *entry);
+static int	get_key_value_pair(char *argument, t_environment *entry);
 static int	get_entry_index(t_vector *env, char *name);
 static void	update_existing_entry(t_vector *env, int index, char *new_value);
 static char	*remove_surrounding_quotes(char *input);
@@ -14,6 +14,7 @@ static int	is_valid_entry_name(char *name);
 int	builtin_export(t_data *data, char **args)
 {
 	int				i;
+	int				update;
 	int				index;
 	t_environment	entry;
 
@@ -25,7 +26,7 @@ int	builtin_export(t_data *data, char **args)
 	i = 1;
 	while (args[i] != NULL)
 	{
-		get_key_value_pair(args[i], &entry);
+		update = get_key_value_pair(args[i], &entry);
 		if (is_valid_entry_name(entry.name) == 0)
 		{
 			printf ("export: '%s': not a valid identifier\n", entry.name);
@@ -41,7 +42,10 @@ int	builtin_export(t_data *data, char **args)
 		}
 		index = get_entry_index(data->environment, entry.name);
 		if (index >= 0)
-			update_existing_entry(data->environment, index, entry.value);
+		{
+			if (update == 1)
+				update_existing_entry(data->environment, index, entry.value);
+		}
 		else
 		{
 			entry.initial_index = get_new_initial_index(data->environment);
@@ -72,11 +76,13 @@ static void	export_print_list(t_data *data)
 	}
 }
 
-static void	get_key_value_pair(char *argument, t_environment *entry)
+static int	get_key_value_pair(char *argument, t_environment *entry)
 {
 	int	length_name;
 	int	length_value;
+	int	update;
 
+	update = 1;
 	argument = remove_surrounding_quotes(argument);
 	length_name = get_name_length(argument);
 	entry->name = malloc(length_name + 1);
@@ -86,11 +92,14 @@ static void	get_key_value_pair(char *argument, t_environment *entry)
 	length_value = 0;
 	if (argument[length_name] == '=')
 		length_value = ft_strlen(&argument[length_name + 1]);
+	else
+		update = 0;
 	entry->value = malloc(length_value + 1);
 	if (entry->value == NULL)
 		exit(1);
 	ft_strlcpy(entry->value, &argument[length_name + 1], length_value + 1);
 	free(argument);
+	return (update);
 }
 
 // removes quotes around the name and the value of the current argument
