@@ -36,7 +36,6 @@ int	get_name_length(char *entry)
 	return (length);
 }
 
-// echo $?USER
 int	get_name_length_whitespace(char *entry)
 {
 	int	length;
@@ -48,6 +47,21 @@ int	get_name_length_whitespace(char *entry)
 			break ;
 		if (entry[0] == '?' && entry[1] == '?')
 			return (1);
+		length++;
+		entry++;
+	}
+	return (length);
+}
+
+int	get_env_var_end(char *entry)
+{
+	int	length;
+
+	length = 0;
+	while (*entry != '\0')
+	{
+		if (ft_isalnum(*entry) == 0 && *entry != '_' && *entry != '?')
+			break ;
 		length++;
 		entry++;
 	}

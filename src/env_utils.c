@@ -114,7 +114,7 @@ static char	*expansion_ops(t_data *data, char *arg, int i)
 	total_len = ft_strlen(arg) + 1;
 	new_arg = ft_calloc(PATH_MAX, 1);
 	var_holder = ft_calloc(PATH_MAX, 1);
-	end = i + get_name_length_whitespace(&arg[i]);
+	end = i + get_env_var_end(&arg[i]);
 	ft_strlcpy(new_arg, arg, i);
 	ft_strlcpy(var_holder, &arg[i], end - i + 1);
 	ft_strlcpy(trail, &arg[end], total_len - end);

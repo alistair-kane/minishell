@@ -97,7 +97,7 @@ int		builtin_cd(t_data *data, char **args);
 int		builtin_pwd(t_data *data);
 int		builtin_export(t_data *data, char **args);
 int		builtin_unset(t_data *data, char **args);
-int		builtin_env(t_data *data);
+int		builtin_env(t_data *data, char **args);
 void	builtin_exit(t_data *data, char **args);
 
 char	**ms_split(t_data *data, char *line);
@@ -109,6 +109,7 @@ void	quote_master(char **args);
 
 int		is_reserved_symbol(char *argument);
 int		get_name_length(char *entry);
+int		get_env_var_end(char *entry);
 int		get_name_length_whitespace(char *entry);
 void	free_c_vector(char **vector);
 

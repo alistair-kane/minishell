@@ -5,12 +5,17 @@
 
 static t_environment	*get_next_entry(t_vector *env, int prev_index);
 
-int	builtin_env(t_data *data)
+int	builtin_env(t_data *data, char **args)
 {
 	int				i;
 	int				initial_index;
 	t_environment	*entry;
 
+	if (args[1] != NULL)
+	{
+		printf("%s: No such file or directory\n", args[1]);
+		return (0);
+	}
 	initial_index = -1;
 	i = 0;
 	while (i < (int)data->environment->total)

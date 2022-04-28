@@ -25,7 +25,7 @@ void	exec_builtin(t_data *data, char **args)
 	else if (!ft_strcmp("unset", args[0]))
 		builtin_unset(data, args);
 	else if (!ft_strcmp("env", args[0]))
-		builtin_env(data);
+		builtin_env(data, args);
 	else if (!ft_strcmp("exit", args[0]))
 		builtin_exit(data, args);
 }
