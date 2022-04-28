@@ -113,7 +113,7 @@ int		get_name_length_whitespace(char *entry);
 void	free_c_vector(char **vector);
 
 void	sort_all_entries(t_vector *env);
-void	env_expansion(t_data *data, char **args);
+char	*env_expansion(t_data *data, char *arg);
 void	add_to_envp(t_data *data, char *name, char *value);
 
 void	signal_handler(int signal);

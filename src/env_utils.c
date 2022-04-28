@@ -72,7 +72,7 @@ static void	swap_entries(t_environment *first, t_environment *second)
 	second->initial_index = tmp;
 }
 
-static void	*env_var_replace(t_data *data, char *var_holder)
+static char	*env_var_replace(t_data *data, char *var_holder)
 {
 	t_environment	*temp;
 	size_t			i;
@@ -98,6 +98,7 @@ static void	*env_var_replace(t_data *data, char *var_holder)
 			return (var_holder);
 		}
 	}
+	free(var_holder);
 	return (NULL);
 }
 
@@ -117,7 +118,7 @@ static char	*expansion_ops(t_data *data, char *arg, int i)
 	ft_strlcpy(new_arg, arg, i);
 	ft_strlcpy(var_holder, &arg[i], end - i + 1);
 	ft_strlcpy(trail, &arg[end], total_len - end);
-	env_var_replace(data, var_holder);
+	var_holder = env_var_replace(data, var_holder);
 	if (var_holder == NULL)
 		ft_strlcat(new_arg, trail, ft_strlen(new_arg) + ft_strlen(trail) + 1);
 	else
@@ -125,38 +126,41 @@ static char	*expansion_ops(t_data *data, char *arg, int i)
 		total_len = ft_strlcat(new_arg, var_holder, ft_strlen(new_arg) \
 			+ ft_strlen(var_holder) + 1);
 		ft_strlcat(new_arg, trail, total_len + ft_strlen(trail) + 1);
+		free(var_holder);
 	}
-	free(var_holder);
 	return (new_arg);
 }
 
-void	env_expansion(t_data *data, char **args)
+char	*env_expansion(t_data *data, char *arg)
 {
-	int	i;
 	int	j;
 	int	sqf;
 	int	dqf;
 
-	i = -1;
 	sqf = -1;
 	dqf = -1;
-	while (args[++i] != NULL)
+	j = -1;
+	while (arg[++j])
 	{
-		j = -1;
-		while (args[i][++j])
+		if (arg[j] == '\"')
+			dqf *= -1;
+		if (arg[j] == '\'' && dqf == -1)
+			sqf *= -1;
+		if (arg[j] == '\\')
+			j++;
+		else if (arg[j] == '$' && sqf == -1)
 		{
-			if (args[i][j] == '\"')
-				dqf *= -1;
-			if (args[i][j] == '\'' && dqf == -1)
-				sqf *= -1;
-			if (args[i][j] == '\\')
-				j++;
-			else if (args[i][j] == '$' && sqf == -1)
-			{
-				args[i] = expansion_ops(data, args[i], j + 1);
-			}
+			if (arg[j + 1] == '\0')
+				return (arg);
+			if (arg[j + 1] == '$')
+				j += 2;
+			else
+				arg = expansion_ops(data, arg, j + 1);
 		}
+		if (arg[j] == '\0')
+			break ;
 	}
+	return (arg);
 }
 
 void	add_to_envp(t_data *data, char *name, char *value)

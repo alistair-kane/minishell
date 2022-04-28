@@ -4,7 +4,7 @@
 void	exit_error(const char *s)
 {
 	perror(s);
-	exit(EXIT_FAILURE);
+	exit(127);
 }
 
 static void	child_helper(t_data *data, t_exec *exec, int *fds, int i)
@@ -34,10 +34,7 @@ static void	child_helper(t_data *data, t_exec *exec, int *fds, int i)
 		exec_builtin(data, cmd);
 		exit(0);
 	}
-	else
-		exec_cmd(data, cmd);
-	printf("Failed to execute '%s'\n", *cmd);
-	exit(1);
+	exec_cmd(data, cmd);
 }
 
 static void parent_helper(t_data *data, t_exec *exec, int *fds, int i)

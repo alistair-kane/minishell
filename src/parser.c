@@ -34,7 +34,7 @@ void	parser(t_data *data, char *buf)
 {
 	char	**args;
 
-	env_expansion(data, &buf);
+	buf = env_expansion(data, buf);
 	args = ms_split(data, buf);
 	quote_master(args);
 	if (check_argument_logic(args) != 0)

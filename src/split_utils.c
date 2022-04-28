@@ -32,6 +32,8 @@ static void	char_cleanup(char *arg)
 	i = -1;
 	while (arg[++i])
 	{
+		if (arg[i] == '\\')
+			i += 2;
 		if (arg[i] == '\'' || arg[i] == '"')
 		{
 			if (handle_quotes(arg[i], &dbl, &single) == 1)

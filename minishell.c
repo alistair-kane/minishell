@@ -14,8 +14,11 @@ int	main(void)
 	while (1)
 	{
 		buf = readline(PROMPT);
-		if (buf == NULL) // !!!!! TODO
+		if (buf == NULL)
+		{
+			printf("%sexit\n", PROMPT);
 			break ;
+		}
 		if (ft_strlen(buf))
 			add_history(buf);
 		vector_add(data->history, buf);

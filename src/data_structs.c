@@ -104,10 +104,4 @@ static void	init_signals(int sig)
 		printf("ERROR! SIGINT\n");
 		return ;
 	}
-	/*if (sigaction(SIGQUIT, &sa, NULL) < 0)
-	{
-		printf("ERROR! SIGQUIT\n"); // !!!!!
-		return ;
-	}*/
-	//signal(SIGQUIT, SIG_IGN); //!!!!! <- also an option
 }

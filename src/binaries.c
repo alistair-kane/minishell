@@ -25,8 +25,13 @@ void	exec_cmd(t_data *data, char **argv)
 {
 	char		*path;
 
-	if (ft_strrchr(argv[0], '/'))
-		path = return_path(data->path, ft_strrchr(argv[0], '/'));
+	if (argv[0][0] == '/')
+		path = argv[0];
+	else if (ft_strrchr(argv[0], '/'))
+	{
+		path = ft_strjoin(data->pwd, "/");
+		path = ft_strjoin(path, argv[0]);
+	}
 	else
 		path = return_path(data->path, argv[0]);
 	if (path == NULL)
