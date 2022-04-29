@@ -153,12 +153,10 @@ char	*env_expansion(t_data *data, char *arg)
 			if (arg[j + 1] == '\0')
 				return (arg);
 			if (arg[j + 1] == '$')
-				j += 2;
+				j++;
 			else
 				arg = expansion_ops(data, arg, j + 1);
 		}
-		if (arg[j] == '\0')
-			break ;
 	}
 	return (arg);
 }

@@ -122,6 +122,7 @@ void	signal_handler(int signal);
 int		prep_exec(t_data *data, char **arguments);
 t_exec	*init_exec(void);
 char	*handle_here_doc(t_exec *exec, char *delimiter);
+char	*create_filename(t_exec *exec, char *filename);
 
 int		check_argument_logic(char **args);
 
