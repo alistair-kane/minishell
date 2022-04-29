@@ -6,7 +6,7 @@
 /*   By: alkane <alkane@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 15:27:44 by alkane            #+#    #+#             */
-/*   Updated: 2022/04/27 17:32:02 by alkane           ###   ########.fr       */
+/*   Updated: 2022/04/29 15:28:48 by alkane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ static int	flag_handler(char **buf, int *n_flag)
 int	builtin_echo(t_data *data, char **args)
 {
 	int	i;
-	int n_flag;
+	int	j;
+	int	n_flag;
 
 	n_flag = 0;
 	if (!data)
@@ -54,9 +55,26 @@ int	builtin_echo(t_data *data, char **args)
 	// checking for ending conditions, current goes through all segments
 	while (args[i])
 	{
-		// too late to fix the space problem with double env $ variable (changed split.c)
-		ft_putstr_fd(args[i++], 1);
-		ft_putstr_fd(" ", 1);
+		j = 0;
+		while (args[i][j])
+		{
+			// too late to fix the space problem with double env $ variable (changed split.c)
+			if (args[i][j] == '\\')
+			{
+				if (args[i][j + 1] == 'a' || args[i][j + 1] == 'b' \
+				|| args[i][j + 1] == 'e' || args[i][j + 1] == 'f' \
+				|| args[i][j + 1] == 'n' || args[i][j + 1] == 'r' \
+				|| args[i][j + 1] == 't' || args[i][j + 1] == 'v' \
+				|| args[i][j + 1] == '\\' || args[i][j + 1] == '\'' \
+				|| args[i][j + 1] == '"' || args[i][j + 1] == '?')
+					j++;
+			}
+			ft_putchar_fd(args[i][j], 1);
+			j++;
+		}
+		if (args[i + 1] != NULL)
+			ft_putstr_fd(" ", 1);
+		i++;
 	}
 	// if the -n flag is not active, putstr newline
 	if (!n_flag)

@@ -32,8 +32,8 @@ void redirect_input(t_exec *exec)
 
 void redirect_output(t_exec *exec, int redir_flag)
 {
-	int j = 0;
-	int outputfd;
+	int	j = 0;
+	int	outputfd;
 
 	while (exec->output_files[j] != NULL)
 	{
