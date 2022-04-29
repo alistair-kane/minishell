@@ -2,8 +2,6 @@
 
 #include "../minishell.h"
 
-static char	*create_filename(t_exec *exec, char *filename);
-
 t_exec	*init_exec(void)
 {
 	t_exec	*exec;
@@ -46,7 +44,7 @@ char	*handle_here_doc(t_exec *exec, char *delimiter)
 	return (filename);
 }
 
-static char	*create_filename(t_exec *exec, char *filename)
+char	*create_filename(t_exec *exec, char *filename)
 {
 	int	i;
 

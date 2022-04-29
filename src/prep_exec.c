@@ -10,6 +10,7 @@ static int	handle_commands(t_exec *exec, char **arguments);
 
 int	prep_exec(t_data *data, char **arguments)
 {
+	char 	*temp;
 	int		i;
 	int		output;
 	int		symbol;
@@ -28,7 +29,17 @@ int	prep_exec(t_data *data, char **arguments)
 			exec = init_exec();
 		}
 		if (symbol > 0)
+		{
+			if (symbol == RESERVED_SYMBOL_PIPE && i == 2 && exec->input_file != NULL)
+			{
+				free(exec->input_file);
+				exec->input_file = NULL;
+				temp = create_filename(exec, "temp");
+				handle_input(exec, temp);
+				close(open(exec->input_file, O_RDWR | O_CREAT, 0644));
+			}
 			i += handle_reserved_symbols(exec, &arguments[i], symbol, &output);
+		}
 		else
 			i += handle_commands(exec, &arguments[i]);
 	}
