@@ -1,20 +1,5 @@
 #include "../../minishell.h"
 
-static char	*get_home_dir(t_data *data)
-{
-	size_t			i;
-	t_environment	*temp;
-
-	i = -1;
-	while (++i < data->environment->total)
-	{
-		temp = vector_get(data->environment, i);
-		if (!ft_strncmp(temp->name, "HOME", 4))
-			return (temp->value);
-	}
-	return (NULL);
-}
-
 static char	*check_paths(t_data *data, char *end, char *cur_path)
 {
 	int		i;
@@ -45,11 +30,20 @@ static void	add_pwd_parse(t_data *data, char **dir, char *cur_path)
 	parse_cur_path(cur_path);
 }
 
-static int	test_chdir(t_data *data, char *cur_path)
+static void	create_new_pwd(t_data *data)
+{
+	t_environment	new;
+
+	new.name = ft_strdup("PWD");
+	new.value = ft_strdup(data->pwd);
+	new.initial_index = get_new_initial_index(data->environment);
+	vector_add(data->environment, &new);
+}
+
+static void	test_chdir(t_data *data, char *cur_path)
 {
 	int				index;
 	t_environment	*entry;
-	t_environment	new;
 
 	if (chdir(cur_path) == 0)
 	{
@@ -63,27 +57,21 @@ static int	test_chdir(t_data *data, char *cur_path)
 			ft_strlcpy(entry->value, data->pwd, ft_strlen(data->pwd) + 1);
 		}
 		else
-		{
-			new.name = ft_strdup("PWD");
-			new.value = ft_strdup(data->pwd);
-			new.initial_index = get_new_initial_index(data->environment);
-			vector_add(data->environment, &new);
-		}
+			create_new_pwd(data);
 	}
 	else
 		printf("No such file or directory\n");
 	free(cur_path);
-	return (2);
 }
 
-int	builtin_cd(t_data *data, char **args)
+void	builtin_cd(t_data *data, char **args)
 {
 	char	*cur_path;
 
 	if (data->args_len > 1)
 	{
 		printf("cd: too many arguments\n");
-		return (data->args_len);
+		return ;
 	}
 	cur_path = ft_calloc(PATH_MAX, sizeof(char));
 	if (!args[1])

@@ -94,7 +94,7 @@ void	exec_cmd(t_data *data, char **argv);
 int		check_parent_builtin(t_data *data, char **cmd, int exec);
 
 int		builtin_echo(t_data *data, char **buf);
-int		builtin_cd(t_data *data, char **args);
+void	builtin_cd(t_data *data, char **args);
 int		builtin_pwd(t_data *data);
 int		builtin_export(t_data *data, char **args);
 int		builtin_unset(t_data *data, char **args);
@@ -135,5 +135,6 @@ int		is_valid_entry_name(char *name);
 
 void	parse_cur_path(char *cur_path);
 int		max(int val1, int val2);
+char	*get_home_dir(t_data *data);
 
 #endif
