@@ -6,7 +6,7 @@
 /*   By: dbrandtn <dbrandtn@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 15:48:51 by dbrandtn          #+#    #+#             */
-/*   Updated: 2022/04/30 16:08:49 by dbrandtn         ###   ########.fr       */
+/*   Updated: 2022/04/30 17:42:04 by dbrandtn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	str_trim_end(char *line)
 		line++;
 	}
 	line--;
-	while (is_whitespace(*line) == 1 && count > 0)
+	while (count > 0 && is_whitespace(*line) == 1)
 	{
 		*line = '\0';
 		line--;
