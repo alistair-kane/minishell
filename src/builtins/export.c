@@ -44,11 +44,9 @@ int	builtin_export(t_data *data, char **args)
 		if (index >= 0)
 		{
 			if (update == 1)
-			{
 				update_existing_entry(data->environment, index, entry.value);
-				free(entry.name);
-				free(entry.value);
-			}
+			free(entry.name);
+			free(entry.value);
 		}
 		else
 		{
