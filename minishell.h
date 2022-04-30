@@ -127,8 +127,12 @@ char	*create_filename(t_exec *exec, char *filename);
 
 int		check_argument_logic(char **args);
 
+char	*remove_surrounding_quotes(char *input);
 int		get_entry_index(t_vector *env, char *name);
+void	update_existing_entry(t_vector *env, int index, char *new_value);
 int		get_new_initial_index(t_vector *env);
+int		is_valid_entry_name(char *name);
+
 void	parse_cur_path(char *cur_path);
 int		max(int val1, int val2);
 
