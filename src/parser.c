@@ -36,6 +36,7 @@ void	parser(t_data *data, char *buf)
 
 	buf = env_expansion(data, buf);
 	args = ms_split(data, buf);
+	free(buf);
 	quote_master(args);
 	if (check_argument_logic(args) != 0)
 	{

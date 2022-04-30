@@ -15,7 +15,6 @@ void	signal_handler(int sig)
 		ft_putchar_fd('\n', STDOUT_FILENO);
 		rl_on_new_line();
 		rl_redisplay();
-		// todo !!!!! kill(child_pid, SIGKILL);
 	}
 	else if (sig == SIGQUIT)
 	{
