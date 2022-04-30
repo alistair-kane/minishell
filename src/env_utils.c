@@ -118,6 +118,7 @@ static char	*expansion_ops(t_data *data, char *arg, int i)
 	ft_strlcpy(new_arg, arg, i);
 	ft_strlcpy(var_holder, &arg[i], end - i + 1);
 	ft_strlcpy(trail, &arg[end], total_len - end);
+	free(arg);
 	var_holder = env_var_replace(data, var_holder);
 	if (var_holder == NULL)
 		ft_strlcat(new_arg, trail, ft_strlen(new_arg) + ft_strlen(trail) + 1);
@@ -140,6 +141,7 @@ char	*env_expansion(t_data *data, char *arg)
 	sqf = -1;
 	dqf = -1;
 	j = -1;
+	arg = ft_strjoin(arg, "");
 	while (arg[++j])
 	{
 		if (arg[j] == '\"')
