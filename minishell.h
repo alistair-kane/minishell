@@ -19,6 +19,7 @@
 # include <sys/wait.h>
 # include <stdlib.h>
 # include <fcntl.h>
+# include <signal.h>
 
 # define PROMPT "$ "
 
