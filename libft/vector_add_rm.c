@@ -6,7 +6,7 @@
 /*   By: dbrandtn <dbrandtn@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 12:34:47 by dbrandtn          #+#    #+#             */
-/*   Updated: 2022/02/18 12:43:54 by dbrandtn         ###   ########.fr       */
+/*   Updated: 2022/04/30 15:16:38 by dbrandtn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void	vector_delete(t_vector *vector, int index)
 
 	if (index < 0 || index >= (int)vector->total)
 		return ;
+	vector->cleanup_cb(vector->nodes[index]);
 	if (vector->data_size == 0)
 	{
 		free(vector->nodes[index]);
