@@ -53,8 +53,36 @@ void	quote_master(char **args)
 	int	i;
 
 	i = -1;
-	while(args[++i])
+	while (args[++i])
 	{
 		char_cleanup(args[i]);
 	}
+}
+
+// returns 1, if something changes
+int	handle_quotes(char c, int *double_quotes, int *single_quotes)
+{
+	if (c == '"')
+	{
+		if (*double_quotes == 1)
+			*double_quotes = 0;
+		else
+		{
+			if (*single_quotes == 0)
+				*double_quotes = 1;
+			else
+				return (0);
+		}
+		return (1);
+	}
+	if (*single_quotes == 1)
+		*single_quotes = 0;
+	else
+	{
+		if (*double_quotes == 0)
+			*single_quotes = 1;
+		else
+			return (0);
+	}
+	return (1);
 }

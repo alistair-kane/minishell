@@ -2,7 +2,6 @@
 
 #include "../minishell.h"
 
-static int	count_arguments(char *line);
 static char	*goto_next_pos(char *line);
 static void	skip_whitespaces(char **line);
 static int	handle_reserved_symbols(char **line);
@@ -17,12 +16,10 @@ char	**ms_split(t_data *data, char *line)
 	char	*last_pos;
 	char	*pos;
 	int		i;
-	//int		count;
 
 	str_trim_end(line);
 	skip_whitespaces(&line);
-	(void)count_arguments;//count = count_arguments(line);
-	array = ft_calloc(1024 + 1, sizeof(void *));
+	array = ft_calloc(1024, sizeof(void *));
 	if (array == NULL)
 		exit(1);
 	i = 0;
@@ -46,21 +43,6 @@ char	**ms_split(t_data *data, char *line)
 	array[i + 1] = NULL;
 	data->args_len = i;
 	return (array);
-}
-
-static int	count_arguments(char *line)
-{
-	int		count;
-
-	count = 1;
-	line = goto_next_pos(line);
-	while (line != NULL)
-	{
-		count++;
-		skip_whitespaces(&line);
-		line = goto_next_pos(line);
-	}
-	return (count);
 }
 
 // this will skip multiple whitespace-chars at the start of the string
@@ -101,34 +83,6 @@ static void	skip_whitespaces(char **line)
 {
 	while (is_whitespace(**line) == 1)
 		(*line)++;
-}
-
-// returns 1, if something changes
-int	handle_quotes(char c, int *double_quotes, int *single_quotes)
-{
-	if (c == '"')
-	{
-		if (*double_quotes == 1)
-			*double_quotes = 0;
-		else
-		{
-			if (*single_quotes == 0)
-				*double_quotes = 1;
-			else
-				return (0);
-		}
-		return (1);
-	}
-	if (*single_quotes == 1)
-		*single_quotes = 0;
-	else
-	{
-		if (*double_quotes == 0)
-			*single_quotes = 1;
-		else
-			return (0);
-	}
-	return (1);
 }
 
 static int	handle_reserved_symbols(char **line)

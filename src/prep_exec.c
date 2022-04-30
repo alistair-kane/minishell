@@ -30,7 +30,8 @@ int	prep_exec(t_data *data, char **arguments)
 		}
 		if (symbol > 0)
 		{
-			if (symbol == RESERVED_SYMBOL_PIPE && i == 2 && exec->input_file != NULL)
+			if (symbol == RESERVED_SYMBOL_PIPE && i == 2 && exec->here_flag == 0
+				&& exec->input_file != NULL)
 			{
 				free(exec->input_file);
 				exec->input_file = NULL;

@@ -2,6 +2,7 @@
 
 #include "../../minishell.h"
 
+static void	handle_valid_input(t_data *data, t_environment *entry, int update);
 static void	export_print_list(t_data *data);
 static int	get_key_value_pair(char *argument, t_environment *entry);
 
@@ -10,7 +11,6 @@ int	builtin_export(t_data *data, char **args)
 {
 	int				i;
 	int				update;
-	int				index;
 	t_environment	entry;
 
 	if (args[1] == NULL)
@@ -19,7 +19,7 @@ int	builtin_export(t_data *data, char **args)
 		return (1);
 	}
 	i = 1;
-	while (args[i] != NULL)
+	while (args[i++] != NULL)
 	{
 		update = get_key_value_pair(args[i], &entry);
 		if (is_valid_entry_name(entry.name) == 0)
@@ -30,29 +30,35 @@ int	builtin_export(t_data *data, char **args)
 				free(entry.value);
 			return (i);
 		}
-		if (ft_strcmp("PATH", entry.name) == 0)
-		{
-			free_path(data);
-			data->path = ft_split(entry.value, ':');
-		}
-		index = get_entry_index(data->environment, entry.name);
-		if (index >= 0)
-		{
-			if (update == 1)
-				update_existing_entry(data->environment, index, entry.value);
-			free(entry.name);
-			free(entry.value);
-		}
-		else
-		{
-			entry.initial_index = get_new_initial_index(data->environment);
-			vector_add(data->environment, &entry);
-			add_to_envp(data, entry.name, entry.value);
-		}
-		i++;
+		handle_valid_input(data, &entry, update);
 	}
 	sort_all_entries(data->environment);
 	return (i);
+}
+
+static void	handle_valid_input(t_data *data, t_environment *entry, int update)
+{
+	int				index;
+
+	if (ft_strcmp("PATH", entry->name) == 0)
+	{
+		free_path(data);
+		data->path = ft_split(entry->value, ':');
+	}
+	index = get_entry_index(data->environment, entry->name);
+	if (index >= 0)
+	{
+		if (update == 1)
+			update_existing_entry(data->environment, index, entry->value);
+		free(entry->name);
+		free(entry->value);
+	}
+	else
+	{
+		entry->initial_index = get_new_initial_index(data->environment);
+		vector_add(data->environment, entry);
+		add_to_envp(data, entry->name, entry->value);
+	}
 }
 
 static void	export_print_list(t_data *data)

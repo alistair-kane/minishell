@@ -91,7 +91,7 @@ void	exec(t_data *data)
 				builtin_exit(data, cmd);
 			else
 				piping(data, exec);
-			i++;
 		}
+		i++;
 	}
 }
