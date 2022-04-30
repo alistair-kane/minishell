@@ -4,10 +4,8 @@
 
 static void	export_print_list(t_data *data);
 static int	get_key_value_pair(char *argument, t_environment *entry);
-static int	get_entry_index(t_vector *env, char *name);
 static void	update_existing_entry(t_vector *env, int index, char *new_value);
 static char	*remove_surrounding_quotes(char *input);
-static int	get_new_initial_index(t_vector *env);
 static int	is_valid_entry_name(char *name);
 
 // without any arguments, this prints all variables available
@@ -137,7 +135,7 @@ static char	*remove_surrounding_quotes(char *input)
 }
 
 // returns the index of an existing entry name
-static int	get_entry_index(t_vector *env, char *name)
+int	get_entry_index(t_vector *env, char *name)
 {
 	int				i;
 	t_environment	*entry;
@@ -173,7 +171,7 @@ static void	update_existing_entry(t_vector *env, int index, char *new_value)
 
 // if all variables are removed at some point, 
 // the starting index will be 1, not 0 anymore
-static int	get_new_initial_index(t_vector *env)
+int	get_new_initial_index(t_vector *env)
 {
 	int				i;
 	int				highest_index;

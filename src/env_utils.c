@@ -141,7 +141,7 @@ char	*env_expansion(t_data *data, char *arg)
 	sqf = -1;
 	dqf = -1;
 	j = -1;
-	arg = ft_strjoin(arg, "");
+	arg = ft_strdup(arg);
 	while (arg[++j])
 	{
 		if (arg[j] == '\"')

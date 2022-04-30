@@ -84,7 +84,7 @@ static void	init_paths(t_data *data)
 		if (!ft_strncmp(entry->name, "PATH", ft_strlen(entry->name)))
 			data->path = ft_split(entry->value, ':');
 		else if (!ft_strncmp(entry->name, "PWD", ft_strlen(entry->name)))
-			data->pwd = entry->value;
+			ft_strlcpy(data->pwd, entry->value, ft_strlen(entry->value) + 1);
 		i++;
 		entry = vector_get(data->environment, i);
 	}

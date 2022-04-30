@@ -163,12 +163,32 @@ static void	add_pwd_parse(t_data *data, char **dir, char *cur_path)
 
 static int	test_chdir(t_data *data, char *cur_path)
 {
+	int				index;
+	t_environment	*entry;
+	t_environment	new;
+
 	if (chdir(cur_path) == 0)
+	{
 		ft_strlcpy(data->pwd, cur_path, ft_strlen(cur_path) + 1);
+		index = get_entry_index(data->environment, "PWD");
+		if (index >= 0)
+		{
+			entry = vector_get(data->environment, index);
+			free(entry->value);
+			entry->value = malloc(ft_strlen(data->pwd) + 1);
+			ft_strlcpy(entry->value, data->pwd, ft_strlen(data->pwd) + 1);
+		}
+		else
+		{
+			new.name = ft_strdup("PWD");
+			new.value = ft_strdup(data->pwd);
+			new.initial_index = get_new_initial_index(data->environment);
+			vector_add(data->environment, &new);
+		}
+	}
 	else
 		printf("No such file or directory\n");
 	free(cur_path);
-	// two arguments consumed, therefore returns 2
 	return (2);
 }
 
@@ -176,8 +196,6 @@ int	builtin_cd(t_data *data, char **args)
 {
 	char	*cur_path;
 
-	if (!data)
-		exit(1);
 	if (data->args_len > 1)
 	{
 		printf("cd: too many arguments\n");

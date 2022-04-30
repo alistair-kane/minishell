@@ -66,7 +66,7 @@ typedef struct s_data
 	t_vector	*history;
 	char		**envp;
 	char		**path;
-	char		*pwd;
+	char		pwd[PATH_MAX];
 	size_t		args_len;
 	pid_t		pid;
 	int			status;
@@ -125,5 +125,8 @@ char	*handle_here_doc(t_exec *exec, char *delimiter);
 char	*create_filename(t_exec *exec, char *filename);
 
 int		check_argument_logic(char **args);
+
+int		get_entry_index(t_vector *env, char *name);
+int		get_new_initial_index(t_vector *env);
 
 #endif
