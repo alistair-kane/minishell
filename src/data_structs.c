@@ -17,12 +17,6 @@ t_data	*data_init(void)
 	data = ft_calloc(1, sizeof(t_data));
 	if (data == NULL)
 		return (NULL);
-	data->history = vector_init(100, 100, 0);
-	if (data->history == NULL)
-	{
-		data_cleanup(data);
-		return (NULL);
-	}
 	init_environment(data);
 	vector_custom_cleanup(data->environment, cleanup_environment);
 	init_paths(data);

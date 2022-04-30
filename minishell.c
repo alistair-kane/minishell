@@ -21,7 +21,6 @@ int	main(void)
 		}
 		if (ft_strlen(buf))
 			add_history(buf);
-		vector_add(data->history, buf);
 		parser(data, buf);
 		if (data->exit != 0)
 			break ;

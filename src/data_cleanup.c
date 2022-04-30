@@ -10,7 +10,6 @@ void	data_cleanup(t_data *data)
 	free_c_vector(data->envp);
 	vector_cleanup(data->exec);
 	vector_cleanup(data->environment);
-	vector_cleanup(data->history);
 	free(data);
 }
 
