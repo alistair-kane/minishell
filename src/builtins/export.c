@@ -44,7 +44,11 @@ int	builtin_export(t_data *data, char **args)
 		if (index >= 0)
 		{
 			if (update == 1)
+			{
 				update_existing_entry(data->environment, index, entry.value);
+				free(entry.name);
+				free(entry.value);
+			}
 		}
 		else
 		{
@@ -94,10 +98,11 @@ static int	get_key_value_pair(char *argument, t_environment *entry)
 		length_value = ft_strlen(&argument[length_name + 1]);
 	else
 		update = 0;
-	entry->value = malloc(length_value + 1);
+	entry->value = ft_calloc(length_value + 1, sizeof(char));
 	if (entry->value == NULL)
 		exit(1);
-	ft_strlcpy(entry->value, &argument[length_name + 1], length_value + 1);
+	if (length_value != 0)
+		ft_strlcpy(entry->value, &argument[length_name + 1], length_value + 1);
 	free(argument);
 	return (update);
 }
