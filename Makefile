@@ -6,7 +6,8 @@ CFLAGS	= -Wall -Werror -Wextra -I $(HOME)/goinfre/.brew/opt/readline/include/
 LIB_LOC = ./libft
 LIBRARY = libft.a
 SRCS	= minishell.c src/data_structs.c src/parser.c src/split.c src/builtins/echo.c \
-			src/builtins/cd.c src/builtins/pwd.c src/builtins/exit.c src/builtins/export.c \
+			src/builtins/cd.c src/builtins/cd_utils_1.c src/builtins/cd_utils_2.c \
+			src/builtins/pwd.c src/builtins/exit.c src/builtins/export.c \
 			src/utils.c src/builtins/unset.c src/env_utils_1.c src/data_cleanup.c \
 			src/builtins/env.c src/binaries.c src/signals.c src/prep_exec.c \
 			src/prep_exec_utils.c src/exec.c src/exec_utils_1.c src/exec_utils_2.c \

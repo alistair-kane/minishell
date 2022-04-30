@@ -87,9 +87,9 @@ void	parser(t_data *data, char *buf);
 void	exec(t_data *data);
 void	exit_error(const char *s);
 void	open_pipe(int *fds);
-void 	redirect_input(t_exec *exec);
+void	redirect_input(t_exec *exec);
 void	redirect_output(t_exec *exec, int redir_flag);
-void 	close_ends(int *fds);
+void	close_ends(int *fds);
 void	exec_cmd(t_data *data, char **argv);
 int		check_parent_builtin(t_data *data, char **cmd, int exec);
 
@@ -129,5 +129,7 @@ int		check_argument_logic(char **args);
 
 int		get_entry_index(t_vector *env, char *name);
 int		get_new_initial_index(t_vector *env);
+void	parse_cur_path(char *cur_path);
+int		max(int val1, int val2);
 
 #endif
