@@ -29,7 +29,7 @@ char	*handle_here_doc(t_exec *exec, char *delimiter)
 	new_delimiter = ft_strjoin(delimiter, "\n");
 	filename = create_filename(exec, "temp");
 	if (filename == NULL)
-		return (NULL); // !!!!! todo: catch return with no file
+		return (NULL);
 	fd = open(filename, O_RDWR | O_CREAT, 0644);
 	while (1)
 	{

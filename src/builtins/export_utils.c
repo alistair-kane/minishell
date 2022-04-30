@@ -6,30 +6,28 @@
 char	*remove_surrounding_quotes(char *input)
 {
 	char	*result;
-	int		length;
-	int		length_name;
+	int		len;
+	int		len_name;
 
-	length = ft_strlen(input);
-	length_name = get_name_length(input);
-	result = malloc(length + 1);
-	if (result == NULL)
-		exit(1);
-	if ((input[0] == '"' && input[length_name - 1] == '"')
-		|| (input[0] == '\'' && input[length_name - 1] == '\''))
-		ft_strlcpy(result, &input[1], length_name - 2 + 1);
+	len = ft_strlen(input);
+	len_name = get_name_length(input);
+	result = malloc(len + 1);
+	if ((input[0] == '"' && input[len_name - 1] == '"')
+		|| (input[0] == '\'' && input[len_name - 1] == '\''))
+		ft_strlcpy(result, &input[1], len_name - 2 + 1);
 	else
-		ft_strlcpy(result, input, length_name + 1);
-	if (length_name != length)
+		ft_strlcpy(result, input, len_name + 1);
+	if (len_name != len)
 	{
 		result[ft_strlen(result) + 1] = '\0';
 		result[ft_strlen(result)] = '=';
-		if ((input[length_name + 1] == '"' && input[length - 1] == '"')
-			|| (input[length_name + 1] == '\'' && input[length - 1] == '\''))
-			ft_strlcpy(&result[ft_strlen(result)], &input[length_name + 2],
-				length - length_name - 2);
+		if ((input[len_name + 1] == '"' && input[len - 1] == '"')
+			|| (input[len_name + 1] == '\'' && input[len - 1] == '\''))
+			ft_strlcpy(&result[ft_strlen(result)], &input[len_name + 2],
+				len - len_name - 2);
 		else
-			ft_strlcpy(&result[ft_strlen(result)], &input[length_name + 1],
-				length - length_name);
+			ft_strlcpy(&result[ft_strlen(result)], &input[len_name + 1],
+				len - len_name);
 	}
 	return (result);
 }

@@ -40,13 +40,9 @@ static void	init_environment(t_data *data)
 	{
 		length_name = get_name_length(environ[i]);
 		entry.name = malloc(length_name + 1);
-		if (entry.name == NULL)
-			exit(1);
 		ft_strlcpy(entry.name, environ[i], length_name + 1);
 		length_value = ft_strlen(&environ[i][length_name + 1]);
 		entry.value = malloc(length_value + 1);
-		if (entry.value == NULL)
-			exit(1);
 		ft_strlcpy(entry.value, &environ[i][length_name + 1], length_value + 1);
 		entry.initial_index = i;
 		vector_add(data->environment, &entry);
@@ -85,11 +81,9 @@ static void	init_signals(int sig)
 {
 	struct sigaction	sa;
 
-	//ft_bzero(&sa, sizeof(sa));
 	sigemptyset(&sa.sa_mask);
 	sigaddset(&sa.sa_mask, sig);
 	sa.sa_handler = &signal_handler;
-	sa.sa_flags = SA_RESTART; // remove this?
 	if (sigaction(sig, &sa, NULL) < 0)
 	{
 		printf("ERROR! SIGINT\n");

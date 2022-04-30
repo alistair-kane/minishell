@@ -96,7 +96,7 @@ void	exec(t_data *data)
 				builtin_exit(data, cmd); // !!!!! need to check output behaviour
 			else
 				piping(data, exec);
-			i++;
 		}
+		i++;
 	}
 }
