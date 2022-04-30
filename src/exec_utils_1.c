@@ -12,34 +12,34 @@ static int	file_open(const char *name, int o_flags)
 	return (fd);
 }
 
-void open_pipe(int *fds)
+void	open_pipe(int *fds)
 {
 	if (pipe(fds) == -1)
 		exit_error("pipe");
 }
 
-void redirect_input(t_exec *exec)
+void	redirect_input(t_exec *exec)
 {
-	int inputfd;
-	
+	int	inputfd;
+
 	inputfd = file_open(exec->input_file, O_RDONLY);
 	dup2(inputfd, STDIN_FILENO);
 	close(inputfd);
-	// !!!!! flag for the here_doc to stop deletion of normal input files (unsure of behaviour if mulitple inputs and here with flag however)
-	if (exec->here_flag) 
+	if (exec->here_flag)
 		unlink(exec->input_file);
 }
 
-void redirect_output(t_exec *exec, int redir_flag)
+void	redirect_output(t_exec *exec, int redir_flag)
 {
-	int	j = 0;
+	int	j;
 	int	outputfd;
 
+	j = 0;
 	while (exec->output_files[j] != NULL)
 	{
-		if (exec->append_output[j]) // >>
+		if (exec->append_output[j])
 			outputfd = file_open(exec->output_files[j], O_WRONLY | O_CREAT | O_APPEND);
-		else // >
+		else
 			outputfd = file_open(exec->output_files[j], O_WRONLY | O_CREAT | O_TRUNC);
 		if (exec->output_files[j + 1] == NULL && redir_flag)
 			dup2(outputfd, STDOUT_FILENO);
@@ -48,7 +48,7 @@ void redirect_output(t_exec *exec, int redir_flag)
 	}
 }
 
-void close_ends(int *fds)
+void	close_ends(int *fds)
 {
 	close(fds[READ_END]);
 	close(fds[WRITE_END]);

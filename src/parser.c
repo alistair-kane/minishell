@@ -28,6 +28,7 @@ void	exec_builtin(t_data *data, char **args)
 		builtin_env(data, args);
 	else if (!ft_strcmp("exit", args[0]))
 		builtin_exit(data, args);
+	exit(0);
 }
 
 void	parser(t_data *data, char *buf)

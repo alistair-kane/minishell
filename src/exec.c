@@ -12,37 +12,34 @@ static void	child_helper(t_data *data, t_exec *exec, int *fds, int i)
 	char	**cmd;
 
 	cmd = vector_get(exec->commands, i);
-	if (i > 0) // if there is a previous cmd
+	if (i > 0)
 	{
 		dup2((fds +2)[READ_END], STDIN_FILENO);
 		close_ends(fds +2);
 	}
-	else if (i == 0 && exec->input_file != NULL) // at first cmd and input file is given
+	else if (i == 0 && exec->input_file != NULL)
 		redirect_input(exec);
-	if (vector_get(exec->commands, i + 1) != NULL) // if there is a next cmd
+	if (vector_get(exec->commands, i + 1) != NULL)
 	{
 		close(fds[READ_END]);
 		dup2(fds[WRITE_END], STDOUT_FILENO);
 		close(fds[WRITE_END]);
 	}
-	else if (exec->output_files[0] != NULL) // if there is no next cmd and output file
+	else if (exec->output_files[0] != NULL)
 		redirect_output(exec, 1);
 	if (check_parent_builtin(data, cmd, 0))
-		exit(0); // exit child after finding built-in cd or unset or export with params
-	else if (check_builtin(cmd))
-	{
-		exec_builtin(data, cmd);
 		exit(0);
-	}
+	else if (check_builtin(cmd))
+		exec_builtin(data, cmd);
 	exec_cmd(data, cmd);
 }
 
-static void parent_helper(t_data *data, t_exec *exec, int *fds, int i)
+static void	parent_helper(t_data *data, t_exec *exec, int *fds, int i)
 {
-	if (i > 0) // if there is a previous cmd
+	if (i > 0)
 		close_ends(fds + 2);
 	waitpid(data->pid, &(data->status), 0);
-	if (vector_get(exec->commands, i + 1) != NULL) // if there is a next cmd
+	if (vector_get(exec->commands, i + 1) != NULL)
 	{
 		(fds +2)[READ_END] = fds[READ_END];
 		(fds +2)[WRITE_END] = fds[WRITE_END];
@@ -60,18 +57,18 @@ static void	piping(t_data *data, t_exec *exec)
 	cmd_1 = vector_get(exec->commands, i);
 	while (cmd_1 != NULL)
 	{
-		if (vector_get(exec->commands, i + 1) != NULL) // if there is a next cmd
+		if (vector_get(exec->commands, i + 1) != NULL)
 			open_pipe(fds);
 		data->pid = fork();
 		if (data->pid < 0)
 			exit_error("fork");
-		if (data->pid == 0) // child process
+		if (data->pid == 0)
 			child_helper(data, exec, fds, i);
-		else // parent process
+		else
 			parent_helper(data, exec, fds, i);
 		cmd_1 = vector_get(exec->commands, ++i);
 	}
-	if (exec->commands->total > 1) // if multiple cmds after loop
+	if (exec->commands->total > 1)
 		close_ends(fds + 2);
 }
 
@@ -87,13 +84,11 @@ void	exec(t_data *data)
 		exec = vector_get(data->exec, i);
 		cmd = vector_get(exec->commands, 0);
 		if (cmd == NULL)
-		{
-			redirect_output(exec, 0); // create output files
-		}
+			redirect_output(exec, 0);
 		else
 		{
 			if (ft_strcmp(cmd[0], "exit") == 0 && exec->commands->total == 1)
-				builtin_exit(data, cmd); // !!!!! need to check output behaviour
+				builtin_exit(data, cmd);
 			else
 				piping(data, exec);
 			i++;
