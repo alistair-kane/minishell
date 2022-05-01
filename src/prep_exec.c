@@ -10,7 +10,7 @@ static int	handle_commands(t_exec *exec, char **arguments);
 
 int	prep_exec(t_data *data, char **arguments)
 {
-	char 	*temp;
+	char	*temp;
 	int		i;
 	int		output;
 	int		symbol;

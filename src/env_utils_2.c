@@ -1,22 +1,38 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env_utils_2.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alkane <alkane@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/01 16:50:02 by alkane            #+#    #+#             */
+/*   Updated: 2022/05/01 16:50:03 by alkane           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
+
+static char	*handle_question_var(t_data *data, char *var_holder)
+{
+	char			*status;
+	char			trail[PATH_MAX];
+
+	status = ft_itoa(WEXITSTATUS(data->status));
+	ft_strlcpy(trail, &var_holder[ft_strlen(status)], PATH_MAX);
+	ft_strlcpy(var_holder, status, ft_strlen(status) + 1);
+	ft_strlcat(var_holder, trail, PATH_MAX - ft_strlen(status));
+	free(status);
+	return (var_holder);
+}
 
 static char	*env_var_replace(t_data *data, char *var_holder)
 {
 	t_environment	*temp;
 	size_t			i;
-	char			*status;
-	char			trail[PATH_MAX];
 
-	i = -1;
 	if (var_holder[0] == '?')
-	{
-		status = ft_itoa(WEXITSTATUS(data->status));
-		ft_strlcpy(trail, &var_holder[ft_strlen(status)], PATH_MAX);
-		ft_strlcpy(var_holder, status, ft_strlen(status) + 1);
-		ft_strlcat(var_holder, trail, PATH_MAX - ft_strlen(status));
-		free(status);
-		return (var_holder);
-	}
+		return (handle_question_var(data, var_holder));
+	i = -1;
 	while (++i < data->environment->total)
 	{
 		temp = vector_get(data->environment, i);
