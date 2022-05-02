@@ -1,5 +1,3 @@
-# !!!!!
-
 NAME	= minishell
 CC		= gcc
 CFLAGS	= -Wall -Werror -Wextra -I $(HOME)/goinfre/.brew/opt/readline/include/

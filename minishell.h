@@ -1,4 +1,14 @@
-// !!!!!
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alkane <alkane@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/02 14:42:53 by alkane            #+#    #+#             */
+/*   Updated: 2022/05/02 14:43:00 by alkane           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -7,7 +17,7 @@
 # include <dirent.h>
 # include <sys/stat.h>
 # ifdef __linux__
-#  include <linux/limits.h> // !!!!! maybe unnecessary for final submission?
+#  include <linux/limits.h>
 # endif
 # include <limits.h>
 # include <errno.h>
