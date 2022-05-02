@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   data_structs.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alkane <alkane@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dbrandtn <dbrandtn@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 14:39:25 by alkane            #+#    #+#             */
-/*   Updated: 2022/05/02 18:13:31 by alkane           ###   ########.fr       */
+/*   Updated: 2022/05/02 19:13:00 by dbrandtn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 static void	init_environment(t_data *data);
 static void	init_env_structs(t_data *data);
 static void	init_paths(t_data *data);
-static void	init_signals(int sig);
 
 t_data	*data_init(void)
 {
@@ -27,8 +26,8 @@ t_data	*data_init(void)
 	init_environment(data);
 	vector_custom_cleanup(data->environment, cleanup_environment);
 	init_paths(data);
-	init_signals(SIGINT);
-	init_signals(SIGQUIT);
+	signal(SIGINT, &signal_handler);
+	signal(SIGQUIT, &signal_handler);
 	data->exec = vector_init(10, 10, 0);
 	if (data->exec == NULL)
 		exit(1);
@@ -86,20 +85,5 @@ static void	init_paths(t_data *data)
 			ft_strlcpy(data->pwd, entry->value, ft_strlen(entry->value) + 1);
 		i++;
 		entry = vector_get(data->environment, i);
-	}
-}
-
-static void	init_signals(int sig)
-{
-	struct sigaction	sa;
-
-	ft_bzero(&sa, sizeof(sa));
-	sigemptyset(&sa.sa_mask);
-	sigaddset(&sa.sa_mask, sig);
-	sa.sa_handler = &signal_handler;
-	if (sigaction(sig, &sa, NULL) < 0)
-	{
-		printf("ERROR! SIGINT\n");
-		return ;
 	}
 }

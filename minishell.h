@@ -6,7 +6,7 @@
 /*   By: dbrandtn <dbrandtn@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 14:42:53 by alkane            #+#    #+#             */
-/*   Updated: 2022/05/02 18:34:00 by dbrandtn         ###   ########.fr       */
+/*   Updated: 2022/05/02 19:14:06 by dbrandtn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,6 @@
 
 # define READ_END 0
 # define WRITE_END 1
-
-static int	g_exit_value;
 
 // 1 = |, 2 = <, 3 = >, 4 = <<, 5 = >>
 enum e_reserved_symbol
@@ -119,6 +117,7 @@ void	parse_cur_path(char *cur_path);
 int		max(int val1, int val2);
 char	*get_home_dir(t_data *data);
 void	set_old_pwd(t_data *data);
+void	set_new_pwd(t_data *data);
 // export_utils.c
 char	*remove_surrounding_quotes(char *input);
 int		get_entry_index(t_vector *env, char *name);

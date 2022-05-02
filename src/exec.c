@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alkane <alkane@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dbrandtn <dbrandtn@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 14:38:26 by alkane            #+#    #+#             */
-/*   Updated: 2022/05/02 14:38:27 by alkane           ###   ########.fr       */
+/*   Updated: 2022/05/02 19:20:28 by dbrandtn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,10 @@ static void	parent_helper(t_data *data, t_exec *exec, int *fds, int i)
 	if (i > 0)
 		close_ends(fds + 2);
 	waitpid(data->pid, &(data->status), 0);
+	if (WIFSIGNALED(data->status))
+		data->status = 128 + WTERMSIG(data->status);
+	else
+		data->status = WEXITSTATUS(data->status);
 	if (vector_get(exec->commands, i + 1) != NULL)
 	{
 		(fds +2)[READ_END] = fds[READ_END];

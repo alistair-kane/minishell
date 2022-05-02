@@ -6,7 +6,7 @@
 /*   By: dbrandtn <dbrandtn@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/01 16:50:02 by alkane            #+#    #+#             */
-/*   Updated: 2022/05/02 18:28:36 by dbrandtn         ###   ########.fr       */
+/*   Updated: 2022/05/02 19:20:09 by dbrandtn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static char	*handle_question_var(t_data *data, char *var_holder)
 	char			*status;
 	char			trail[PATH_MAX];
 
-	status = ft_itoa(WEXITSTATUS(data->status));
+	status = ft_itoa(data->status);
 	ft_strlcpy(trail, &var_holder[ft_strlen(status)], PATH_MAX);
 	ft_strlcpy(var_holder, status, ft_strlen(status) + 1);
 	ft_strlcat(var_holder, trail, PATH_MAX - ft_strlen(status));

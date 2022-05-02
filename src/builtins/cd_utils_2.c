@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_utils_2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alkane <alkane@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dbrandtn <dbrandtn@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/01 16:52:41 by alkane            #+#    #+#             */
-/*   Updated: 2022/05/02 18:15:03 by alkane           ###   ########.fr       */
+/*   Updated: 2022/05/02 19:14:40 by dbrandtn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	*get_home_dir(t_data *data)
 
 void	set_old_pwd(t_data *data)
 {
-	char *temp[3];
+	char	*temp[3];
 
 	temp[0] = "export";
 	temp[1] = ft_strjoin("OLDPWD=", data->pwd);
@@ -49,7 +49,7 @@ void	set_new_pwd(t_data *data)
 {
 	char	*temp[3];
 	char	buf[PATH_MAX];
-	
+
 	getcwd(buf, PATH_MAX);
 	temp[0] = "export";
 	temp[1] = ft_strjoin("PWD=", buf);

@@ -6,7 +6,7 @@
 /*   By: dbrandtn <dbrandtn@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 14:40:01 by alkane            #+#    #+#             */
-/*   Updated: 2022/05/02 17:57:33 by dbrandtn         ###   ########.fr       */
+/*   Updated: 2022/05/02 19:14:15 by dbrandtn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,11 @@ void	signal_handler(int sig)
 		ft_putchar_fd('\n', STDOUT_FILENO);
 		rl_on_new_line();
 		rl_redisplay();
-		g_exit_value = 130;
 	}
 	else if (sig == SIGQUIT)
 	{
 		rl_on_new_line();
 		rl_redisplay();
-		g_exit_value = 131;
 		return ;
 	}
 }
