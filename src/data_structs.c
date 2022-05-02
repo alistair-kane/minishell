@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   data_structs.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbrandtn <dbrandtn@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: alkane <alkane@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 14:39:25 by alkane            #+#    #+#             */
-/*   Updated: 2022/05/02 14:52:29 by dbrandtn         ###   ########.fr       */
+/*   Updated: 2022/05/02 18:13:31 by alkane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ t_data	*data_init(void)
 	if (data->exec == NULL)
 		exit(1);
 	vector_custom_cleanup(data->exec, cleanup_exec);
+	if (data->pwd[0] == '\0')
+		set_new_pwd(data);
 	return (data);
 }
 
