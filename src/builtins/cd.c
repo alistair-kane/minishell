@@ -6,7 +6,7 @@
 /*   By: alkane <alkane@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/01 16:52:33 by alkane            #+#    #+#             */
-/*   Updated: 2022/05/01 16:52:34 by alkane           ###   ########.fr       */
+/*   Updated: 2022/05/02 16:57:09 by alkane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ static void	test_chdir(t_data *data, char *cur_path)
 
 	if (chdir(cur_path) == 0)
 	{
+		set_old_pwd(data);
 		ft_strlcpy(data->pwd, cur_path, ft_strlen(cur_path) + 1);
 		index = get_entry_index(data->environment, "PWD");
 		if (index >= 0)

@@ -6,7 +6,7 @@
 /*   By: alkane <alkane@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/01 16:52:41 by alkane            #+#    #+#             */
-/*   Updated: 2022/05/01 16:52:42 by alkane           ###   ########.fr       */
+/*   Updated: 2022/05/02 16:56:50 by alkane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,15 @@ char	*get_home_dir(t_data *data)
 			return (temp->value);
 	}
 	return (NULL);
+}
+
+void	set_old_pwd(t_data *data)
+{
+	char *temp[3];
+
+	temp[0] = "export";
+	temp[1] = ft_strjoin("OLDPWD=", data->pwd);
+	temp[2] = NULL;
+	builtin_export(data, temp);
+	free(temp[1]);
 }
