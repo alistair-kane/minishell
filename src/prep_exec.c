@@ -2,13 +2,14 @@
 
 #include "../minishell.h"
 
+static int	handle_symbols(t_exec *exec, char **arguments, int i, int *output);
+static void	handle_input_is_first_arg(t_exec *exec, int i, int symbol);
 static int	handle_reserved_symbols(t_exec *exec, char **arguments, int symbol,
 				int *output);
 static int	handle_input(t_exec *exec, char *filename);
 
 int	prep_exec(t_data *data, char **arguments)
 {
-	char	*temp;
 	int		i;
 	int		output;
 	int		symbol;
@@ -27,23 +28,38 @@ int	prep_exec(t_data *data, char **arguments)
 			exec = init_exec();
 		}
 		if (symbol > 0)
-		{
-			if (symbol == RESERVED_SYMBOL_PIPE && i == 2 && exec->here_flag == 0
-				&& exec->input_file != NULL)
-			{
-				free(exec->input_file);
-				exec->input_file = NULL;
-				temp = create_filename(exec, "temp");
-				handle_input(exec, temp);
-				close(open(exec->input_file, O_RDWR | O_CREAT, 0644));
-			}
-			i += handle_reserved_symbols(exec, &arguments[i], symbol, &output);
-		}
+			i += handle_symbols(exec, &arguments[i], i, &output);
 		else
 			i += handle_commands(exec, &arguments[i]);
 	}
 	vector_add(data->exec, exec);
 	return (0);
+}
+
+static int	handle_symbols(t_exec *exec, char **arguments, int i, int *output)
+{
+	int	ret;
+	int	symbol;
+
+	symbol = is_reserved_symbol(arguments[0]);
+	handle_input_is_first_arg(exec, i, symbol);
+	ret = handle_reserved_symbols(exec, &arguments[0], symbol, output);
+	return (ret);
+}
+
+static void	handle_input_is_first_arg(t_exec *exec, int i, int symbol)
+{
+	char	*temp;
+
+	if (symbol == RESERVED_SYMBOL_PIPE && i == 2 && exec->here_flag == 0
+		&& exec->input_file != NULL)
+	{
+		free(exec->input_file);
+		exec->input_file = NULL;
+		temp = create_filename(exec, "temp");
+		handle_input(exec, temp);
+		close(open(exec->input_file, O_RDWR | O_CREAT, 0644));
+	}
 }
 
 // returns the number of 'consumed' arguments (returns 1 for the pipe)

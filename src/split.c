@@ -3,8 +3,9 @@
 #include "../minishell.h"
 
 static char	*goto_next_pos(char *line);
+static char	*handle_end_of_arg(char *line, int double_quotes,
+				int single_quotes);
 static void	skip_whitespaces(char **line);
-static int	handle_reserved_symbols(char **line);
 
 /*
 returns an array of strings - splits the line when finding a whitespace-char, 
@@ -20,26 +21,19 @@ char	**ms_split(t_data *data, char *line)
 	str_trim_end(line);
 	skip_whitespaces(&line);
 	array = ft_calloc(1024, sizeof(void *));
-	if (array == NULL)
-		exit(1);
 	i = 0;
 	last_pos = line;
 	pos = goto_next_pos(line);
 	while (pos != NULL)
 	{
 		array[i] = malloc((pos - last_pos) + 1);
-		if (array[i] == NULL)
-			exit(1);
 		ft_strlcpy(array[i], last_pos, (pos - last_pos) + 1);
 		skip_whitespaces(&pos);
 		i++;
 		last_pos = pos;
 		pos = goto_next_pos(pos);
 	}
-	array[i] = malloc(ft_strlen(last_pos) + 1);
-	if (array[i] == NULL)
-		exit(1);
-	ft_strlcpy(array[i], last_pos, ft_strlen(last_pos) + 1);
+	array[i] = ft_strdup(last_pos);
 	array[i + 1] = NULL;
 	data->args_len = i;
 	return (array);
@@ -48,11 +42,11 @@ char	**ms_split(t_data *data, char *line)
 // this will skip multiple whitespace-chars at the start of the string
 static char	*goto_next_pos(char *line)
 {
-	int	double_quotes_open;
-	int	single_quotes_open;
+	int	double_quotes;
+	int	single_quotes;
 
-	double_quotes_open = 0;
-	single_quotes_open = 0;
+	double_quotes = 0;
+	single_quotes = 0;
 	if (handle_reserved_symbols(&line) != 0)
 	{
 		if (ft_strlen(line) != 0)
@@ -65,16 +59,23 @@ static char	*goto_next_pos(char *line)
 		if (*line == '\\')
 			line += 2;
 		if (*line == '\'' || *line == '"')
-			handle_quotes(*line, &double_quotes_open, &single_quotes_open);
-		if (double_quotes_open == 0 && single_quotes_open == 0)
-		{
-			if (*line == '<' || *line == '>' || *line == '|' || *line == '$')
-				return (line);
-			if (is_whitespace(*line) == 1)
-				return (line);
-		}
+			handle_quotes(*line, &double_quotes, &single_quotes);
+		if (handle_end_of_arg(line, double_quotes, single_quotes) != NULL)
+			return (line);
 		if (*line != '\0')
 			line++;
+	}
+	return (NULL);
+}
+
+static char	*handle_end_of_arg(char *line, int double_quotes, int single_quotes)
+{
+	if (double_quotes == 0 && single_quotes == 0)
+	{
+		if (*line == '<' || *line == '>' || *line == '|' || *line == '$')
+			return (line);
+		if (is_whitespace(*line) == 1)
+			return (line);
 	}
 	return (NULL);
 }
@@ -83,27 +84,4 @@ static void	skip_whitespaces(char **line)
 {
 	while (is_whitespace(**line) == 1)
 		(*line)++;
-}
-
-static int	handle_reserved_symbols(char **line)
-{
-	if (**line == '$')
-	{
-		(*line)++;
-		while (is_whitespace(**line) == 0 && **line != '<' && **line != '>'
-			&& **line != '|' && **line != '\0')
-			(*line)++;
-	}
-	else if (**line == '<')
-		while (**line == '<')
-			(*line)++;
-	else if (**line == '>')
-		while (**line == '>')
-			(*line)++;
-	else if (**line == '|')
-		while (**line == '|')
-			(*line)++;
-	else
-		return (0);
-	return (1);
 }

@@ -83,3 +83,26 @@ int	handle_quotes(char c, int *double_quotes, int *single_quotes)
 	}
 	return (1);
 }
+
+int	handle_reserved_symbols(char **line)
+{
+	if (**line == '$')
+	{
+		(*line)++;
+		while (is_whitespace(**line) == 0 && **line != '<' && **line != '>'
+			&& **line != '|' && **line != '\0')
+			(*line)++;
+	}
+	else if (**line == '<')
+		while (**line == '<')
+			(*line)++;
+	else if (**line == '>')
+		while (**line == '>')
+			(*line)++;
+	else if (**line == '|')
+		while (**line == '|')
+			(*line)++;
+	else
+		return (0);
+	return (1);
+}
