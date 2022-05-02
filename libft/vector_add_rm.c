@@ -6,7 +6,7 @@
 /*   By: dbrandtn <dbrandtn@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 12:34:47 by dbrandtn          #+#    #+#             */
-/*   Updated: 2022/04/30 15:23:09 by dbrandtn         ###   ########.fr       */
+/*   Updated: 2022/05/02 14:33:34 by dbrandtn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,32 +74,31 @@ static void	copy_data(t_vector *vector, void **new)
 	ft_memcpy(new, vector->nodes, vector->total * vector->data_size);
 }
 
-void	vector_delete(t_vector *vector, int index)
+void	vector_delete(t_vector *vec, int idx)
 {
 	char	*buf;
 	size_t	i;
 
-	if (index < 0 || index >= (int)vector->total)
+	if (idx < 0 || idx >= (int)vec->total)
 		return ;
-	if (vector->data_size == 0)
+	if (vec->data_size == 0)
 	{
-		vector->cleanup_cb(vector->nodes[index]);
-		free(vector->nodes[index]);
-		i = index;
-		while (i < vector->total - 1)
+		vec->cleanup_cb(vec->nodes[idx]);
+		free(vec->nodes[idx]);
+		i = idx;
+		while (i < vec->total - 1)
 		{
-			vector->nodes[i] = vector->nodes[i + 1];
+			vec->nodes[i] = vec->nodes[i + 1];
 			i++;
 		}
-		vector->nodes[i + 1] = NULL;
+		vec->nodes[i + 1] = NULL;
 	}
 	else
 	{
-		buf = (char *)vector->nodes;
-		vector->cleanup_cb(&buf[index * vector->data_size]);
-		ft_memmove(&buf[index * vector->data_size],
-			&buf[(index + 1) * vector->data_size],
-			(vector->total - (index + 1)) * vector->data_size);
+		buf = (char *)vec->nodes;
+		vec->cleanup_cb(&buf[idx * vec->data_size]);
+		ft_memmove(&buf[idx * vec->data_size], &buf[(idx + 1) * vec->data_size],
+			(vec->total - (idx + 1)) * vec->data_size);
 	}
-	vector->total--;
+	vec->total--;
 }

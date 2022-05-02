@@ -84,7 +84,7 @@ int	handle_quotes(char c, int *double_quotes, int *single_quotes)
 	return (1);
 }
 
-int	handle_reserved_symbols(char **line)
+int	parse_reserved_symbols(char **line)
 {
 	if (**line == '$')
 	{

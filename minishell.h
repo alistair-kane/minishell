@@ -123,7 +123,7 @@ char	**ms_split(t_data *data, char *line);
 // split_utils.c
 void	quote_master(char **args);
 int		handle_quotes(char c, int *double_quotes, int *single_quotes);
-int		handle_reserved_symbols(char **line);
+int		parse_reserved_symbols(char **line);
 
 // logic_check.c
 int		check_argument_logic(char **args);

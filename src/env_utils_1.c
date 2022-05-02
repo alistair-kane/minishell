@@ -72,6 +72,6 @@ void	add_to_envp(t_data *data, char *name, char *value)
 		exit(1);
 	ft_strlcpy(data->envp[i], name, ft_strlen(name) + 1);
 	data->envp[i][ft_strlen(name)] = '=';
-	ft_strlcpy(&data->envp[i][ft_strlen(name) + 1], value, 
+	ft_strlcpy(&data->envp[i][ft_strlen(name) + 1], value,
 		ft_strlen(value) + 1);
 }

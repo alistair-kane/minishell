@@ -47,7 +47,7 @@ static char	*goto_next_pos(char *line)
 
 	double_quotes = 0;
 	single_quotes = 0;
-	if (handle_reserved_symbols(&line) != 0)
+	if (parse_reserved_symbols(&line) != 0)
 	{
 		if (ft_strlen(line) != 0)
 			return (line);
