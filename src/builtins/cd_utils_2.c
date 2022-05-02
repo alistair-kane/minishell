@@ -6,7 +6,7 @@
 /*   By: alkane <alkane@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/01 16:52:41 by alkane            #+#    #+#             */
-/*   Updated: 2022/05/02 16:56:50 by alkane           ###   ########.fr       */
+/*   Updated: 2022/05/02 18:15:03 by alkane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,18 @@ void	set_old_pwd(t_data *data)
 	temp[2] = NULL;
 	builtin_export(data, temp);
 	free(temp[1]);
+}
+
+void	set_new_pwd(t_data *data)
+{
+	char	*temp[3];
+	char	buf[PATH_MAX];
+	
+	getcwd(buf, PATH_MAX);
+	temp[0] = "export";
+	temp[1] = ft_strjoin("PWD=", buf);
+	temp[2] = NULL;
+	builtin_export(data, temp);
+	free(temp[1]);
+	ft_strlcpy(data->pwd, buf, ft_strlen(buf) + 1);
 }

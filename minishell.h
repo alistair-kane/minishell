@@ -6,7 +6,7 @@
 /*   By: alkane <alkane@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 14:42:53 by alkane            #+#    #+#             */
-/*   Updated: 2022/05/02 17:11:39 by alkane           ###   ########.fr       */
+/*   Updated: 2022/05/02 18:09:40 by alkane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ void	parse_cur_path(char *cur_path);
 int		max(int val1, int val2);
 char	*get_home_dir(t_data *data);
 void	set_old_pwd(t_data *data);
+void	set_new_pwd(t_data *data);
 // export_utils.c
 char	*remove_surrounding_quotes(char *input);
 int		get_entry_index(t_vector *env, char *name);
