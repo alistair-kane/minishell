@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   data_structs.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alkane <alkane@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dbrandtn <dbrandtn@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 14:39:25 by alkane            #+#    #+#             */
-/*   Updated: 2022/05/02 14:39:26 by alkane           ###   ########.fr       */
+/*   Updated: 2022/05/02 14:52:29 by dbrandtn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ static void	init_signals(int sig)
 {
 	struct sigaction	sa;
 
+	ft_bzero(&sa, sizeof(sa));
 	sigemptyset(&sa.sa_mask);
 	sigaddset(&sa.sa_mask, sig);
 	sa.sa_handler = &signal_handler;
