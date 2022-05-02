@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils_2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alkane <alkane@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dbrandtn <dbrandtn@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/01 16:50:02 by alkane            #+#    #+#             */
-/*   Updated: 2022/05/01 16:50:03 by alkane           ###   ########.fr       */
+/*   Updated: 2022/05/02 18:28:36 by dbrandtn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,14 @@ static char	*expansion_ops(t_data *data, char *arg, int i)
 	return (new_arg);
 }
 
+static char	*expansion_helper(t_data *data, char *arg, int *i)
+{
+	arg = expansion_ops(data, arg, *i + 1);
+	if (arg[*i] == '$')
+		(*i)--;
+	return (arg);
+}
+
 char	*env_expansion(t_data *data, char *arg)
 {
 	int	i;
@@ -98,7 +106,7 @@ char	*env_expansion(t_data *data, char *arg)
 			if (arg[i + 1] == '$')
 				i++;
 			else
-				arg = expansion_ops(data, arg, i + 1);
+				arg = expansion_helper(data, arg, &i);
 		}
 	}
 	return (arg);

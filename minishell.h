@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alkane <alkane@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dbrandtn <dbrandtn@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 14:42:53 by alkane            #+#    #+#             */
-/*   Updated: 2022/05/02 17:11:39 by alkane           ###   ########.fr       */
+/*   Updated: 2022/05/02 17:56:53 by dbrandtn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@
 
 # define READ_END 0
 # define WRITE_END 1
+
+static int	g_exit_value;
 
 // 1 = |, 2 = <, 3 = >, 4 = <<, 5 = >>
 enum e_reserved_symbol
