@@ -6,7 +6,7 @@
 /*   By: dbrandtn <dbrandtn@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 14:38:26 by alkane            #+#    #+#             */
-/*   Updated: 2022/05/02 19:20:28 by dbrandtn         ###   ########.fr       */
+/*   Updated: 2022/05/02 19:27:53 by dbrandtn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ static void	parent_helper(t_data *data, t_exec *exec, int *fds, int i)
 		data->status = 128 + WTERMSIG(data->status);
 	else
 		data->status = WEXITSTATUS(data->status);
+	signal(SIGINT, &signal_handler);
+	signal(SIGQUIT, &signal_handler);
 	if (vector_get(exec->commands, i + 1) != NULL)
 	{
 		(fds +2)[READ_END] = fds[READ_END];
@@ -74,6 +76,8 @@ static void	piping(t_data *data, t_exec *exec)
 	{
 		if (vector_get(exec->commands, i + 1) != NULL)
 			open_pipe(fds);
+		signal(SIGINT, &signal_handler_child);
+		signal(SIGQUIT, &signal_handler_child);
 		data->pid = fork();
 		if (data->pid < 0)
 			exit_error("fork");

@@ -6,7 +6,7 @@
 /*   By: dbrandtn <dbrandtn@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 14:42:53 by alkane            #+#    #+#             */
-/*   Updated: 2022/05/02 19:14:06 by dbrandtn         ###   ########.fr       */
+/*   Updated: 2022/05/02 19:28:16 by dbrandtn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ t_data	*data_init(void);
 
 // signals.c
 void	signal_handler(int signal);
+void	signal_handler_child(int sig);
 
 // data_cleanup.c
 void	data_cleanup(t_data *data);
