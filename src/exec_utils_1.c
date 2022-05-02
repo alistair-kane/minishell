@@ -38,9 +38,11 @@ void	redirect_output(t_exec *exec, int redir_flag)
 	while (exec->output_files[j] != NULL)
 	{
 		if (exec->append_output[j])
-			outputfd = file_open(exec->output_files[j], O_WRONLY | O_CREAT | O_APPEND);
+			outputfd = file_open(exec->output_files[j],
+					O_WRONLY | O_CREAT | O_APPEND);
 		else
-			outputfd = file_open(exec->output_files[j], O_WRONLY | O_CREAT | O_TRUNC);
+			outputfd = file_open(exec->output_files[j],
+					O_WRONLY | O_CREAT | O_TRUNC);
 		if (exec->output_files[j + 1] == NULL && redir_flag)
 			dup2(outputfd, STDOUT_FILENO);
 		close(outputfd);

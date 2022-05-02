@@ -5,36 +5,19 @@
 static void	swap_entries(t_environment *first, t_environment *second)
 {
 	char	name[4096];
-	char	value[16384]; // !!!!!
+	char	value[16384];
 	int		tmp;
 
 	ft_strlcpy(name, first->name, ft_strlen(first->name) + 1);
 	ft_strlcpy(value, first->value, ft_strlen(first->value) + 1);
 	free(first->name);
-	first->name = malloc(ft_strlen(second->name) + 1);
-	if (first->name == NULL)
-		exit(1);
-	ft_strlcpy(first->name, second->name, ft_strlen(second->name) + 1);
+	first->name = ft_strdup(second->name);
 	free(first->value);
-	if (second->value != NULL)
-	{
-		first->value = malloc(ft_strlen(second->value) + 1);
-		if (first->value == NULL)
-			exit(1);
-		ft_strlcpy(first->value, second->value, ft_strlen(second->value) + 1);
-	}
-	else
-		first->value = NULL;
+	first->value = ft_strdup(second->value);
 	free(second->name);
-	second->name = malloc(ft_strlen(name) + 1);
-	if (second->name == NULL)
-		exit(1);
-	ft_strlcpy(second->name, name, ft_strlen(name) + 1);
+	second->name = ft_strdup(name);
 	free(second->value);
-	second->value = malloc(ft_strlen(value) + 1);
-	if (second->value == NULL)
-		exit(1);
-	ft_strlcpy(second->value, value, ft_strlen(value) + 1);
+	second->value = ft_strdup(value);
 	tmp = first->initial_index;
 	first->initial_index = second->initial_index;
 	second->initial_index = tmp;
@@ -77,7 +60,7 @@ void	add_to_envp(t_data *data, char *name, char *value)
 		return ;
 	if (data->envp == NULL)
 	{
-		data->envp = ft_calloc(1024, sizeof(char *)); // !!!!!
+		data->envp = ft_calloc(1024, sizeof(char *));
 		if (data->envp == NULL)
 			exit(1);
 	}

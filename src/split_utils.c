@@ -20,15 +20,12 @@ static int	check_reset(char *arg, int *delp1, int *delp2, int *i)
 static void	char_cleanup(char *arg)
 {
 	int	i;
-	int	delp1;
-	int	delp2;
-	int	single;
-	int	dbl;
+	int	delp[2];
+	int	quotes[2];
 
-	single = 0;
-	dbl = 0;
-	delp1 = -1;
-	delp2 = -1;
+	ft_bzero(quotes, sizeof(int) * 2);
+	delp[0] = -1;
+	delp[1] = -1;
 	i = -1;
 	while (arg[++i])
 	{
@@ -36,15 +33,15 @@ static void	char_cleanup(char *arg)
 			i += 2;
 		if (arg[i] == '\'' || arg[i] == '"')
 		{
-			if (handle_quotes(arg[i], &dbl, &single) == 1)
+			if (handle_quotes(arg[i], &quotes[0], &quotes[1]) == 1)
 			{
-				if (delp1 == -1)
-					delp1 = i;
+				if (delp[0] == -1)
+					delp[0] = i;
 				else
-					delp2 = i;
+					delp[1] = i;
 			}
 		}
-		check_reset(arg, &delp1, &delp2, &i);
+		check_reset(arg, &delp[0], &delp[1], &i);
 	}
 }
 

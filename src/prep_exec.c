@@ -5,8 +5,6 @@
 static int	handle_reserved_symbols(t_exec *exec, char **arguments, int symbol,
 				int *output);
 static int	handle_input(t_exec *exec, char *filename);
-static int	handle_output(t_exec *exec, char *filename, int append);
-static int	handle_commands(t_exec *exec, char **arguments);
 
 int	prep_exec(t_data *data, char **arguments)
 {
@@ -90,52 +88,4 @@ static int	handle_input(t_exec *exec, char *filename)
 		exit(1);
 	ft_strlcpy(exec->input_file, filename, length + 1);
 	return (2);
-}
-
-static int	handle_output(t_exec *exec, char *filename, int append)
-{
-	int	i;
-	int	length;
-
-	if (filename == NULL)
-		return (1);
-	i = 0;
-	while (exec->output_files[i] != NULL)
-		i++;
-	if (i >= 128)
-		return (2);
-	exec->append_output[i] = append;
-	length = ft_strlen(filename);
-	exec->output_files[i] = ft_calloc(length + 1, sizeof(char));
-	if (exec->output_files[i] == NULL)
-		exit(1);
-	ft_strlcpy(exec->output_files[i], filename, length + 1);
-	return (2);
-}
-
-// 'comsume' every argument until you hit the end or a reserved symbol
-static int	handle_commands(t_exec *exec, char **arguments)
-{
-	char	**command;
-	int		i;
-	int		length;
-
-	command = ft_calloc(128, sizeof(char *));
-	if (command == NULL)
-		exit(1);
-	i = 0;
-	while (is_reserved_symbol(arguments[i]) == 0)
-	{
-		length = ft_strlen(arguments[i]);
-		command[i] = malloc(length + 1);
-		if (command[i] == NULL)
-			exit(1);
-		ft_strlcpy(command[i], arguments[i], length + 1);
-		i++;
-		if (arguments[i] == NULL)
-			break ;
-	}
-	command[i] = NULL;
-	vector_add(exec->commands, command);
-	return (i);
 }

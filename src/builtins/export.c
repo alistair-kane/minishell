@@ -18,8 +18,8 @@ int	builtin_export(t_data *data, char **args)
 		export_print_list(data);
 		return (1);
 	}
-	i = 1;
-	while (args[i++] != NULL)
+	i = 0;
+	while (args[++i] != NULL)
 	{
 		update = get_key_value_pair(args[i], &entry);
 		if (is_valid_entry_name(entry.name) == 0)

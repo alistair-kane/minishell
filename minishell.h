@@ -124,6 +124,8 @@ int		prep_exec(t_data *data, char **arguments);
 t_exec	*init_exec(void);
 char	*handle_here_doc(t_exec *exec, char *delimiter);
 char	*create_filename(t_exec *exec, char *filename);
+int		handle_output(t_exec *exec, char *filename, int append);
+int		handle_commands(t_exec *exec, char **arguments);
 
 int		check_argument_logic(char **args);
 
