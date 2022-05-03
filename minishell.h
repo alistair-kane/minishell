@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbrandtn <dbrandtn@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: alistair <alistair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 14:42:53 by alkane            #+#    #+#             */
-/*   Updated: 2022/05/02 19:28:16 by dbrandtn         ###   ########.fr       */
+/*   Updated: 2022/05/03 21:10:33 by alistair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int		check_builtin(char **args);
 void	exec_builtin(t_data *data, char **args);
 
 // builtins/*.c
-int		builtin_echo(t_data *data, char **buf);
+int		builtin_echo(t_data *data, char **args);
 void	builtin_cd(t_data *data, char **args);
 int		builtin_pwd(t_data *data);
 int		builtin_export(t_data *data, char **args);

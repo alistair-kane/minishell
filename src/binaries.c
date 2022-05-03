@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   binaries.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbrandtn <dbrandtn@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: alistair <alistair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 14:41:27 by alkane            #+#    #+#             */
-/*   Updated: 2022/05/02 19:14:31 by dbrandtn         ###   ########.fr       */
+/*   Updated: 2022/05/03 20:56:12 by alistair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ static char	*return_path(char **paths, char *execname)
 	char	*temp;
 	char	*path;
 
+	if (paths == NULL)
+		return (NULL);
 	i = -1;
 	while (paths[++i] != NULL)
 	{

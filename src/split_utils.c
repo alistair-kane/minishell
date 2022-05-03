@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alkane <alkane@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alistair <alistair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 14:40:19 by alkane            #+#    #+#             */
-/*   Updated: 2022/05/02 14:40:20 by alkane           ###   ########.fr       */
+/*   Updated: 2022/05/03 21:13:09 by alistair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ void	quote_master(char **args)
 	int	i;
 
 	i = -1;
+	if (args == NULL)
+		return ;
 	while (args[++i])
 	{
 		char_cleanup(args[i]);
