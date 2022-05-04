@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prep_exec_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alkane <alkane@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dbrandtn <dbrandtn@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 14:39:51 by alkane            #+#    #+#             */
-/*   Updated: 2022/05/02 14:39:52 by alkane           ###   ########.fr       */
+/*   Updated: 2022/05/04 13:16:39 by dbrandtn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,6 @@ char	*handle_here_doc(t_exec *exec, char *delimiter)
 		return (NULL);
 	new_delimiter = ft_strjoin(delimiter, "\n");
 	filename = create_filename(exec, "temp");
-	if (filename == NULL)
-		return (NULL);
 	fd = open(filename, O_RDWR | O_CREAT, 0644);
 	while (1)
 	{
@@ -48,7 +46,10 @@ char	*handle_here_doc(t_exec *exec, char *delimiter)
 		if (line == NULL || ft_strcmp(line, new_delimiter) == 0)
 			break ;
 		write(fd, line, ft_strlen(line));
+		free(line);
 	}
+	if (line != NULL)
+		free(line);
 	close(fd);
 	free(new_delimiter);
 	return (filename);

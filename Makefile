@@ -1,6 +1,7 @@
 NAME	= minishell
 CC		= gcc
 CFLAGS	= -Wall -Werror -Wextra -I $(HOME)/goinfre/.brew/opt/readline/include/
+LIBFT_DIR = libft/
 LIB_LOC = ./libft
 LIBRARY = libft.a
 SRCS	= minishell.c src/data_structs.c src/parser.c src/split.c src/builtins/echo.c \
@@ -10,21 +11,18 @@ SRCS	= minishell.c src/data_structs.c src/parser.c src/split.c src/builtins/echo
 			src/builtins/env.c src/binaries.c src/signals.c src/prep_exec.c \
 			src/prep_exec_utils.c src/exec.c src/exec_utils_1.c src/exec_utils_2.c \
 			src/logic_check.c src/split_utils.c src/env_utils_2.c src/builtins/export_utils.c
-OBJS	= ${SRCS:.c=.o}
 
 all: $(NAME)
 
-$(LIBRARY):
-	$(MAKE) -C $(LIB_LOC)
 
-$(NAME): $(OBJS) $(LIBRARY)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -L $(LIB_LOC) -lft -L $(HOME)/goinfre/.brew/opt/readline/lib/ -lreadline
+$(NAME):
+	$(MAKE) all -C $(LIBFT_DIR)
+	$(CC) $(CFLAGS) $(SRCS) $(LIBFT_DIR)$(LIBRARY) -L $(HOME)/goinfre/.brew/opt/readline/lib/ -lreadline -o $(NAME)
 
 debug: CFLAGS += -g3
 debug: re
 
 clean:
-	rm -f $(OBJS)
 	$(MAKE) clean -C $(LIB_LOC)
 
 fclean: clean
